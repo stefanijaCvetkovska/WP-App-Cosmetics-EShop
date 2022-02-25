@@ -1,0 +1,128 @@
+<div class="form-bg">
+    <div class="container">
+        <h3 class="table-title">Brands list</h3>
+        <div class="table-content">
+
+            <div class="mb-3">
+                <a href="/admin/brands/add-brands" class="btn submit">
+                    Add brand
+                </a>
+            </div>
+
+            <form th:action="@{'/admin/brands/page/' + ${currentPage} + '?searchName=' + ${searchName}}">
+                <div class="searchBar mb-3">
+                    <input id="searchQueryInput"
+                           type="text"
+                           name="searchName"
+                           placeholder="Search for a brand"
+                           value=""/>
+                    <button id="searchQuerySubmit"
+                            type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+
+            <table class="table table-light-bordered text-center">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        <a th:href="@{'/admin/brands/page/' + ${currentPage} + '?searchName=' + ${searchName} + '&sortField=id&sortDir=' + ${reverseSortDir}}">
+                            <i class="fas fa-sort"></i> ID
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a th:href="@{'/admin/brands/page/' + ${currentPage} + '?searchName=' + ${searchName} + '&sortField=name&sortDir=' + ${reverseSortDir}}">
+                            <i class="fas fa-sort"></i> Brand Name
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Brand Logo
+                    </th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="brand: ${brands}">
+                    <td th:text="${brand.id}"></td>
+                    <td th:text="${brand.name}"></td>
+                    <td>
+                        <img th:src="${brand.logo}" width="70" height="70" alt=""/>
+                    </td>
+                    <td>
+                        <form method="POST" th:action="@{'/admin/brands/delete/{id}' (id=${brand.id})}">
+                            <button type="submit" class="btn btn-danger">
+                                <!--                                <i class="fas fa-trash"></i>-->
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                    <td>
+                        <a th:href="@{'/admin/brands/edit-brands/{id}' (id=${brand.id})}" class="btn btn-info">
+                            <!--                            <i class="fas fa-edit"></i>-->
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!--Pagination-->
+            <div th:if="${totalPages > 1}">
+                <div class="row">
+                    <div class="col-sm-2">
+                        Total Rows: [[${totalItems}]]
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage > 1}"
+                           th:href="@{'/admin/brands/page/' + '1' + '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                           class="btn btn-light">
+                            First
+                        </a>
+                        <span th:unless="${currentPage > 1}">First</span>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage > 1}"
+                           th:href="@{'/admin/brands/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                           class="btn btn-light">
+                            Prev
+                        </a>
+                        <span th:unless="${currentPage > 1}">Prev</span>
+                    </div>
+
+                    <div class="col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}"
+                           th:href="@{'/admin/brands/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                           class="btn btn-light">
+                            [[${i}]]
+                        </a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>
+					</span>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage < totalPages}"
+                           th:href="@{'/admin/brands/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                           class="btn btn-light">
+                            Next
+                        </a>
+                        <span th:unless="${currentPage < totalPages}">Next</span>
+                    </div>
+
+                    <div class="col-sm-1">
+                        <a th:if="${currentPage < totalPages}"
+                           th:href="@{'/admin/brands/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"
+                           class="btn btn-light">
+                            Last
+                        </a>
+                        <span th:unless="${currentPage < totalPages}">Last</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

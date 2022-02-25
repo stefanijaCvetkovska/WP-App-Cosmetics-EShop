@@ -1,0 +1,14 @@
+.fa-shopping-basket:hover{
+    color: #ff3d81;
+    transition: all 0.5s ease-in-out;
+}
+
+.bg-pink{
+    background: linear-gradient(to right, #FF638E, #FF97A8);
+    color: white;
+    border-radius: 5px;
+}
+
+.border-b{
+    border-bottom: 1px solid rgba(107, 107, 107, 0.34);
+}

@@ -1,0 +1,114 @@
+<form th:action="@{'/products/page/1'}">
+    <button class="btn btn-dark mb-3" type="submit" value="">Clear filters</button>
+</form>
+<div class="row">
+    <!--    Accordion-->
+    <th:block th:replace="product-filtering-sidebar.html"></th:block>
+    <!--    Products-->
+    <div class="col-md-9 m-0">
+
+        <!--    Search-->
+        <form th:action="@{'/products/page/1?name=' + ${name}}">
+            <div class="searchBar mb-3">
+                <input id="searchQueryInput"
+                       type="text"
+                       name="name"
+                       placeholder="Search for a product"
+                       value=""/>
+                <button id="searchQuerySubmit"
+                        type="submit">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </form>
+
+        <div class="row ml-2">
+            <div th:each="product: ${products}" class="card-width mt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-img-actions text-center">
+                            <img th:src="${product.image}" width="150px" height="150px"/>
+                        </div>
+                    </div>
+
+                    <div class="card-body bg-light text-center">
+                        <div class="mb-2">
+                            <h6 th:text="${product.name}" class="font-weight-semibold mb-2"></h6>
+                            <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
+                        </div>
+                        <h3 th:text="'$' + ${product.price}" class="mb-0 font-weight-semibold"></h3>
+                        <div><i class="fa fa-star star"></i> <i class="fa fa-star star"></i> <i
+                                class="fa fa-star star"></i> <i
+                                class="fa fa-star star"></i>
+                        </div>
+                        <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
+                            <button type="submit" class="btn btn-success btn-sm m-2">
+                                <i class="fa fa-cart-plus mr-2"></i>
+                                Add to cart
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-between">
+                        <div class="row">
+                            <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
+                                <button type="submit" class="btn btn-link text-danger">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                            <a th:href="@{'/products/edit-form/{id}' (id=${product.id})}"
+                               class="btn btn-link">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                        </div>
+                        <div class="text-danger m-1" th:text="'In stock: '+ ' ' + ${product.quantity}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-5">
+            <a href="/products/add-form" class="btn submit">
+                Add new product
+            </a>
+        </div>
+
+        <!--Pagination-->
+        <th:block th:replace="product-pagination.html"></th:block>
+
+
+        <!--        <div>-->
+        <!--            <div th:each="product: ${products}" class="card m-3">-->
+        <!--                <h5 th:text="${product.category.name}" class="card-header"></h5>-->
+        <!--                <div class="card-body">-->
+        <!--                    <h5 th:text="${product.name}" class="card-title"></h5>-->
+        <!--                    <p th:text="'Made by:' + ' ' +${product.brand.name}"></p>-->
+        <!--                    <div class="row">-->
+        <!--                        <div class="col-md-1"></div>-->
+        <!--                        <div class="col-md-3 mr-3">-->
+        <!--                            <img th:src="${product.image}" width="200" height="200" alt=""/>-->
+        <!--                        </div>-->
+        <!--                        <div class="col-md-3">-->
+        <!--                            <p th:text="'Price:' + ' ' +${product.price}"></p>-->
+        <!--                            <p th:text="'In stock:' + ' ' +${product.quantity}"></p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                    <div class="row">-->
+        <!--                        <div class="m-2">-->
+        <!--                            <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">-->
+        <!--                                <button type="submit" class="btn btn-primary">Add to cart</button>-->
+        <!--                            </form>-->
+        <!--                        </div>-->
+        <!--                        <div class="row ml-2">-->
+        <!--                            <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">-->
+        <!--                                <button type="submit" class="btn btn-danger delete-item m-2">Delete</button>-->
+        <!--                            </form>-->
+        <!--                            <a th:href="@{'/products/edit-form/{id}' (id=${product.id})}"-->
+        <!--                               class="btn btn-primary edit-item  m-2">Edit</a>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+    </div>
+</div>
