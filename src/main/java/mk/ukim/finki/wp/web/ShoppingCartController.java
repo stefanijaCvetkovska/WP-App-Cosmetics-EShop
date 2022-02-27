@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/shopping-cart")
@@ -33,6 +34,7 @@ public class ShoppingCartController {
         User user = this.userRepository.findByEmail(email);
         ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
         model.addAttribute("products", this.shoppingCartService.listAllProductsInShoppingCart(shoppingCart.getId()));
+        model.addAttribute("productsInCart", shoppingCart.getProducts().size());
         model.addAttribute("total", shoppingCartService.totalPrice(user.getId()));
         model.addAttribute("bodyContent", "shopping-cart");
         return "master-template";
@@ -40,10 +42,11 @@ public class ShoppingCartController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add-product/{id}")
-    public String addProductToCart(@PathVariable Long id, HttpServletRequest req) {
+    public String addProductToCart(@PathVariable Long id, HttpSession session, HttpServletRequest req) {
         try {
             String email = req.getRemoteUser();
             User user = this.userRepository.findByEmail(email);
+            ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
             this.shoppingCartService.addProductToShoppingCart(user.getId(), id);
             return "redirect:/shopping-cart";
         } catch (RuntimeException exception) {

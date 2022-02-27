@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ProductService {
     List<Product> listAll();
     Optional<Product> findById(Long id);
-    Product create(String name, Double price, Integer quantity, Long brandId, Long categoryId, String image);
-    Product update(Long id, String name, Double price, Integer quantity, Long brandId, Long categoryId, String image);
+    Product create(String name, Double price, Integer quantity, String description, Long brandId, Long categoryId, String image);
+    Product update(Long id, String name, Double price, Integer quantity, String description, Long brandId, Long categoryId, String image);
     Product delete(Long id);
 
 

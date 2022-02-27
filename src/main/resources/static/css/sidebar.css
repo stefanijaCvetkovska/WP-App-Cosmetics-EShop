@@ -36,8 +36,10 @@ a:focus {
 }
 
 .counter{
-    font-size: x-small;
+    font-size: small;
     color: white;
+    width: 1.85%;
+    margin-left: -0.5%;
 }
 
 /* ---------------------------------------------------

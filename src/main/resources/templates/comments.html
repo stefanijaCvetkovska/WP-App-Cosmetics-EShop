@@ -1,0 +1,27 @@
+<div>
+    <div th:each="review: ${reviews}" class="d-sm-flex justify-content-between my-2 border-b">
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" width="70" height="70" class="mt-3 mr-4"/>
+            <div class="media-body pt-3">
+                <h5 th:text="${review.user.firstName}+ ' ' + ${review.user.lastName}"
+                    class="product-card-title font-weight-semibold border-0 pb-0"></h5>
+                <div th:replace="user-stars-review.html"></div>
+                <div th:text="${review.comment}" class="font-size-sm text-muted mr-2 mb-2"></div>
+            </div>
+        </div>
+        <div th:if="${review.user.email} == ${#request.getRemoteUser()}">
+            <div class="row">
+                <form method="POST" th:action="@{'/reviews/{id}/delete-review/{reviewId}' (id=${product.id}, reviewId=${review.id})}">
+                    <button type="submit" class="btn btn-link text-danger">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </form>
+                <a th:href="@{'/reviews/{id}/reviews-form/{reviewId}' (id=${product.id}, reviewId=${review.id})}"
+                   class="btn btn-link">
+                    <i class="fas fa-pen"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div th:replace="comment-pagination.html"></div>
+</div>

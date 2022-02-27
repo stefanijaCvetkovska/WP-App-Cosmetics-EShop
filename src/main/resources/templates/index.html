@@ -1,13 +1,10 @@
 <div>
-    <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-            <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}">Logout</a></li>
-        </ul>
+    <div class="d-flex justify-content-center">
+        <img src="/images/img.png" class="img-fluid"/>
     </div>
 
-    <div class="container">
-        <h1>Registration and Login with Spring Boot, Spring Security,
-            Thymeleaf, Hibernate and MySQL</h1>
-        Welcome <span sec:authentication="principal.username"> User</span>
-    </div>
+
+
+
+
 </div>

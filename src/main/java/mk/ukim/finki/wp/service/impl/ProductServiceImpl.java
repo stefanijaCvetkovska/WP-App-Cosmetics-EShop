@@ -3,11 +3,13 @@ package mk.ukim.finki.wp.service.impl;
 import mk.ukim.finki.wp.model.Brand;
 import mk.ukim.finki.wp.model.Category;
 import mk.ukim.finki.wp.model.Product;
+import mk.ukim.finki.wp.model.User;
 import mk.ukim.finki.wp.model.exceptions.InvalidBrandIdException;
 import mk.ukim.finki.wp.model.exceptions.InvalidCategoryIdException;
 import mk.ukim.finki.wp.repository.BrandRepository;
 import mk.ukim.finki.wp.repository.CategoryRepository;
 import mk.ukim.finki.wp.repository.ProductRepository;
+import mk.ukim.finki.wp.repository.UserRepository;
 import mk.ukim.finki.wp.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,11 +26,16 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, BrandRepository brandRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository,
+                              BrandRepository brandRepository,
+                              CategoryRepository categoryRepository,
+                              UserRepository userRepository) {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -42,21 +49,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(String name, Double price, Integer quantity, Long brandId, Long categoryId, String image) {
-        Brand brand=this.brandRepository.findById(brandId).orElseThrow(InvalidBrandIdException::new);
-        Category category=this.categoryRepository.findById(categoryId).orElseThrow(InvalidCategoryIdException::new);
-        Product product=new Product(name,price,quantity,brand,category,image);
+    public Product create(String name, Double price, Integer quantity, String description, Long brandId, Long categoryId, String image) {
+        Brand brand = this.brandRepository.findById(brandId).orElseThrow(InvalidBrandIdException::new);
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(InvalidCategoryIdException::new);
+        Product product = new Product(name, price, quantity, description, brand, category, image);
         return this.productRepository.save(product);
     }
 
     @Override
-    public Product update(Long id, String name, Double price, Integer quantity, Long brandId, Long categoryId, String image) {
-        Brand brand=this.brandRepository.findById(brandId).orElseThrow(InvalidBrandIdException::new);
-        Category category=this.categoryRepository.findById(categoryId).orElseThrow(InvalidCategoryIdException::new);
-        Product product=this.productRepository.findById(id).get();
+    public Product update(Long id, String name, Double price, Integer quantity, String description, Long brandId, Long categoryId, String image) {
+        Brand brand = this.brandRepository.findById(brandId).orElseThrow(InvalidBrandIdException::new);
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(InvalidCategoryIdException::new);
+        Product product = this.productRepository.findById(id).get();
         product.setName(name);
         product.setPrice(price);
         product.setQuantity(quantity);
+        product.setDescription(description);
         product.setBrand(brand);
         product.setCategory(category);
         product.setImage(image);
@@ -65,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product delete(Long id) {
-        Product product=this.productRepository.findById(id).get();
+        Product product = this.productRepository.findById(id).get();
         this.productRepository.delete(product);
         return product;
     }
@@ -134,5 +142,4 @@ public class ProductServiceImpl implements ProductService {
             return this.productRepository.findAll(pageable);
         }
     }
-
 }

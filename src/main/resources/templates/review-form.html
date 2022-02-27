@@ -1,0 +1,47 @@
+<div class="form-bg">
+    <div class="container">
+        <div class="form-container">
+            <div class="right-content">
+                <h3 class="form-title">Review</h3>
+                <form th:method="POST"
+                      th:action="@{'/reviews/{id}/add-review/{reviewId}' (id=${product?.id}, reviewId=${review?.id})}"
+                      class="form-horizontal">
+                    <div class="d-flex justify-content-start">
+                        <fieldset class="rating">
+                            <input required type="radio" id="star5" name="stars" value="5"/>
+                            <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                            <input required type="radio" id="star4half" name="stars" value="4.5"/>
+                            <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                            <input required type="radio" id="star4" name="stars" value="4"/>
+                            <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                            <input required type="radio" id="star3half" name="stars" value="3.5"/>
+                            <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                            <input required type="radio" id="star3" name="stars" value="3"/>
+                            <label class="full" for="star3" title="Meh - 3 stars"></label>
+                            <input required type="radio" id="star2half" name="stars" value="2.5"/>
+                            <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                            <input required type="radio" id="star2" name="stars" value="2"/>
+                            <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                            <input required type="radio" id="star1half" name="stars" value="1.5"/>
+                            <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                            <input required type="radio" id="star1" name="stars" value="1"/>
+                            <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                            <input required type="radio" id="starhalf" name="stars" value="0.5"/>
+                            <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                        </fieldset>
+                    </div>
+                    <div class="form-group">
+                        <label>Comment</label>
+                        <textarea rows="3"
+                                  style="height:100%"
+                                  class="form-control"
+                                  name="comment"
+                                  th:text="${review?.comment}">
+                        </textarea>
+                    </div>
+                    <button class="btn submit" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

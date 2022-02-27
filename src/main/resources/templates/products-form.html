@@ -30,6 +30,17 @@
                                th:value="${product?.quantity}"
                                required>
                     </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea rows="3"
+                                  style="height:100%"
+                                  class="form-control"
+                                  name="description"
+                                  th:text="${product?.description}"
+                                  required></textarea>
+                    </div>
+
                     <div class="form-group">
                         <label>Product image</label>
                         <textarea rows="3"

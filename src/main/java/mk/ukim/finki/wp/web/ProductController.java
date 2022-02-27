@@ -2,10 +2,7 @@ package mk.ukim.finki.wp.web;
 
 import mk.ukim.finki.wp.model.*;
 import mk.ukim.finki.wp.repository.UserRepository;
-import mk.ukim.finki.wp.service.BrandService;
-import mk.ukim.finki.wp.service.CategoryService;
-import mk.ukim.finki.wp.service.ProductService;
-import mk.ukim.finki.wp.service.ShoppingCartService;
+import mk.ukim.finki.wp.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,26 +19,30 @@ public class ProductController {
     private final BrandService brandService;
     private final ShoppingCartService shoppingCartService;
     private final UserRepository userRepository;
+    private final ReviewService reviewService;
 
     public ProductController(ProductService productService,
                              CategoryService categoryService,
                              BrandService brandService,
                              ShoppingCartService shoppingCartService,
-                             UserRepository userRepository) {
+                             UserRepository userRepository,
+                             ReviewService reviewService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.brandService = brandService;
         this.shoppingCartService = shoppingCartService;
         this.userRepository = userRepository;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
-    public String getProducts(Model model) {
-        return findPaginatedProducts(1, "id", "asc", null, null, null, null, "", model);
+    public String getProducts(HttpServletRequest request, Model model) {
+        return findPaginatedProducts(request, 1, "id", "asc", null, null, null, null, "", model);
     }
 
     @GetMapping("/page/{pageNo}")
-    public String findPaginatedProducts(@PathVariable(value = "pageNo") int pageNum,
+    public String findPaginatedProducts(HttpServletRequest request,
+                                        @PathVariable(value = "pageNo") int pageNum,
                                         @RequestParam(defaultValue = "id") String sortField,
                                         @RequestParam(defaultValue = "asc") String sortDir,
                                         @RequestParam(required = false) Long categoryId,
@@ -50,6 +51,12 @@ public class ProductController {
                                         @RequestParam(required = false) Double price2,
                                         @RequestParam(required = false) String name,
                                         Model model) {
+
+        String email = request.getRemoteUser();
+        User user = this.userRepository.findByEmail(email);
+        ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
+        model.addAttribute("productsInCart", shoppingCart.getProducts().size());
+
         int pageSize = 6;
         Page<Product> page;
 
@@ -116,10 +123,11 @@ public class ProductController {
     public String create(@RequestParam String name,
                          @RequestParam Double price,
                          @RequestParam Integer quantity,
+                         @RequestParam String description,
                          @RequestParam Long brand,
                          @RequestParam Long category,
                          @RequestParam String image) {
-        this.productService.create(name, price, quantity, brand, category, image);
+        this.productService.create(name, price, quantity, description, brand, category, image);
         return "redirect:/products";
     }
 
@@ -128,10 +136,11 @@ public class ProductController {
                          @RequestParam String name,
                          @RequestParam Double price,
                          @RequestParam Integer quantity,
+                         @RequestParam String description,
                          @RequestParam Long brand,
                          @RequestParam Long category,
                          @RequestParam String image) {
-        this.productService.update(id, name, price, quantity, brand, category, image);
+        this.productService.update(id, name, price, quantity, description, brand, category, image);
         return "redirect:/products";
     }
 
@@ -139,5 +148,40 @@ public class ProductController {
     public String delete(@PathVariable Long id) {
         this.productService.delete(id);
         return "redirect:/products";
+    }
+
+    @GetMapping("/details/{id}")
+    public String getProductDetails(@PathVariable Long id, HttpServletRequest request, Model model) {
+        return findPaginatedProductDetails(request, id, 1, model);
+    }
+
+    @GetMapping("/details/{id}/page/{pageNo}")
+    public String findPaginatedProductDetails(HttpServletRequest request,
+                                              @PathVariable Long id,
+                                              @PathVariable(value = "pageNo") int pageNo,
+                                              Model model) {
+        String email = request.getRemoteUser();
+        User user = this.userRepository.findByEmail(email);
+        ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
+        model.addAttribute("productsInCart", shoppingCart.getProducts().size());
+
+        Product product = this.productService.findById(id).get();
+
+        int pageSize = 6;
+        Page<Review> page = this.reviewService.listAllByProduct(pageNo, pageSize, id);
+        List<Review> reviews = page.getContent();
+
+        model.addAttribute("currentPage", pageNo);
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("totalItems", page.getTotalElements());
+
+        List<Review> reviewsByUser = this.reviewService.listAllByProductAndUser(id, email);
+
+        model.addAttribute("reviewsByUser", reviewsByUser);
+
+        model.addAttribute("product", product);
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("bodyContent", "product-details");
+        return "master-template";
     }
 }
