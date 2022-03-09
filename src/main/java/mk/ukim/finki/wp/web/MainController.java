@@ -26,21 +26,14 @@ public class MainController {
 	}
 
 	@GetMapping("/")
-	public String home(HttpServletRequest request, HttpSession session, Model model) {
-		String email = request.getRemoteUser();
-		User user = this.userRepository.findByEmail(email);
-		ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
-		model.addAttribute("productsInCart", shoppingCart.getProducts().size());
-		String userFullName = user.getFirstName() + " " + user.getLastName();
-		session.setAttribute("user", userFullName);
+	public String home(Model model) {
 		model.addAttribute("brands", this.brandService.listAll());
 		model.addAttribute("bodyContent", "index");
 		return "master-template";
 	}
 
 	@GetMapping("/login")
-	public String login() {
+	public String login(Model model) {
 		return "login";
 	}
-
 }

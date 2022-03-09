@@ -18,3 +18,50 @@
     display: flex;
     justify-content: space-around;
 }
+
+.card-product{
+    border-radius: 0;
+    box-shadow: 3px 3px 3px rgba(107, 107, 107, 0.39);
+    border: none;
+}
+
+.clear-filter{
+    border-radius: 1.625rem;
+}
+
+.card-body-info  > div > h6{
+    text-transform: uppercase;
+    font-family: Bahnschrift;
+}
+
+.card-body-info > h2{
+    color: forestgreen;
+}
+
+.btn-details{
+    text-transform: uppercase;
+    background-color: #F7D9E5;
+    color: #848484;
+    border-radius: 0;
+}
+
+.btn-cart{
+    text-transform: uppercase;
+    background-color: #848484;
+    color: #F7D9E5;
+    border-radius: 0;
+}
+
+.btn-details:hover{
+    background-color: #d096a8;
+    color: #e8e8e8;
+}
+
+.btn-cart:hover{
+    background-color: #484646;
+    color: #F7D9E5;
+}
+
+.card-footer-info{
+    background-color: white;
+}

@@ -1,81 +1,81 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration and Login App</title>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link rel="icon"
+          href="https://cdn-icons.flaticon.com/png/512/573/premium/573829.png?token=exp=1645874623~hmac=b3001fb479693c7076cd3f02e74ec560">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800'
+          rel='stylesheet' type='text/css'>
 
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-
+    <link href="/css/login-register.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+<div class="pt-4">
+    <div class="d-flex justify-content-center m-5">
+        <div class="col-md-7">
+            <div th:if="${param.error}">
+                <div class="alert alert-danger">Wrong email or password. Please try again!</div>
+            </div>
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-		</div>
-	</nav>
+            <div th:if="${param.logout}">
+                <div class="alert alert-success">Successful logout!</div>
+            </div>
 
-	<br>
-	<br>
-	<div class = "container">
-		<div class = "row">
-			<div class = "col-md-6 col-md-offset-3">
 
-				<h1> User Login Page </h1>
-				<form th:action="@{/login}" method="post">
+            <div class="form-container">
+                <div class="left-content">
+                    <h3 class="title">eCosmetics</h3>
+                    <h4 class="sub-title">Beauty is a way of life.</h4>
+                </div>
 
-					<!-- error message -->
-					<div th:if="${param.error}">
-						<div class="alert alert-danger">Invalid username or
-							password.</div>
-					</div>
+                <div class="right-content">
+                    <h3 class="form-title">Login</h3>
+                    <form class="form-horizontal" th:action="@{/login}" method="post">
+                        <div class="form-group">
+                            <label for="username">Email</label>
+                            <input id="username" name="username" type="email" class="form-control">
+                        </div>
 
-					<!-- logout message -->
-					<div th:if="${param.logout}">
-						<div class="alert alert-info">You have been logged out.</div>
-					</div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password" name="password" type="password" class="form-control">
+                        </div>
 
-					<div class = "form-group">
-						<label for ="username"> Username </label> :
-						<input type="text" class = "form-control" id ="username" name = "username"
-						placeholder="Enter Email ID" autofocus="autofocus">
-					</div>
+                        <input type="submit" name="login-submit" id="login-submit"
+                               class="btn submit" value="Login"/>
 
-					<div class="form-group">
-						<label for="password">Password</label>: <input type="password"
-							id="password" name="password" class="form-control"
-							placeholder="Enter Password" />
-					</div>
-
-					<div class="form-group">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<input type="submit" name="login-submit" id="login-submit"
-									class="form-control btn btn-primary" value="Log In" />
-							</div>
-						</div>
-					</div>
-				</form>
-				<div class="form-group">
-						<span>New user? <a href="/" th:href="@{/registration}">Register
-								here</a></span>
-				</div>
-			</div>
-		</div>
-	</div>
+                        <div class="remember-me">
+                            <input type="checkbox" class="checkbox">
+                            <span class="check-label">Remember Me</span>
+                        </div>
+                        <a href="" class="forgot">Forgot Password</a>
+                    </form>
+                    <span class="separator">OR</span>
+                    <ul class="social-links">
+                        <li><a href=""><i class="fab fa-google"></i> Login with Google</a></li>
+                        <li><a href=""><i class="fab fa-facebook-f"></i> Login with Facebook</a></li>
+                    </ul>
+                    <span class="signup-link">Don't have an account? Sign up <a
+                            th:href="@{/registration}">here</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

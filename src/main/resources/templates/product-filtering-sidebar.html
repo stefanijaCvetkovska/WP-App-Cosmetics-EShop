@@ -1,8 +1,8 @@
-<div class="accordion col-md-3" id="accordionExample">
+<div class="accordion accordion-filter" id="accordionExample">
     <div class="card">
-        <div class="card-header" id="headingOne">
+        <div class="card-header card-header-filters" id="headingOne">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left"
+                <button class="btn btn-link btn-block text-left text-decoration-none"
                         type="button"
                         data-toggle="collapse"
                         data-target="#collapseOne"
@@ -17,12 +17,12 @@
              class="collapse show"
              aria-labelledby="headingOne"
              data-parent="#accordionExample">
-            <div class="card-body">
+            <div class="card-body card-body-filters">
                 <form id="filter-cat"
                       th:action="@{'/products/page/1?categoryId=' + ${categoryId}}">
                     <ul class="list-unstyled">
                         <li th:each="category: ${categories}">
-                            <button class="btn btn-link"
+                            <button class="btn btn-link text-decoration-none"
                                     id="categoryId"
                                     name="categoryId"
                                     type="submit"
@@ -36,9 +36,9 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header" id="headingTwo">
+        <div class="card-header card-header-filters" id="headingTwo">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed"
+                <button class="btn btn-link btn-block text-left collapsed text-decoration-none"
                         type="button"
                         data-toggle="collapse"
                         data-target="#collapseTwo"
@@ -49,11 +49,11 @@
             </h2>
         </div>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-            <div class="card-body">
+            <div class="card-body card-body-filters">
                 <form id="filter-brand" th:action="@{'/products/page/1?brandId=' + ${brandId}}">
                     <ul class="list-unstyled">
                         <li th:each="brand: ${brands}">
-                            <button class="btn btn-link"
+                            <button class="btn btn-link text-decoration-none"
                                     id="brandId"
                                     name="brandId"
                                     type="submit"
@@ -67,9 +67,9 @@
         </div>
     </div>
     <div class="card">
-        <div class="card-header" id="headingThree">
+        <div class="card-header card-header-filters" id="headingThree">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button" data-toggle="collapse"
                         data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     Filter by price
                 </button>
@@ -105,9 +105,9 @@
     </div>
 
     <div class="card">
-        <div class="card-header" id="headingThree">
+        <div class="card-header card-header-filters" id="headingThree">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse"
+                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button" data-toggle="collapse"
                         data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                      Sort
                 </button>

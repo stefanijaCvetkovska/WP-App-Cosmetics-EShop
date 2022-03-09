@@ -3,8 +3,16 @@
         <img src="/images/img.png" class="img-fluid"/>
     </div>
 
-
-
-
+    <div class="row">
+        <div class="container">
+            <section class="logo-carousel slider" data-arrows="true">
+                <div th:each="brand: ${brands}" class="slide">
+                    <img th:src="${brand.logo}"/>
+                </div>
+            </section>
+        </div>
+    </div>
 
 </div>
+
+

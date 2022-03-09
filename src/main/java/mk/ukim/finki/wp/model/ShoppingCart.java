@@ -3,6 +3,8 @@ package mk.ukim.finki.wp.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import mk.ukim.finki.wp.model.enumerations.ShoppingCartStatus;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -25,6 +27,12 @@ public class ShoppingCart {
     private User user;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "carts_products",
+            joinColumns = @JoinColumn(
+                    name = "shopping_cart_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "products_id", referencedColumnName = "id"))
     private List<Product> products;
 
     @Enumerated(EnumType.STRING)

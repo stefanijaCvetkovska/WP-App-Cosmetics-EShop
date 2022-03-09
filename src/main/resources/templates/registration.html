@@ -1,80 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Registration</title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-	crossorigin="anonymous">
-</head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <link rel="icon"
+          href="https://cdn-icons.flaticon.com/png/512/573/premium/573829.png?token=exp=1645874623~hmac=b3001fb479693c7076cd3f02e74ec560">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+          integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+          crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800'
+          rel='stylesheet' type='text/css'>
+
+    <link href="/css/login-register.css" type="text/css" rel="stylesheet">
 <body>
+<div>
+    <div class="d-flex justify-content-center m-5 pt-2">
+        <div class="col-md-7">
+            <div th:if="${param.success}">
+                <div class="alert alert-success">You've successfully registered!
+                    <a class="text-info" href="/" th:href="@{/login}">Login here</a>
+                </div>
+            </div>
+            <div class="form-container">
+                <div class="left-content">
+                    <h3 class="title">eCosmetics</h3>
+                    <h4 class="sub-title pt-5">Beauty is a way of life.</h4>
+                </div>
 
-	<!-- create navigation bar ( header) -->
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#" th:href="@{/}">Registration and
-					Login Module</a>
-			</div>
-		</div>
-	</nav>
+                <div class="right-content">
+                    <h3 class="form-title">Register</h3>
+                    <form class="form-horizontal" th:action="@{/registration}" method="post" th:object="${user}">
+                        <div class="form-group">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName"
+                                   name="firstName"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{firstName}"
+                                   required
+                                   autofocus="autofocus">
+                        </div>
 
-<br>
-<br>
-	<!-- Create HTML registration form -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+                        <div class="form-group">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName"
+                                   name="lastName"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{lastName}"
+                                   required
+                                   autofocus="autofocus">
+                        </div>
 
-				<!-- success message -->
-				<div th:if="${param.success}">
-					<div class="alert alert-info">You've successfully registered
-						to our awesome app!</div>
-				</div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input id="email"
+                                   name="email"
+                                   type="text"
+                                   class="form-control"
+                                   th:field="*{email}"
+                                   required
+                                   autofocus="autofocus">
+                        </div>
 
-				<h1>Registration</h1>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input id="password"
+                                   name="password"
+                                   type="password"
+                                   class="form-control"
+                                   th:field="*{password}"
+                                   required
+                                   autofocus="autofocus">
+                        </div>
 
-				<form th:action="@{/registration}" method="post" th:object="${user}">
-					<div class="form-group">
-						<label class="control-label" for="firstName"> First Name </label>
-						<input id="firstName" class="form-control" th:field="*{firstName}"
-							required autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<label class="control-label" for="lastName"> Last Name </label> <input
-							id="lastName" class="form-control" th:field="*{lastName}"
-							required autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<label class="control-label" for="email"> Email </label> <input
-							id="email" class="form-control" th:field="*{email}" required
-							autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<label class="control-label" for="password"> Password </label> <input
-							id="password" class="form-control" type="password"
-							th:field="*{password}" required autofocus="autofocus" />
-					</div>
-
-					<div class="form-group">
-						<button type="submit" class="btn btn-success">Register</button>
-						<span>Already registered? <a href="/" th:href="@{/login}">Login
-								here</a></span>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn submit">Register</button>
+                            <span class="signup-link">Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

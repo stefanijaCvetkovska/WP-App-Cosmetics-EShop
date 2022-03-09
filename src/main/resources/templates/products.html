@@ -1,88 +1,105 @@
-<form th:action="@{'/products/page/1'}">
-    <button class="btn btn-dark mb-3" type="submit" value="">Clear filters</button>
-</form>
-<div class="row">
-    <!--    Accordion-->
-    <th:block th:replace="product-filtering-sidebar.html"></th:block>
-    <!--    Products-->
-    <div class="col-md-9 m-0">
+<div class="mr-5 ml-5 pr-5 pl-5">
 
-        <!--    Search-->
-        <form th:action="@{'/products/page/1?name=' + ${name}}">
-            <div class="searchBar mb-3">
-                <input id="searchQueryInput"
-                       type="text"
-                       name="name"
-                       placeholder="Search for a product"
-                       value=""/>
-                <button id="searchQuerySubmit"
-                        type="submit">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-        </form>
+    <div class="row mt-5 mb-3">
+        <div class="col-3">
+            <form th:action="@{'/products/page/1'}">
+                <button class="btn btn-dark btn-block clear-filter" type="submit" value="">Clear filters</button>
+            </form>
+        </div>
+        <div class="col-9">
+            <!--    Search-->
+            <form th:action="@{'/products/page/1?name=' + ${name}}">
+                <div class="searchBar mb-3">
+                    <input id="searchQueryInput"
+                           type="text"
+                           name="name"
+                           placeholder="Search for a product"
+                           value=""/>
+                    <button id="searchQuerySubmit"
+                            type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <div class="row ml-2">
-            <div th:each="product: ${products}" class="card-width mt-2">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-img-actions text-center">
-                            <img th:src="${product.image}" width="150px" height="150px"/>
-                        </div>
-                    </div>
+    <div class="row">
+        <!--    Accordion-->
+        <div class="col-3">
+            <th:block th:replace="product-filtering-sidebar.html"></th:block>
+        </div>
+        <!--    Products-->
+        <div class="col-9">
 
-                    <div class="card-body bg-light text-center">
-                        <div class="mb-2">
-                            <h6 th:text="${product.name}" class="font-weight-semibold mb-2"></h6>
-                            <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
-                        </div>
-                        <h3 th:text="'$' + ${product.price}" class="mb-0 font-weight-semibold"></h3>
+            <div class="row ml-2">
+                <div th:each="product: ${products}" class="card-width mb-2">
+                    <div class="card card-product">
 
-                        <div class="d-flex justify-content-between mt-2">
-                            <a class="btn btn-outline-primary btn-sm"
-                               th:href="@{'/products/details/{id}' (id=${product.id})}">
-                                <i class="fas fa-barcode"></i> Details</a>
-                            <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
-                                <button type="submit" class="btn btn-success btn-sm">
-                                    <i class="fa fa-cart-plus mr-2"></i>
-                                    Add to cart
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                        <div class="card-body card-body-info bg-white text-center">
+                            <div class="mb-3 card-img-actions text-center">
+                                <img th:src="${product.image}" width="150px" height="150px"/>
+                            </div>
+                            <div>
+                                <h6 th:text="${product.name}" class="font-weight-semibold mb-2"></h6>
+                                <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
+                            </div>
+                            <h2 th:text="'$' + ${product.price}" class="mt-n2 font-weight-semibold"></h2>
 
-                    <div class="card-footer d-flex justify-content-between">
-                        <div class="row">
-                            <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
-                                <button type="submit" class="btn btn-link text-danger">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                            <a th:href="@{'/products/edit-form/{id}' (id=${product.id})}"
-                               class="btn btn-link">
-                                <i class="fas fa-pen"></i>
-                            </a>
+                                <div class="mb-3 d-flex justify-content-center">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+
+                            <div class="mt-2">
+                                <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
+                                    <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+                                        Add to cart
+                                    </button>
+                                </form>
+                                <a class="btn btn-block btn-sm btn-details pt-2 pb-2"
+                                   th:href="@{'/products/details/{id}' (id=${product.id})}">
+                                    Details
+                                </a>
+                            </div>
                         </div>
-                        <div class="text-danger m-1"
-                             th:if="${product.quantity > 0}"
-                             th:text="'In stock: '+ ' ' + ${product.quantity}">
-                        </div>
-                        <div class="text-danger m-1"
-                             th:if="${product.quantity == 0}"
-                             th:text="'Out of stock!'">
+
+                        <div class="card-footer card-footer-info d-flex justify-content-between">
+                            <div class="row">
+                                <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
+                                    <button type="submit" class="btn btn-link text-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                                <a th:href="@{'/products/edit-form/{id}' (id=${product.id})}"
+                                   class="btn btn-link">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                            </div>
+                            <div class="m-1 text-muted"
+                                 th:if="${product.quantity > 0}"
+                                 th:text="'In stock: '+ ' ' + ${product.quantity}">
+                            </div>
+                            <div class="m-1 text-muted"
+                                 th:if="${product.quantity == 0}"
+                                 th:text="'Out of stock!'">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="mt-5">
-            <a href="/products/add-form" class="btn submit">
-                Add new product
-            </a>
-        </div>
+            <div class="mt-5">
+                <a href="/products/add-form" class="btn submit">
+                    Add new product
+                </a>
+            </div>
 
-        <!--Pagination-->
-        <th:block th:replace="product-pagination.html"></th:block>
+            <!--Pagination-->
+            <th:block th:replace="product-pagination.html"></th:block>
+        </div>
     </div>
 </div>
