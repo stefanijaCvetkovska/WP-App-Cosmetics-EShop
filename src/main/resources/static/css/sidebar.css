@@ -2,6 +2,10 @@
     background: white;
 }
 
+.card-filters{
+    border-radius: 0;
+}
+
 .card-header-filters > h2 > button{
     text-transform: uppercase;
     color: #333333;
@@ -17,5 +21,11 @@
 }
 
 .card-body-filters > form > ul > li > button:hover{
-    color: #e08b7b;
+    color: #F7D9E5;
+}
+
+@media only screen and (max-width: 1300px) {
+  .card-header-filters > h2 > button{
+      font-size: 12px;
+  }
 }

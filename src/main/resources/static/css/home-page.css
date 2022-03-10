@@ -1,3 +1,37 @@
+.left{
+    background: #F1E9E6;
+}
+.slogan{
+    background: #343434;
+    width: 120%;
+    color: white;
+}
+
+.home-btn{
+    background: #343434;
+    font-size: x-large;
+    border-radius: 0%;
+}
+
+.fa-angle-double-down{
+    color: #656565;
+}
+
+.boxes-hp{
+    background: #343434;
+    color: white;
+}
+
+.fa-shipping-fast, .fa-money-bill, .fa-shopping-bag{
+    color: white;
+}
+
+.bordering{
+    border-bottom: 2px solid #333;
+    padding-bottom: 5px;
+    width: max-content;
+}
+
 .slick-slide {
     margin: 0px 20px;
 }

@@ -1,10 +1,47 @@
-<div>
-    <div class="d-flex justify-content-center">
-        <img src="/images/img.png" class="img-fluid"/>
+<div class="main">
+    <div class="row">
+        <div class="left col-md-5 p-5 ml-5">
+            <div class="slogan p-4 mt-5 offset-1">
+                <h1 class="display-3">
+                    BEAUTY IS A </br> WAY OF LIFE.
+                </h1>
+            </div>
+            <div class="m-5 p-2">
+                <p>
+                    Retailer of well-known Health & Beauty Products with an affordable price tag!
+                    We stock thousands of products from top health and beauty brands all at fantastically discounted
+                    prices.
+                </p>
+                <div class="pt-3">
+                    <a href="/products" class="btn home-btn text-light">SHOP NOW</a>
+                </div>
+            </div>
+        </div>
+        <div class="right col-md-5 offset-1">
+            <div class="d-flex">
+                <div class="first-image mt-5">
+                    <img src="/images/home-gel.png" width="400" height="510">
+                </div>
+                <div class="d-md-none d-lg-block">
+                    <div class="second-image mt-5 pt-5">
+                        <img src="/images/home-blush.png" width="250" height="170">
+                    </div>
+                    <div class="third-image m-3 offset-4">
+                        <img src="/images/home-cream.png" width="220" height="290">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center display-3 mt-n5">
+        <img src="/images/home-scroll.gif" width="60" height="60">
     </div>
 
-    <div class="row">
-        <div class="container">
+    <div class="m-5">
+        <div class="brands-list">
+<!--            <div>-->
+<!--                <h3 class="ml-5 bordering">BRANDS</h3>-->
+<!--            </div>-->
             <section class="logo-carousel slider" data-arrows="true">
                 <div th:each="brand: ${brands}" class="slide">
                     <img th:src="${brand.logo}"/>
@@ -13,6 +50,46 @@
         </div>
     </div>
 
+<!--    <div class="m-5 pt-5">-->
+<!--        <div id="about-us">-->
+<!--            <div>-->
+<!--                <h3 class="ml-5 bordering">ABOUT US</h3>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;            <div class="mt-3 p-5">&ndash;&gt;-->
+<!--            &lt;!&ndash;                Dedicated to its savvy shoppers eCOSMETICS bring you a range of beauty bargains including: Clinique, NYX Cosmetics, Yves Saint Laurent alongside hundreds of new products every week.&ndash;&gt;-->
+<!--            &lt;!&ndash;                Find gorgeous fragrances, skincare, make up and hair care products all at the lowest possible prices.&ndash;&gt;-->
+<!--            &lt;!&ndash;                Please enjoy our wide range of products including Fragrances, Skincare, Hair Care, Make Up, Nails, Body and Sun & Tanning.&ndash;&gt;-->
+<!--            &lt;!&ndash;                eCOSMETICS aim to offer a quick and reliable service, affordable prices and friendly, easy to deal with staff.&ndash;&gt;-->
+<!--            &lt;!&ndash;                If we fall short in any of these areas please contact us here.&ndash;&gt;-->
+<!--            &lt;!&ndash;            </div>&ndash;&gt;-->
+<!--            <div class="row justify-content-around mt-5 text-center">-->
+<!--                <div class="col-md-3 boxes-hp p-4">-->
+<!--                    <div class="display-3">-->
+<!--                        <i class="fas fa-shopping-bag"></i>-->
+<!--                    </div>-->
+<!--                    <p class="mt-4">-->
+<!--                        eCOSMETICS brings you a range of beauty bargains alongside hundreds of new products every week.-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--                <div class="col-md-3 boxes-hp p-4">-->
+<!--                    <div class="display-3">-->
+<!--                        <i class="fas fa-money-bill"></i>-->
+<!--                    </div>-->
+<!--                    <p class="mt-4">-->
+<!--                        Find gorgeous fragrances, skincare, make up and hair care products all at the lowest possible-->
+<!--                        prices.-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--                <div class="col-md-3 boxes-hp p-4">-->
+<!--                    <div class="display-3">-->
+<!--                        <i class="fas fa-shipping-fast"></i>-->
+<!--                    </div>-->
+<!--                    <p class="mt-4">-->
+<!--                        eCOSMETICS aim to offer a quick and reliable service, affordable prices and friendly, easy to-->
+<!--                        deal with staff.-->
+<!--                    </p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>
-
-

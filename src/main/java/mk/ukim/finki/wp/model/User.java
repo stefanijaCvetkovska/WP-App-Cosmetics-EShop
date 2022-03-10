@@ -34,6 +34,9 @@ public class User {
 
     private Collection<Role> roles;
 
+    @ManyToMany
+    private List<Event> events;
+
     public User() {
 
     }

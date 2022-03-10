@@ -1,116 +1,151 @@
 <div th:if="${totalPages > 1}">
-    <div class="row">
-        <div class="col-sm-1 page-item">
-            <div th:if="${currentPage > 1}">
+    <div class="row justify-content-center">
+        <div class="col-2 border-p">
+            <div class="page-item"
+                 th:if="${currentPage > 1}">
                 <a th:if="${categoryId != null}"
                    th:href="@{'/products/page/1?categoryId=' + ${categoryId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-left"></i>
+<!--                    <i class="fas fa-angle-double-left"></i>-->
+                    first
                 </a>
                 <a th:if="${brandId != null}"
                    th:href="@{'/products/page/1?brandId=' + ${brandId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-left"></i>
+<!--                    <i class="fas fa-angle-double-left"></i>-->
+                    first
                 </a>
                 <a th:if="${price1 != null && price2 != null}"
                    th:href="@{'/products/page/1?price1=' + ${price1} + '&price2=' +${price2} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-left"></i>
+<!--                    <i class="fas fa-angle-double-left"></i>-->
+                    first
                 </a>
                 <a th:if="${name != null}"
                    th:href="@{'/products/page/1?name=' + ${name} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-left"></i>
+<!--                    <i class="fas fa-angle-double-left"></i>-->
+                    first
                 </a>
                 <a th:if="${categoryId == null && brandId == null && price1 == null && price2 == null && name == null}"
                    th:href="@{'/products/page/1?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-left"></i>
+<!--                    <i class="fas fa-angle-double-left"></i>-->
+                    first
                 </a>
             </div>
-            <span th:unless="${currentPage > 1}">
-                <i class="fas fa-angle-double-left"></i>
+            <span th:unless="${currentPage > 1}" class="page-limit">
+<!--                <i class="fas fa-angle-double-left"></i>-->
+                first
             </span>
         </div>
 
-        <div class="col-sm-1 page-item">
-            <div th:if="${currentPage > 1}">
+        <div class="col-2 border-p">
+            <div class="page-item"
+                 th:if="${currentPage > 1}">
                 <a th:if="${categoryId != null}"
                    th:href="@{'/products/page/' + ${currentPage - 1} + '?categoryId=' + ${categoryId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-left"></i>
+<!--                    <i class="fas fa-angle-left"></i>-->
+                    prev
                 </a>
                 <a th:if="${brandId != null}"
                    th:href="@{'/products/page/' + ${currentPage - 1} + '?brandId=' + ${brandId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-left"></i>
+<!--                    <i class="fas fa-angle-left"></i>-->
+                    prev
                 </a>
                 <a th:if="${price1 != null && price2 != null}"
                    th:href="@{'/products/page/' + ${currentPage - 1} + '?price1=' + ${price1} + '&price2=' +${price2} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-left"></i>
+<!--                    <i class="fas fa-angle-left"></i>-->
+                    prev
                 </a>
                 <a th:if="${name != null}"
                    th:href="@{'/products/page/' + ${currentPage - 1} + '?name=' + ${name} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-left"></i>
+<!--                    <i class="fas fa-angle-left"></i>-->
+                    prev
                 </a>
                 <a th:if="${categoryId == null && brandId == null && price1 == null && price2 == null && name == null}"
                    th:href="@{'/products/page/' + ${currentPage - 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-left"></i>
+<!--                    <i class="fas fa-angle-left"></i>-->
+                    prev
                 </a>
             </div>
-            <span th:unless="${currentPage > 1}"><i class="fas fa-angle-left"></i></span>
-        </div>
-
-        <div>
-            <span class="page-item">
-                <span th:text="${'Page' + ' ' + currentPage + ' ' + 'of' + ' ' + totalPages}"></span>
+            <span th:unless="${currentPage > 1}" class="page-limit">
+<!--                <i class="fas fa-angle-left"></i>-->
+                prev
             </span>
         </div>
 
-        <div class="col-sm-1 page-item">
-            <div th:if="${currentPage < totalPages}">
+        <div class="col-3 text-center border-p">
+            <span class="page-number">
+                <span th:text="${currentPage + ' ' + 'of' + ' ' + totalPages}"></span>
+            </span>
+        </div>
+
+        <div class="col-2 border-p">
+            <div class="page-item"
+                 th:if="${currentPage < totalPages}">
                 <a th:if="${categoryId != null}"
                    th:href="@{'/products/page/' + ${currentPage + 1} + '?categoryId=' + ${categoryId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-right"></i>
+<!--                    <i class="fas fa-angle-right"></i>-->
+                    next
                 </a>
                 <a th:if="${brandId != null}"
                    th:href="@{'/products/page/' + ${currentPage + 1} + '?brandId=' + ${brandId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-right"></i>
+<!--                    <i class="fas fa-angle-right"></i>-->
+                    next
                 </a>
                 <a th:if="${price1 != null && price2 != null}"
                    th:href="@{'/products/page/' + ${currentPage + 1} + '?price1=' + ${price1} + '&price2=' +${price2} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-right"></i>
+<!--                    <i class="fas fa-angle-right"></i>-->
+                    next
                 </a>
                 <a th:if="${name != null}"
                    th:href="@{'/products/page/' + ${currentPage + 1} + '?name=' + ${name} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-right"></i>
+<!--                    <i class="fas fa-angle-right"></i>-->
+                    next
                 </a>
                 <a th:if="${categoryId == null && brandId == null && price1 == null && price2 == null && name == null}"
                    th:href="@{'/products/page/' + ${currentPage + 1} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-right"></i>
+<!--                    <i class="fas fa-angle-right"></i>-->
+                    next
                 </a>
             </div>
-            <span th:unless="${currentPage < totalPages}"><i class="fas fa-angle-right"></i></span>
+            <span th:unless="${currentPage < totalPages}" class="page-limit">
+<!--                <i class="fas fa-angle-right"></i>-->
+                next
+            </span>
         </div>
 
 
-        <div class="col-sm-1 page-item">
-            <div th:if="${currentPage < totalPages}">
+        <div class="col-2 border-p">
+            <div class="page-item"
+                 th:if="${currentPage < totalPages}">
                 <a th:if="${categoryId != null}"
                    th:href="@{'/products/page/' + ${totalPages} + '?categoryId=' + ${categoryId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-right"></i>
+<!--                    <i class="fas fa-angle-double-right"></i>-->
+                    last
                 </a>
                 <a th:if="${brandId != null}"
                    th:href="@{'/products/page/' + ${totalPages} + '?brandId=' + ${brandId} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-right"></i>
+<!--                    <i class="fas fa-angle-double-right"></i>-->
+                    last
                 </a>
                 <a th:if="${price1 != null && price2 != null}"
                    th:href="@{'/products/page/' + ${totalPages} + '?price1=' + ${price1} + '&price2=' +${price2} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-right"></i>
+<!--                    <i class="fas fa-angle-double-right"></i>-->
+                    last
                 </a>
                 <a th:if="${name != null}"
                    th:href="@{'/products/page/' + ${totalPages} + '?name=' + ${name} +'&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-right"></i>
+<!--                    <i class="fas fa-angle-double-right"></i>-->
+                    last
                 </a>
                 <a th:if="${categoryId == null && brandId == null && price1 == null && price2 == null && name == null}"
                    th:href="@{'/products/page/' + ${totalPages} +'?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                    <i class="fas fa-angle-double-right"></i>
+<!--                    <i class="fas fa-angle-double-right"></i>-->
+                    last
                 </a>
             </div>
-            <span th:unless="${currentPage < totalPages}"><i class="fas fa-angle-double-right"></i></span>
+            <span th:unless="${currentPage < totalPages}" class="page-limit">
+<!--                <i class="fas fa-angle-double-right"></i>-->
+                last
+            </span>
         </div>
     </div>
 </div>
+

@@ -2,14 +2,17 @@
 
     <div class="row mt-5 mb-3">
         <div class="col-3">
-            <form th:action="@{'/products/page/1'}">
-                <button class="btn btn-dark btn-block clear-filter" type="submit" value="">Clear filters</button>
+            <form th:action="@{'/products'}">
+                <button class="btn btn-link btn-block clear-filter text-decoration-none" type="submit" value="">
+                    <i class="fas fa-times"></i>
+                    Clear filters
+                </button>
             </form>
         </div>
         <div class="col-9">
             <!--    Search-->
             <form th:action="@{'/products/page/1?name=' + ${name}}">
-                <div class="searchBar mb-3">
+                <div class="searchBar sb-products mb-3">
                     <input id="searchQueryInput"
                            type="text"
                            name="name"
@@ -35,7 +38,6 @@
             <div class="row ml-2">
                 <div th:each="product: ${products}" class="card-width mb-2">
                     <div class="card card-product">
-
                         <div class="card-body card-body-info bg-white text-center">
                             <div class="mb-3 card-img-actions text-center">
                                 <img th:src="${product.image}" width="150px" height="150px"/>
@@ -46,13 +48,13 @@
                             </div>
                             <h2 th:text="'$' + ${product.price}" class="mt-n2 font-weight-semibold"></h2>
 
-                                <div class="mb-3 d-flex justify-content-center">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
+                            <div class="mb-3 d-flex justify-content-center">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
 
                             <div class="mt-2">
                                 <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
@@ -91,15 +93,17 @@
                     </div>
                 </div>
             </div>
-
-            <div class="mt-5">
-                <a href="/products/add-form" class="btn submit">
+            <div class="mt-1 ml-2 mr-1">
+                <a href="/products/add-form" class="btn btn-block btn-link text-decoration-none button-style">
                     Add new product
                 </a>
             </div>
 
             <!--Pagination-->
-            <th:block th:replace="product-pagination.html"></th:block>
+            <div class="mt-3 d-flex justify-content-center">
+                <th:block th:replace="product-pagination.html"></th:block>
+            </div>
+
         </div>
     </div>
 </div>

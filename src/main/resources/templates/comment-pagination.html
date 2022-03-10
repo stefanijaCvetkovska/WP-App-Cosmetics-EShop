@@ -1,46 +1,50 @@
 <!--Pagination-->
 <div th:if="${totalPages > 1}">
-    <div class="row">
-        <div class="col-sm-1">
-            <a th:if="${currentPage > 1}"
-               th:href="@{'/products/details/'+ ${product.id} + '/page/1'}"
-               class="btn btn-light">
-                First
-            </a>
-            <span th:unless="${currentPage > 1}">First</span>
+    <div class="row justify-content-center">
+        <div class="col-1 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage > 1}"
+                   th:href="@{'/products/details/'+ ${product.id} + '/page/1'}">
+                    First
+                </a>
+            </div>
+            <span th:unless="${currentPage > 1}" class="page-limit">First</span>
         </div>
 
-        <div class="col-sm-1">
-            <a th:if="${currentPage > 1}"
-               th:href="@{'/products/details/'+ ${product.id} +'/page/' + ${currentPage - 1}}"
-               class="btn btn-light">
-                Prev
-            </a>
-            <span th:unless="${currentPage > 1}">Prev</span>
+        <div class="col-1 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage > 1}"
+                   th:href="@{'/products/details/'+ ${product.id} +'/page/' + ${currentPage - 1}}">
+                    Prev
+                </a>
+            </div>
+            <span th:unless="${currentPage > 1}" class="page-limit">Prev</span>
         </div>
 
-        <div>
-            <span class="page-item">
-                <span th:text="${'Page' + ' ' + currentPage + ' ' + 'of' + ' ' + totalPages}"></span>
+        <div class="col-2 text-center border-p">
+            <span class="page-number">
+                <span th:text="${currentPage + ' ' + 'of' + ' ' + totalPages}"></span>
             </span>
         </div>
 
-        <div class="col-sm-1">
-            <a th:if="${currentPage < totalPages}"
-               th:href="@{'/products/details/'+ ${product.id} +'/page/' + ${currentPage + 1}}"
-               class="btn btn-light">
-                Next
-            </a>
-            <span th:unless="${currentPage < totalPages}">Next</span>
+        <div class="col-1 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/products/details/'+ ${product.id} +'/page/' + ${currentPage + 1}}">
+                    Next
+                </a>
+            </div>
+            <span th:unless="${currentPage < totalPages}" class="page-limit">Next</span>
         </div>
 
-        <div class="col-sm-1">
-            <a th:if="${currentPage < totalPages}"
-               th:href="@{'/products/details/'+ ${product.id} + '/page/' + ${totalPages}}"
-               class="btn btn-light">
-                Last
-            </a>
-            <span th:unless="${currentPage < totalPages}">Last</span>
+        <div class="col-1 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/products/details/'+ ${product.id} + '/page/' + ${totalPages}}">
+                    Last
+                </a>
+            </div>
+            <span th:unless="${currentPage < totalPages}" class="page-limit">Last</span>
         </div>
     </div>
 </div>

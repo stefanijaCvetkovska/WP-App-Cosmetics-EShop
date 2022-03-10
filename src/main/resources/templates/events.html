@@ -1,0 +1,73 @@
+<section class="mr-5 ml-5 pl-5 pr-5">
+    <h1>Events</h1>
+
+    <!--    <div th:each="month : ${months}">-->
+    <!--        <form th:action="@{'/events?filterMonth=' + ${month}}">-->
+    <!--            <button th:text="${month}"-->
+    <!--                    th:value="${month}"-->
+    <!--                    class="btn btn-light"-->
+    <!--                    name="filterMonth"-->
+    <!--                    type="submit">-->
+    <!--            </button>-->
+    <!--        </form>-->
+    <!--    </div>-->
+
+
+    <div class="grey-block">
+        <div class="row justify-content-center">
+            <article th:each="event: ${events}" class="card-events col-5 m-2">
+
+
+                <section class="date">
+                    <time>
+                        <span th:text="${#temporals.day(event.startDate)}">
+                        </span>
+                        <span th:text="${#temporals.monthNameShort(event.startDate)}">
+                        </span>
+                    </time>
+                </section>
+
+
+                <section class="card-cont">
+                    <small>eCOSMETICS</small>
+                    <h3 th:text="${event.eventName}"></h3>
+                    <div class="even-date">
+                        <time>
+                            <span th:text="${#temporals.dayOfWeekName(event.startDate)
+                            + ' '
+                            + #temporals.day(event.startDate)
+                            + ' '
+                            + #temporals.monthName(event.startDate)
+                            + ' '
+                            + #temporals.year(event.startDate)}">
+
+                            </span>
+                            <span th:text="${#temporals.hour(event.startDate)
+                            +':'
+                            + #temporals.minute(event.startDate)
+                            + ' to '
+                            + #temporals.hour(event.endDate)
+                            + ':'
+                            + #temporals.minute(event.endDate)}">
+                            </span>
+                        </time>
+                    </div>
+
+
+                    <div class=" even-info">
+                            <p th:text="${event.eventDescription}"></p>
+                    </div>
+                    <a href="#">INTERESTED</a>
+                </section>
+
+
+            </article>
+        </div>
+
+        <div class="mt-1 ml-2 mr-1">
+            <a href="/events/add-form" class="btn btn-block btn-link text-decoration-none button-style">
+                Add new event
+            </a>
+        </div>
+    </div>
+</section>

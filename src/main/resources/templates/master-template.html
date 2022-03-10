@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <title>eCosmetics</title>
     <link rel="icon"
-          href="https://cdn-icons.flaticon.com/png/512/573/premium/573829.png?token=exp=1645874623~hmac=b3001fb479693c7076cd3f02e74ec560">
+          href="/images/icon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
           integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
           crossorigin="anonymous"/>
@@ -28,6 +28,7 @@
     <style>
         html {
             scroll-behavior: smooth;
+            overflow-x: hidden;
         }
 
         body {
@@ -42,6 +43,7 @@
     <link href="/css/products-list.css" rel="stylesheet"/>
     <link href="/css/product-details.css" rel="stylesheet"/>
     <link href="/css/stars.css" rel="stylesheet"/>
+    <link href="/css/events.css" rel="stylesheet">
     <script src="/scripts/sidebar.js"></script>
     <script src="/scripts/slider.js"></script>
 
@@ -117,8 +119,11 @@
     <div>
         <div th:replace="fragments/navbar.html"></div>
     </div>
-    <div>
+    <div class="mb-5">
         <section th:include="${bodyContent}"></section>
+    </div>
+    <div>
+        <div th:replace="fragments/footer.html"></div>
     </div>
 
 </div>

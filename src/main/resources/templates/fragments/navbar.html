@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-        <a class="navbar-brand font-weight-bold" href="#">eCOSMETICS</a>
+        <a class="navbar-brand font-weight-bold" href="/">eCOSMETICS</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item">
                 <a class="nav-link" href="/">HOME</a>
@@ -13,14 +13,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/products">PRODUCTS</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/events">EVENTS</a>
+            </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
                 <a class="nav-link" href="/admin/brands">BRANDS</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#about-us">ABOUT US</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">CONTACT</a>
             </li>
         </ul>
         <ul class="navbar-nav">
@@ -31,11 +28,14 @@
 <!--                          th:text="${productsInCart}" th:unless="${#request.getRemoteUser() == null}"></span>-->
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/contact">USERNAME</a>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/contact" th:text="${#request.getRemoteUser()}"></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">LOGIN</a>
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
+                <a class="nav-link" th:href="@{/login}">LOGIN</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a th:href="@{/logout}" class="nav-link download" href="/login">LOGOUT</a>
             </li>
         </ul>
     </div>
