@@ -19,4 +19,6 @@ public interface ProductService {
     Page<Product> listProductsByBrand(int pageNo, int pageSize, String sortField, String sortDirection, Long brandId);
     Page<Product> listProductsByPriceBetween(int pageNo, int pageSize, String sortField, String sortDirection, Double price1,Double price2);
     Page<Product> listProductsByNameLike(int pageNo, int pageSize, String sortField, String sortDirection, String name);
+
+    Product rating (Long productId);
 }

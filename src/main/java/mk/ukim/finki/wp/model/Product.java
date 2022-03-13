@@ -32,6 +32,7 @@ public class Product {
     @Column(length = 100000)
     private String description;
 
+    private Float rating;
 
     public Product(String name, Double price, Integer quantity, String description, Brand brand, Category category, String image) {
         this.name = name;
@@ -41,5 +42,6 @@ public class Product {
         this.brand = brand;
         this.category = category;
         this.image = image;
+        this.rating = Float.valueOf(0);
     }
 }

@@ -69,7 +69,8 @@
     <div class="card">
         <div class="card-header card-header-filters" id="headingThree">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button" data-toggle="collapse"
+                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button"
+                        data-toggle="collapse"
                         data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                     Filter by price
                 </button>
@@ -105,29 +106,35 @@
     </div>
 
     <div class="card card-filters">
-        <div class="card-header card-header-filters" id="headingThree">
+        <div class="card-header card-header-filters" id="headingFour">
             <h2 class="mb-0">
-                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button" data-toggle="collapse"
-                        data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                     Sort
+                <button class="btn btn-link btn-block text-left collapsed text-decoration-none" type="button"
+                        data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Sort
                 </button>
             </h2>
         </div>
-        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-            <div class="card-body">
-                <form id="filter-price"
-                      th:action="@{'/products/page/1?price1=' + ${price1} + '&price2=' + ${price2}}">
-                    <p class="text-muted text-center text-sm">Type your price range</p>
-                    <div class="row d-flex justify-content-center">
-
-                    </div>
-                    <div class="mt-2">
-                        <button class="btn btn-outline-dark btn-block mb-2"
-                                type="submit">
-                            Filter
-                        </button>
-                    </div>
-                </form>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+            <div class="card-body sort-filters">
+                <div class="m-2">
+                    <a class="text-decoration-none"
+                       th:href="@{'/products/page/1?sortField=name&sortDir='+${reverseSortDir}}">
+                        <i class="fas fa-sort"></i> Name
+                    </a>
+                </div>
+                <div class="m-2">
+                    <a class="text-decoration-none"
+                       th:href="@{'/products/page/1?sortField=price&sortDir='+${reverseSortDir}}">
+                        <i class="fas fa-sort"></i> Price
+                    </a>
+                </div>
+                <div class="m-2">
+                    <a class="text-decoration-none"
+                       th:href="@{'/products/page/1?sortField=rating&sortDir='+${reverseSortDir}}">
+                        <i class="fas fa-sort"></i> Rating
+                    </a>
+                </div>
             </div>
         </div>
     </div>

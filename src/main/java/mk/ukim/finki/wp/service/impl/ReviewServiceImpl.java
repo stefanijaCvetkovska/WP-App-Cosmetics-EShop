@@ -68,9 +68,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public Page<Review> listAllByProduct(int pageNo, int pageSize, Long productId) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
-        Product product=productId != null ? this.productRepository.findById(productId).
-                orElse((Product) null ) : null;
-        return this.reviewRepository.findAllByProduct(product,pageable);
+        Product product = productId != null ? this.productRepository.findById(productId).
+                orElse((Product) null) : null;
+        return this.reviewRepository.findAllByProduct(product, pageable);
     }
 
     @Override
@@ -78,7 +78,13 @@ public class ReviewServiceImpl implements ReviewService {
         User user = this.userRepository.findByEmail(email);
         Product product = this.productRepository.findById(productId)
                 .orElseThrow(ProductNotFoundException::new);
-        return this.reviewRepository.findAllByProductAndUser(product,user);
+        return this.reviewRepository.findAllByProductAndUser(product, user);
     }
 
+    @Override
+    public List<Review> listAllByProduct(Long productId) {
+        Product product = productId != null ? this.productRepository.findById(productId).
+                orElse((Product) null) : null;
+        return this.reviewRepository.findAllByProduct(product);
+    }
 }

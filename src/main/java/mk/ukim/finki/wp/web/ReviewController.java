@@ -43,6 +43,7 @@ public class ReviewController {
                             @RequestParam float stars,
                             Model model) {
         this.reviewService.create(request.getRemoteUser(), id, comment, stars);
+        this.productService.rating(id);
         model.addAttribute("id", this.productService.findById(id));
         return "redirect:/products/details/{id}";
     }
@@ -67,6 +68,7 @@ public class ReviewController {
                              @RequestParam float stars,
                              Model model) {
         this.reviewService.edit(reviewId, comment, stars);
+        this.productService.rating(id);
         model.addAttribute("id", this.productService.findById(id));
         model.addAttribute("reviewId", this.reviewService.findById(id));
         return "redirect:/products/details/{id}#comments";

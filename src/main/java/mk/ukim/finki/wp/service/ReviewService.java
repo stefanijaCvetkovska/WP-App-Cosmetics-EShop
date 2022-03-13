@@ -14,4 +14,5 @@ public interface ReviewService {
     Optional<Review> findById(Long id);
     Page<Review> listAllByProduct(int pageNo, int pageSize, Long productId);
     List<Review> listAllByProductAndUser(Long productId, String email);
+    List<Review> listAllByProduct(Long productId);
 }

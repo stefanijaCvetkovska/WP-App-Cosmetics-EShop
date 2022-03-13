@@ -13,4 +13,5 @@ public interface EventService {
     Event update(Long id, LocalDateTime startDate, LocalDateTime endDate, String eventName, String eventDescription);
     Event delete(Long id);
     List<Event> listEventsByDateBetween(LocalDateTime date1, LocalDateTime date2);
+    void deleteFinished(List<Event> events);
 }

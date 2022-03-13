@@ -3,7 +3,7 @@ package mk.ukim.finki.wp.service.impl;
 import mk.ukim.finki.wp.model.Brand;
 import mk.ukim.finki.wp.model.Category;
 import mk.ukim.finki.wp.model.Product;
-import mk.ukim.finki.wp.model.User;
+import mk.ukim.finki.wp.model.Review;
 import mk.ukim.finki.wp.model.exceptions.InvalidBrandIdException;
 import mk.ukim.finki.wp.model.exceptions.InvalidCategoryIdException;
 import mk.ukim.finki.wp.repository.BrandRepository;
@@ -11,6 +11,7 @@ import mk.ukim.finki.wp.repository.CategoryRepository;
 import mk.ukim.finki.wp.repository.ProductRepository;
 import mk.ukim.finki.wp.repository.UserRepository;
 import mk.ukim.finki.wp.service.ProductService;
+import mk.ukim.finki.wp.service.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +28,17 @@ public class ProductServiceImpl implements ProductService {
     private final BrandRepository brandRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final ReviewService reviewService;
 
     public ProductServiceImpl(ProductRepository productRepository,
                               BrandRepository brandRepository,
                               CategoryRepository categoryRepository,
-                              UserRepository userRepository) {
+                              UserRepository userRepository, ReviewService reviewService) {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
+        this.reviewService = reviewService;
     }
 
     @Override
@@ -80,8 +83,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<Product> listAllProducts(int pageNo, int pageSize, String sortField, String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
-                Sort.by(sortField).descending();
+        Sort sort = sortDirection
+                .equalsIgnoreCase(Sort.Direction.ASC.name())
+                ? Sort.by(sortField).ascending()
+                : Sort.by(sortField).descending();
 
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return this.productRepository.findAll(pageable);
@@ -141,5 +146,18 @@ public class ProductServiceImpl implements ProductService {
         } else {
             return this.productRepository.findAll(pageable);
         }
+    }
+
+    @Override
+    public Product rating(Long productId) {
+        Product product = this.productRepository.findById(productId).get();
+        List<Review> reviews = this.reviewService.listAllByProduct(productId);
+        float value = 0;
+        for (int i = 0; i < reviews.size(); i++) {
+            value += reviews.get(i).getStars();
+        }
+        float average = value / reviews.size();
+        product.setRating(average);
+        return this.productRepository.save(product);
     }
 }

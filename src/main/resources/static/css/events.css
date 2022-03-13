@@ -1,25 +1,16 @@
 .grey-block {
     background-color: #dadde6;
-    padding: 5%;
+    padding: 1%;
 }
-
-.fl-right {
-    float: right
-}
-
-
 .card-events {
     display: table-row;
-    width: 49%;
     background-color: #fff;
     color: #989898;
     margin-bottom: 10px;
-    font-family: 'Oswald', sans-serif;
     text-transform: uppercase;
     border-radius: 4px;
     position: relative
 }
-
 
 .date {
     display: table-cell;
@@ -76,7 +67,7 @@
 
 .card-cont {
     display: table-cell;
-    width: 75%;
+    width: 100%;
     font-size: 85%;
     padding: 10px 10px 30px 50px
 }
@@ -84,10 +75,6 @@
 .card-cont h3 {
     color: #3C3C3C;
     font-size: 130%
-}
-
-.row:last-child .card-events:last-of-type .card-cont h3 {
-    text-decoration: line-through
 }
 
 .card-cont>div {
@@ -120,9 +107,6 @@
         float: none;
         width: 100%;
         margin-bottom: 10px
-    }
-    .card-events+.card-events {
-        margin-left: 0
     }
     .card-cont .even-date,
     .card-cont .even-info {

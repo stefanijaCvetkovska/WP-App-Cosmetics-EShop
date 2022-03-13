@@ -66,4 +66,15 @@ public class EventServiceImpl implements EventService {
     public List<Event> listEventsByDateBetween(LocalDateTime date1, LocalDateTime date2) {
         return this.eventRepository.findAllByStartDateBetween(date1, date2);
     }
+
+    @Override
+    public void deleteFinished(List<Event> events) {
+        LocalDateTime currentTime = LocalDateTime.now();
+
+        for(int i=0;i<events.toArray().length;i++){
+            if(events.get(i).getEndDate().isAfter(currentTime))
+                events.remove(events.get(i));
+        }
+        this.eventRepository.saveAll(events);
+    }
 }

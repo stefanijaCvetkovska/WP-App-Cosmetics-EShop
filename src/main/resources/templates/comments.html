@@ -1,32 +1,32 @@
-<div>
-    <div th:each="review: ${reviews}" class="d-sm-flex justify-content-between my-2 border-b">
+<div class="user-comments mt-5 mb-5 pr-5 pl-5 pt-3 pb-3">
+    <div th:each="review: ${reviews}" class="comments-info d-sm-flex justify-content-between my-2 border-b">
         <div class="media d-block d-sm-flex text-center text-sm-left">
-            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" width="70" height="70" class="mt-3 mr-4"/>
-            <div class="media-body pt-3">
+            <img src="https://t4.ftcdn.net/jpg/02/29/75/83/240_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg"
+                 width="100" height="100" class="mt-3 mr-4"/>
+            <div class="media-body pt-1 pb-1 mt-2 mb-2">
                 <h5 th:text="${review.user.firstName}+ ' ' + ${review.user.lastName}"
-                    class="product-card-title font-weight-semibold border-0 pb-0"></h5>
+                    class="comment-card-title border-1 mt-3"></h5>
                 <div th:replace="user-stars-review.html"></div>
-                <div th:text="${review.comment}" class="font-size-sm text-muted mr-2 mb-2"></div>
+                <div th:text="${review.comment}" class="mt-4 mb-3"
+                     style="font-size: larger"></div>
             </div>
         </div>
         <div th:if="${review.user.email} == ${#request.getRemoteUser()}">
-            <div class="row">
+            <div class="mr-5">
                 <form method="POST"
                       th:action="@{'/reviews/{id}/delete-review/{reviewId}' (id=${product.id}, reviewId=${review.id})}">
-                    <button type="submit" class="btn btn-link text-danger">
-                        <i class="fas fa-trash-alt"></i>
+                    <button type="submit" class="btn btn-outline-danger btn-block mt-4">
+                        REMOVE
                     </button>
                 </form>
                 <a th:href="@{'/reviews/{id}/reviews-form/{reviewId}' (id=${product.id}, reviewId=${review.id})}"
-                   class="btn btn-link">
-                    <i class="fas fa-pen"></i>
+                   class="btn btn-outline-info btn-block mt-3">
+                    EDIT
                 </a>
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-center">
-        <div class="col-7 mt-3">
-            <div th:replace="comment-pagination.html"></div>
-        </div>
+    <div class="mt-4">
+        <div th:replace="comment-pagination.html"></div>
     </div>
 </div>
