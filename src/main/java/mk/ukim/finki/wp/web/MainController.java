@@ -26,7 +26,16 @@ public class MainController {
 	}
 
 	@GetMapping("/")
-	public String home(Model model) {
+	public String home(HttpSession session, HttpServletRequest request, Model model) {
+
+		try{
+			String email = request.getRemoteUser();
+			User user = this.userRepository.findByEmail(email);
+			session.setAttribute("user", user.getFirstName());
+		}
+		catch (RuntimeException e){
+		}
+
 		model.addAttribute("brands", this.brandService.listAll());
 		model.addAttribute("bodyContent", "index");
 		return "master-template";

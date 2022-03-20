@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CategoryService {
     List<Category> listAll();
     Optional<Category> findById(Long id);
+    Optional<Category> findByName(String categoryName);
 }

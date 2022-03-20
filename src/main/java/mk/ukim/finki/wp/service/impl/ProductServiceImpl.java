@@ -149,6 +149,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> listAllProductsByCategoryName(String categoryName) {
+        Category category = this.categoryRepository.findByName(categoryName).get();
+        return this.productRepository.findAllByCategory(category);
+    }
+
+    @Override
+    public List<Product> listAllProductsByBrandName(String brandName) {
+        Brand brand = this.brandRepository.findByName(brandName).get();
+        return this.productRepository.findAllByBrand(brand);
+    }
+
+    @Override
     public Product rating(Long productId) {
         Product product = this.productRepository.findById(productId).get();
         List<Review> reviews = this.reviewService.listAllByProduct(productId);
@@ -161,3 +173,4 @@ public class ProductServiceImpl implements ProductService {
         return this.productRepository.save(product);
     }
 }
+

@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li sec:authorize="isAuthenticated()" class="nav-item">
-                <a class="nav-link" href="/contact" th:text="${#request.getRemoteUser()}"></a>
+                <a class="nav-link" href="/profile" th:text="${#session.getAttribute('user')}"></a>
             </li>
             <li sec:authorize="!isAuthenticated()" class="nav-item">
                 <a class="nav-link" th:href="@{/login}">LOGIN</a>

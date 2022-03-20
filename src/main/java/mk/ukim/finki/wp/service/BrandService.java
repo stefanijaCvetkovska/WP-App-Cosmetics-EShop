@@ -12,6 +12,8 @@ public interface BrandService {
 
     Optional<Brand> findById(Long id);
 
+    Optional<Brand> findByName(String name);
+
     Brand create(String name, String logo);
 
     Brand update(Long id, String name, String logo);
