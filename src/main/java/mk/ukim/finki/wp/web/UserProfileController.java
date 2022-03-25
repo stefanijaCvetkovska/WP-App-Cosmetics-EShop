@@ -11,10 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.templateparser.text.JavaScriptTemplateParser;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -43,7 +46,7 @@ public class UserProfileController {
         model.addAttribute("events", events);
         model.addAttribute("categoriesChart", getCategoriesChart());
         model.addAttribute("brandsChart", getBrandChart());
-        model.addAttribute("eventsChart", getEventChartData(request));
+        model.addAttribute("eventsChart", getEventChartData(events));
         model.addAttribute("bodyContent", "user-profile");
         return "master-template";
     }
@@ -70,10 +73,7 @@ public class UserProfileController {
         return result;
     }
 
-    private List<List<Object>> getEventChartData(HttpServletRequest request) {
-        String email = request.getRemoteUser();
-        User user = this.userRepository.findByEmail(email);
-        List<Event> events = this.userService.listAllEventsInInterested(user.getId());
+    private List<List<Object>> getEventChartData(List<Event> events) {
         List result = new LinkedList();
 
         for (int i = 0; i < events.size(); i++) {
@@ -82,10 +82,9 @@ public class UserProfileController {
             LocalDateTime startDate = LocalDateTime.parse(events.get(i).getStartDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
             LocalDateTime endDate = LocalDateTime.parse(events.get(i).getEndDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
-            List<Object> event = List.of(eventName, startDate, endDate);
+            List<Object> event = List.of(eventName, startDate.toLocalDate(), endDate.toLocalDate());
             result.add(event);
         }
         return result;
     }
-
 }

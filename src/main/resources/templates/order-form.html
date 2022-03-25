@@ -1,0 +1,71 @@
+<section class="order-form my-4 mx-4">
+    <div class="container pt-4">
+
+        <form th:method="POST" th:action="@{'/order/purchase/{cart}' (cart=${cart.id})}">
+            <div class="row">
+                <div class="col-12">
+                    <h1>You can see my Order Form</h1>
+                    <span>with some explanation below</span>
+                    <hr class="mt-1">
+                </div>
+                <div class="col-12">
+
+                    <div class="row mx-4">
+                        <div class="col-12 mb-2">
+                            <label class="order-form-label">Name</label>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <input class="order-form-input" placeholder="First"
+                                   th:value="${first}">
+                        </div>
+                        <div class="col-12 col-sm-6 mt-2 mt-sm-0">
+                            <input class="order-form-input" placeholder="Last"
+                                   th:value="${last}">
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-4">
+                        <div class="col-12">
+                            <label class="order-form-label">E-mail</label>
+                        </div>
+                        <div class="col-12">
+                            <input class="order-form-input" placeholder="E-mail" th:value="${email}">
+                        </div>
+                    </div>
+
+                    <div class="row mt-3 mx-4">
+                        <div class="col-12">
+                            <label class="order-form-label">Adress</label>
+                        </div>
+                        <div class="col-12">
+                            <input class="order-form-input" placeholder="Street Address" name="address"
+                            >
+                        </div>
+
+                        <div class="col-12">
+                            <label class="order-form-label">Phone</label>
+                        </div>
+                        <div class="col-12">
+                            <input class="order-form-input" placeholder="Phone number" name="phone">
+                        </div>
+                    </div>
+
+                    <div>
+                        <input th:each="pm : ${paymentMethods}"
+                               type="radio"
+                               th:text="${pm}"
+                               th:value="${pm}"
+                               name="payment">
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button type="submit" id="btnSubmit" class="btn btn-dark d-block mx-auto btn-submit">Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

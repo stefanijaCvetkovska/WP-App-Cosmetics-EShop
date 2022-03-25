@@ -20,17 +20,36 @@
                     </div>
                 </div>
 
-                <div class="mt-5">
-                    <div class="mt-5">
+
+                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+                    <form th:action="@{'/shopping-cart/edit-cart/{productId}' (productId=${product.id})}">
+                        <div class="form-group mb-2">
+                            <label for="newQuantity">Quantity</label>
+                            <input class="form-control form-control-sm"
+                                   type="number"
+                                   id="newQuantity"
+                                   name="newQuantity"
+                                   th:each="p : ${productQuantity}"
+                                   th:if="${#lists.contains(p, product)}"
+                                   th:value="${p[1]}">
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm btn-block mb-2"
+                                    type="submit">
+                                Update cart
+                            </button>
+                        </div>
+                    </form>
+                    <div>
                         <form th:method="POST" th:action="@{'/shopping-cart/remove-product/{id}' (id=${product.id})}">
-                            <button class="btn btn-outline-danger mt-5" type="submit">
+                            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="submit">
                                 Remove
                             </button>
                         </form>
                     </div>
                 </div>
             </div>
-            <a href="#" class="add-item btn btn-block btn-secondary">
+            <a href="/order" class="add-item btn btn-block btn-secondary">
                 Proceed to checkout
             </a>
         </div>

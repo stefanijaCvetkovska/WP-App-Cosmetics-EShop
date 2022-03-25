@@ -8,7 +8,7 @@
     <script type="text/javascript" th:inline="javascript">
 
         // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages': ['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart);
@@ -25,9 +25,11 @@
             data.addRows([[${categoriesChart}]]);
 
             // Set chart options
-            var options = {'title':'Products per category',
-                'width':400,
-                'height':300};
+            var options = {
+                'title': 'Products per category',
+                'width': 400,
+                'height': 300
+            };
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
@@ -38,7 +40,7 @@
     <script type="text/javascript" th:inline="javascript">
 
         // Load the Visualization API and the corechart package.
-        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages': ['corechart']});
 
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawChart);
@@ -55,9 +57,11 @@
             data.addRows([[${brandsChart}]]);
 
             // Set chart options
-            var options = {'title':'Products per brand',
-                'width':400,
-                'height':300};
+            var options = {
+                'title': 'Products per brand',
+                'width': 400,
+                'height': 300
+            };
 
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.PieChart(document.getElementById('brands_chart'));
@@ -65,18 +69,53 @@
         }
     </script>
 
-    <script type="text/javascript" th:inline="javascript">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
         google.charts.load('current', {'packages':['timeline']});
         google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var container = document.getElementById('timeline2');
+            var chart = new google.visualization.Timeline(container);
+            var dataTable = new google.visualization.DataTable();
+
+            dataTable.addColumn({ type: 'string', id: 'President' });
+            dataTable.addColumn({ type: 'date', id: 'Start' });
+            dataTable.addColumn({ type: 'date', id: 'End' });
+            dataTable.addRows([
+                [ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],
+                [ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],
+                [ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]]);
+
+            console.log(dataTable)
+            chart.draw(dataTable);
+        }
+    </script>
+
+
+    <script type="text/javascript" th:inline="javascript">
+        google.charts.load('current', {'packages': ['timeline']});
+        google.charts.setOnLoadCallback(drawChart);
+
         function drawChart() {
             var container = document.getElementById('timeline');
             var chart = new google.visualization.Timeline(container);
             var dataTable = new google.visualization.DataTable();
 
-            dataTable.addColumn({ type: 'string', id: 'President' });
-            dataTable.addColumn({ type: 'datetime', id: 'Start' });
-            dataTable.addColumn({ type: 'datetime', id: 'End' });
+            dataTable.addColumn({type: 'string', id: 'President'});
+            dataTable.addColumn({type: 'date', id: 'Start'});
+            dataTable.addColumn({type: 'date', id: 'End'});
             dataTable.addRows([[${eventsChart}]]);
+
+            //console.log(dataTable)
+
+            let eventsList = [[${eventsChart}]];
+            console.log(eventsList);
+
+            for (let i = 0; i < eventsList.length; i++) {
+                let name = eventsList[i]
+                console.log(name);
+            }
+
 
             chart.draw(dataTable);
         }
@@ -88,7 +127,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="profile-img">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
+                         alt=""/>
                     <div class="file btn btn-lg btn-primary">
                         Change Photo
                         <input type="file" name="file"/>
@@ -117,8 +157,9 @@
             </div>
         </div>
     </form>
-<!--    <div id="chart_div"></div>-->
+    <!--    <div id="chart_div"></div>-->
     <div id="timeline"></div>
+    <div id="timeline2"></div>
     <div id="brands_chart"></div>
 </div>
 </body>

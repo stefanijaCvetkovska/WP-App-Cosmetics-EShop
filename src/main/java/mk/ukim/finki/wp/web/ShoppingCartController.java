@@ -8,13 +8,15 @@ import mk.ukim.finki.wp.service.ShoppingCartService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.expression.Lists;
+import org.thymeleaf.expression.Sets;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/shopping-cart")
@@ -33,16 +35,26 @@ public class ShoppingCartController {
         String email = req.getRemoteUser();
         User user = this.userRepository.findByEmail(email);
         ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
-        model.addAttribute("products", this.shoppingCartService.listAllProductsInShoppingCart(shoppingCart.getId()));
-        model.addAttribute("productsInCart", shoppingCart.getProducts().size());
+
         model.addAttribute("total", shoppingCartService.totalPrice(user.getId()));
+
+        List<Product> productList = this.shoppingCartService.listAllProductsInShoppingCart(shoppingCart.getId());
+
+        model.addAttribute("productQuantity", this.shoppingCartService.productOrderQuantity(shoppingCart.getId()));
+
+        Set<Product> set = new HashSet<>(productList);
+        productList.clear();
+        productList.addAll(set);
+
+        model.addAttribute("products", productList);
+        model.addAttribute("productsInCart", shoppingCart.getProducts().size());
         model.addAttribute("bodyContent", "shopping-cart");
         return "master-template";
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add-product/{id}")
-    public String addProductToCart(@PathVariable Long id, HttpSession session, HttpServletRequest req) {
+    public String addProductToCart(@PathVariable Long id, HttpServletRequest req, Model model) {
         try {
             String email = req.getRemoteUser();
             User user = this.userRepository.findByEmail(email);
@@ -53,6 +65,25 @@ public class ShoppingCartController {
             return "redirect:/shopping-cart?error=" + exception.getMessage();
         }
     }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/edit-cart/{productId}")
+    public String updateShoppingCart(@PathVariable Long productId,
+                                     @RequestParam int newQuantity,
+                                     HttpServletRequest req,
+                                     Model model) {
+        try {
+            String email = req.getRemoteUser();
+            User user = this.userRepository.findByEmail(email);
+            ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());
+            this.shoppingCartService.updateShoppingCart(user.getId(), productId, newQuantity);
+            return "redirect:/shopping-cart";
+        } catch (RuntimeException exception) {
+            return "redirect:/shopping-cart?error=" + exception.getMessage();
+        }
+    }
+
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/remove-product/{id}")
