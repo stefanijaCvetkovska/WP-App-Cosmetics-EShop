@@ -2,3 +2,4 @@
 * linguist-vendored
 *.js linguist-vendored=false
 * linguist-language=Java
+8 linguist-language=SpringBoot
