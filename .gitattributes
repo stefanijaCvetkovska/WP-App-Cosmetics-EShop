@@ -1,5 +1,5 @@
-# * text=auto
-# * linguist-vendored
-# *.js linguist-vendored=false
-# * linguist-language=Java
-# * linguist-language=Java
+* text=auto
+* linguist-vendored
+*.js linguist-vendored=false
+* linguist-language=Java
+* linguist-language=Java
