@@ -1,12 +1,11 @@
 .fa-shopping-cart:hover{
-    color: #ff3d81;
+    color: #F7D9E5;
     transition: all 0.5s ease-in-out;
 }
 
 .bg-pink{
-    background: linear-gradient(to right, #FF638E, #FF97A8);
-    color: white;
-    border-radius: 5px;
+    background: #F7D9E5;
+    color: #848484;
 }
 
 .border-b{

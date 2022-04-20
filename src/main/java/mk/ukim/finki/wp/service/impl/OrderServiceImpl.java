@@ -9,10 +9,13 @@ import mk.ukim.finki.wp.model.enumerations.ShoppingCartStatus;
 import mk.ukim.finki.wp.repository.OrderRepository;
 import mk.ukim.finki.wp.repository.ProductRepository;
 import mk.ukim.finki.wp.repository.ShoppingCartRepository;
+import mk.ukim.finki.wp.repository.UserRepository;
 import mk.ukim.finki.wp.service.OrderService;
 import mk.ukim.finki.wp.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -22,12 +25,14 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final ProductRepository productRepository;
     private final OrderRepository orderRepository;
+    private final UserRepository userRepository;
 
-    public OrderServiceImpl(ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderRepository orderRepository) {
+    public OrderServiceImpl(ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderRepository orderRepository, UserRepository userRepository) {
         this.shoppingCartService = shoppingCartService;
         this.shoppingCartRepository = shoppingCartRepository;
         this.productRepository = productRepository;
         this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -69,5 +74,53 @@ public class OrderServiceImpl implements OrderService {
         } else {
             return 0.0;
         }
+    }
+
+    @Override
+    public Double sales(int month) {
+        List<Order> orders = this.orderRepository.findAll();
+        Double sales = 0.0;
+
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getPurchaseDate().getMonthValue() == month) {
+                Double s = orders.get(i).getTotalPrice();
+                sales += s;
+            }
+        }
+
+        return sales;
+    }
+
+    @Override
+    public Double expenses(int month) {
+        Double sales = this.sales(month);
+        Double expenses = sales * 0.4;
+        return expenses;
+    }
+
+    @Override
+    public Double profit(int month) {
+        Double sales = this.sales(month);
+        Double expenses = this.expenses(month);
+        Double profit = sales - expenses;
+        return profit;
+    }
+
+    @Override
+    public List<Order> listAllOrdersByUser(Long userId) {
+        User user = this.userRepository.findById(userId).get();
+        List<ShoppingCart> carts = this.shoppingCartRepository.findAllByUser(user);
+        List<Order> allOrders = this.orderRepository.findAll();
+        List<Order> result = new LinkedList<>();
+        for (int i = 0; i < carts.size(); i++) {
+            ShoppingCart cart = carts.get(i);
+            for (int j = 0; j < allOrders.size(); j++) {
+                Order order = allOrders.get(j);
+                if (cart.getId().equals(order.getShoppingCart().getId())) {
+                    result.add(order);
+                }
+            }
+        }
+        return result;
     }
 }

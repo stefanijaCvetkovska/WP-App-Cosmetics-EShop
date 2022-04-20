@@ -52,6 +52,7 @@ public class EventServiceImpl implements EventService {
         event.setEndDate(endDate);
         event.setEventName(eventName);
         event.setEventDescription(eventDescription);
+        event.setMonth(startDate.getMonth().name());
         return this.eventRepository.save(event);
     }
 

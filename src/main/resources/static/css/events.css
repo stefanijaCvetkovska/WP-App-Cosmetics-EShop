@@ -1,15 +1,30 @@
+.header-events{
+    font-size: 70px;
+    color: #343434;
+    border-bottom: 3px solid #343434;
+    width: max-content;
+}
 .grey-block {
     background-color: #dadde6;
-    padding: 1%;
+    margin-top: 2rem;
+    padding-top: 2.5rem;
 }
 .card-events {
     display: table-row;
-    background-color: #fff;
-    color: #989898;
-    margin-bottom: 10px;
+    background: #343434;
+    color: #ffffff;
     text-transform: uppercase;
-    border-radius: 4px;
-    position: relative
+    border-radius: 15px;
+    position: relative;
+    box-shadow: 6px 7px 0px rgba(183, 183, 183, 0.66);
+}
+
+.event-name{
+    background: white;
+    padding: 1rem;
+    font-weight: bolder;
+    color: #343434;
+    text-align: center;
 }
 
 .date {
@@ -17,7 +32,7 @@
     width: 25%;
     position: relative;
     text-align: center;
-    border-right: 2px dashed #dadde6
+    border-right: 2px dashed #dadde6;
 }
 
 .date:before,
@@ -69,7 +84,7 @@
     display: table-cell;
     width: 100%;
     font-size: 85%;
-    padding: 10px 10px 30px 50px
+    padding: 25px 15px 20px 50px;
 }
 
 .card-cont h3 {

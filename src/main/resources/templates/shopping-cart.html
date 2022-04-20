@@ -1,11 +1,13 @@
-<div class="container pb-5 mt-n2 mt-md-n3">
+<div class="container my-5">
     <div class="row">
         <div class="col-xl-9 col-md-8">
             <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-pink">
-                <span>Products</span><a
-                    class="font-size-sm" href=/products>
-                <i class="fas fa-angle-left"></i>
-                Continue shopping</a></h2>
+                <span>Products</span>
+                <a class="font-size-sm text-secondary" href=/products>
+                    <i class="fas fa-angle-left"></i>
+                    Continue shopping
+                </a>
+            </h2>
             <!-- Item-->
             <div th:each="product: ${products}" class="d-sm-flex justify-content-between my-4 border-b">
                 <div class="media d-block d-sm-flex text-center text-sm-left mb-3">
@@ -21,7 +23,7 @@
                 </div>
 
 
-                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+                <div class="mr-5 mt-3 text-center text-sm-left" style="max-width: 10rem;">
                     <form th:action="@{'/shopping-cart/edit-cart/{productId}' (productId=${product.id})}">
                         <div class="form-group mb-2">
                             <label for="newQuantity">Quantity</label>
@@ -49,9 +51,14 @@
                     </div>
                 </div>
             </div>
-            <a href="/order" class="add-item btn btn-block btn-secondary">
-                Proceed to checkout
-            </a>
+            <div th:if="${products.size() == 0}" class="alert alert-info" role="alert">
+                Your shopping cart is empty!
+            </div>
+            <div th:if="${products.size() > 0}">
+                <a href="/order" class="add-item btn btn-block btn-secondary">
+                    Proceed to checkout
+                </a>
+            </div>
         </div>
         <!-- Sidebar-->
         <div class="col-xl-3 col-md-4 pt-3 pt-md-0">

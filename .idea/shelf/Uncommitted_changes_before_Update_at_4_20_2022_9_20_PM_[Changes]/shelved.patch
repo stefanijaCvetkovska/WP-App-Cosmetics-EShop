@@ -1,0 +1,1521 @@
+Index: src/main/java/mk/ukim/finki/wp/CaptchaSettings.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/CaptchaSettings.java b/src/main/java/mk/ukim/finki/wp/CaptchaSettings.java
+new file mode 100644
+--- /dev/null	(date 1650479117464)
++++ b/src/main/java/mk/ukim/finki/wp/CaptchaSettings.java	(date 1650479117464)
+@@ -0,0 +1,14 @@
++package mk.ukim.finki.wp;
++
++import lombok.Data;
++import org.springframework.boot.context.properties.ConfigurationProperties;
++import org.springframework.stereotype.Component;
++
++@Component
++@ConfigurationProperties(prefix = "google.recaptcha.key")
++@Data
++public class CaptchaSettings {
++
++    private String site;
++    private String secret;
++}
+\ No newline at end of file
+Index: src/main/resources/templates/admin-profile.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/admin-profile.html b/src/main/resources/templates/admin-profile.html
+new file mode 100644
+--- /dev/null	(date 1648405939099)
++++ b/src/main/resources/templates/admin-profile.html	(date 1648405939099)
+@@ -0,0 +1,163 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <title>Title</title>
++    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
++
++    <script type="text/javascript" th:inline="javascript">
++
++        // Load the Visualization API and the corechart package.
++        google.charts.load('current', {'packages': ['corechart']});
++
++        // Set a callback to run when the Google Visualization API is loaded.
++        google.charts.setOnLoadCallback(drawChart);
++
++        // Callback that creates and populates a data table,
++        // instantiates the pie chart, passes in the data and
++        // draws it.
++        function drawChart() {
++
++            // Create the data table.
++            var data = new google.visualization.DataTable();
++            data.addColumn('string', 'Category');
++            data.addColumn('number', 'Products');
++            data.addRows([[${categoriesChart}]]);
++
++            // Set chart options
++            var options = {
++                'title': 'Products per category',
++                'width': 500,
++                'height': 400,
++                pieHole: 0.4,
++                colors: ['#e0440e', '#e6693e', '#ec8f6e', '#f3b49f', '#f6c7b6']
++            };
++
++            // Instantiate and draw our chart, passing in some options.
++            var chart = new google.visualization.PieChart(document.getElementById('categories_chart'));
++            chart.draw(data, options);
++        }
++    </script>
++
++    <script type="text/javascript" th:inline="javascript">
++
++        // Load the Visualization API and the corechart package.
++        google.charts.load('current', {'packages': ['corechart']});
++
++        // Set a callback to run when the Google Visualization API is loaded.
++        google.charts.setOnLoadCallback(drawChart);
++
++        // Callback that creates and populates a data table,
++        // instantiates the pie chart, passes in the data and
++        // draws it.
++        function drawChart() {
++
++            // Create the data table.
++            var data = new google.visualization.DataTable();
++            data.addColumn('string', 'Brand');
++            data.addColumn('number', 'Products');
++            data.addRows([[${brandsChart}]]);
++
++            // Set chart options
++            var options = {
++                'title': 'Products per brand',
++                'width': 600,
++                'height': 400,
++                bar: {groupWidth: "80%"}
++            };
++
++            // Instantiate and draw our chart, passing in some options.
++            var chart = new google.visualization.BarChart(document.getElementById('brands_chart'));
++            chart.draw(data, options);
++        }
++    </script>
++
++    <script type="text/javascript">
++        google.charts.load('current', {'packages':['corechart']});
++        google.charts.setOnLoadCallback(drawChart);
++
++        function drawChart() {
++            var data = new google.visualization.DataTable();
++            data.addColumn('number', 'Month');
++            data.addColumn('number', 'Sales');
++            data.addColumn('number', 'Expenses');
++            data.addColumn('number', 'Profit');
++            data.addRows([[${profitChart}]]);
++
++            var options = {
++                title: 'Company Performance',
++                hAxis: {title: 'Month',  titleTextStyle: {color: '#333'}},
++                vAxis: {minValue: 0}
++            };
++
++            var chart = new google.visualization.AreaChart(document.getElementById('profit_chart'));
++            chart.draw(data, options);
++        }
++    </script>
++
++
++    <script type="text/javascript" th:inline="javascript">
++        google.charts.load('current', {'packages': ['timeline']});
++        google.charts.setOnLoadCallback(drawChart);
++
++        function drawChart() {
++            var container = document.getElementById('timeline');
++            var chart = new google.visualization.Timeline(container);
++            var dataTable = new google.visualization.DataTable();
++
++            dataTable.addColumn({type: 'string', id: 'eventName'});
++            dataTable.addColumn({type: 'number', id: 'startMonth'});
++            dataTable.addColumn({type: 'number', id: 'endMonth'});
++            dataTable.addRows([[${eventsChart}]]);
++
++            chart.draw(dataTable);
++        }
++    </script>
++
++
++</head>
++<body>
++<div class="container emp-profile">
++    <form method="post">
++        <div class="row">
++            <div class="col-md-4">
++                <div class="profile-img">
++                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
++                         alt=""/>
++                    <div class="file btn btn-lg btn-primary">
++                        Change Photo
++                        <input type="file" name="file"/>
++                    </div>
++                </div>
++            </div>
++            <div class="col-md-6">
++                <div class="profile-head">
++                    <h5>
++                        Kshiti Ghelani
++                    </h5>
++                </div>
++            </div>
++            <div class="col-md-2">
++                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
++            </div>
++        </div>
++        <div class="row">
++            <div class="col-md-4">
++                <div class="profile-work">
++                    <a href="/events?interest=INTERESTED">Your upcoming events</a>
++                    <ul>
++                        <li th:each="event : ${events}" th:text="${event.eventName}"></li>
++                    </ul>
++                </div>
++            </div>
++        </div>
++    </form>
++    <div class="row">
++        <div class="col-5" id="categories_chart"></div>
++        <div class="col-7" id="brands_chart"></div>
++    </div>
++<!--    <div id="timeline"></div>-->
++    <div id="profit_chart" style="width: 100%; height: 500px;"></div>
++</div>
++</body>
++</html>
+\ No newline at end of file
+Index: src/main/java/mk/ukim/finki/wp/web/UserProfileController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mk.ukim.finki.wp.web;\r\n\r\nimport mk.ukim.finki.wp.model.Brand;\r\nimport mk.ukim.finki.wp.model.Event;\r\nimport mk.ukim.finki.wp.model.User;\r\nimport mk.ukim.finki.wp.repository.UserRepository;\r\nimport mk.ukim.finki.wp.service.BrandService;\r\nimport mk.ukim.finki.wp.service.ProductService;\r\nimport mk.ukim.finki.wp.service.UserService;\r\nimport org.springframework.stereotype.Controller;\r\nimport org.springframework.ui.Model;\r\nimport org.springframework.web.bind.annotation.GetMapping;\r\nimport org.springframework.web.bind.annotation.RequestMapping;\r\nimport org.thymeleaf.templateparser.text.JavaScriptTemplateParser;\r\n\r\nimport javax.servlet.http.HttpServletRequest;\r\nimport java.text.SimpleDateFormat;\r\nimport java.time.LocalDate;\r\nimport java.time.LocalDateTime;\r\nimport java.time.ZoneId;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.util.*;\r\n\r\n@Controller\r\n@RequestMapping(\"/profile\")\r\npublic class UserProfileController {\r\n\r\n    private final UserService userService;\r\n    private final UserRepository userRepository;\r\n    private final ProductService productService;\r\n    private final BrandService brandService;\r\n\r\n    public UserProfileController(UserService userService,\r\n                                 UserRepository userRepository, ProductService productService, BrandService brandService) {\r\n        this.userService = userService;\r\n        this.userRepository = userRepository;\r\n        this.productService = productService;\r\n        this.brandService = brandService;\r\n    }\r\n\r\n    @GetMapping\r\n    public String getUserProfilePage(Model model, HttpServletRequest request) {\r\n        String email = request.getRemoteUser();\r\n        User user = this.userRepository.findByEmail(email);\r\n        List<Event> events = this.userService.listAllEventsInInterested(user.getId());\r\n        model.addAttribute(\"events\", events);\r\n        model.addAttribute(\"categoriesChart\", getCategoriesChart());\r\n        model.addAttribute(\"brandsChart\", getBrandChart());\r\n        model.addAttribute(\"eventsChart\", getEventChartData(events));\r\n        model.addAttribute(\"bodyContent\", \"user-profile\");\r\n        return \"master-template\";\r\n    }\r\n\r\n    private List<List<Object>> getCategoriesChart() {\r\n        return List.of(\r\n                List.of(\"Makeup\", this.productService.listAllProductsByCategoryName(\"Makeup\").size()),\r\n                List.of(\"Hair care\", this.productService.listAllProductsByCategoryName(\"Hair care\").size()),\r\n                List.of(\"Skin care\", this.productService.listAllProductsByCategoryName(\"Skin care\").size()),\r\n                List.of(\"Body care\", this.productService.listAllProductsByCategoryName(\"Body care\").size()),\r\n                List.of(\"Nails\", this.productService.listAllProductsByCategoryName(\"Nails\").size()),\r\n                List.of(\"Perfume\", this.productService.listAllProductsByCategoryName(\"Perfume\").size())\r\n        );\r\n    }\r\n\r\n    private List<List<Object>> getBrandChart() {\r\n        List<Brand> brands = this.brandService.listAll();\r\n        List result = new LinkedList();\r\n        for (int i = 0; i < brands.size(); i++) {\r\n            String brandName = brands.get(i).getName();\r\n            List<Object> brand = List.of(brandName, this.productService.listAllProductsByBrandName(brandName).size());\r\n            result.add(brand);\r\n        }\r\n        return result;\r\n    }\r\n\r\n    private List<List<Object>> getEventChartData(List<Event> events) {\r\n        List result = new LinkedList();\r\n\r\n        for (int i = 0; i < events.size(); i++) {\r\n            String eventName = events.get(i).getEventName();\r\n\r\n            LocalDateTime startDate = LocalDateTime.parse(events.get(i).getStartDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);\r\n            LocalDateTime endDate = LocalDateTime.parse(events.get(i).getEndDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);\r\n\r\n            List<Object> event = List.of(eventName, startDate.toLocalDate(), endDate.toLocalDate());\r\n            result.add(event);\r\n        }\r\n        return result;\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java b/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java
+--- a/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java	(date 1650474378409)
+@@ -1,41 +1,32 @@
+ package mk.ukim.finki.wp.web;
+ 
+-import mk.ukim.finki.wp.model.Brand;
+ import mk.ukim.finki.wp.model.Event;
++import mk.ukim.finki.wp.model.Order;
+ import mk.ukim.finki.wp.model.User;
+ import mk.ukim.finki.wp.repository.UserRepository;
+-import mk.ukim.finki.wp.service.BrandService;
+-import mk.ukim.finki.wp.service.ProductService;
+-import mk.ukim.finki.wp.service.UserService;
++import mk.ukim.finki.wp.service.*;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.GetMapping;
+ import org.springframework.web.bind.annotation.RequestMapping;
+-import org.thymeleaf.templateparser.text.JavaScriptTemplateParser;
+ 
+ import javax.servlet.http.HttpServletRequest;
+-import java.text.SimpleDateFormat;
+-import java.time.LocalDate;
+-import java.time.LocalDateTime;
+-import java.time.ZoneId;
+-import java.time.format.DateTimeFormatter;
+-import java.util.*;
++import java.util.List;
+ 
+ @Controller
+-@RequestMapping("/profile")
++@RequestMapping("/user/profile")
+ public class UserProfileController {
+ 
+     private final UserService userService;
+     private final UserRepository userRepository;
+-    private final ProductService productService;
+-    private final BrandService brandService;
++    private final OrderService orderService;
++    private final EventService eventService;
+ 
+-    public UserProfileController(UserService userService,
+-                                 UserRepository userRepository, ProductService productService, BrandService brandService) {
++    public UserProfileController(UserService userService, UserRepository userRepository, OrderService orderService, EventService eventService) {
+         this.userService = userService;
+         this.userRepository = userRepository;
+-        this.productService = productService;
+-        this.brandService = brandService;
++        this.orderService = orderService;
++        this.eventService = eventService;
+     }
+ 
+     @GetMapping
+@@ -43,48 +34,10 @@
+         String email = request.getRemoteUser();
+         User user = this.userRepository.findByEmail(email);
+         List<Event> events = this.userService.listAllEventsInInterested(user.getId());
++        List<Order> orders = this.orderService.listAllOrdersByUser(user.getId());
+         model.addAttribute("events", events);
+-        model.addAttribute("categoriesChart", getCategoriesChart());
+-        model.addAttribute("brandsChart", getBrandChart());
+-        model.addAttribute("eventsChart", getEventChartData(events));
++        model.addAttribute("orders", orders);
+         model.addAttribute("bodyContent", "user-profile");
+         return "master-template";
+     }
+-
+-    private List<List<Object>> getCategoriesChart() {
+-        return List.of(
+-                List.of("Makeup", this.productService.listAllProductsByCategoryName("Makeup").size()),
+-                List.of("Hair care", this.productService.listAllProductsByCategoryName("Hair care").size()),
+-                List.of("Skin care", this.productService.listAllProductsByCategoryName("Skin care").size()),
+-                List.of("Body care", this.productService.listAllProductsByCategoryName("Body care").size()),
+-                List.of("Nails", this.productService.listAllProductsByCategoryName("Nails").size()),
+-                List.of("Perfume", this.productService.listAllProductsByCategoryName("Perfume").size())
+-        );
+-    }
+-
+-    private List<List<Object>> getBrandChart() {
+-        List<Brand> brands = this.brandService.listAll();
+-        List result = new LinkedList();
+-        for (int i = 0; i < brands.size(); i++) {
+-            String brandName = brands.get(i).getName();
+-            List<Object> brand = List.of(brandName, this.productService.listAllProductsByBrandName(brandName).size());
+-            result.add(brand);
+-        }
+-        return result;
+-    }
+-
+-    private List<List<Object>> getEventChartData(List<Event> events) {
+-        List result = new LinkedList();
+-
+-        for (int i = 0; i < events.size(); i++) {
+-            String eventName = events.get(i).getEventName();
+-
+-            LocalDateTime startDate = LocalDateTime.parse(events.get(i).getStartDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+-            LocalDateTime endDate = LocalDateTime.parse(events.get(i).getEndDate().toString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+-
+-            List<Object> event = List.of(eventName, startDate.toLocalDate(), endDate.toLocalDate());
+-            result.add(event);
+-        }
+-        return result;
+-    }
+-}
+\ No newline at end of file
++}
+Index: src/main/resources/templates/fragments/footer.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><footer class=\"text-center text-white\" style=\"background-color: #f1f1f1;\">\r\n    <!-- Grid container -->\r\n    <div class=\"container pt-4\">\r\n        <div class=\"row text-dark text-left justify-content-center\">\r\n            <div class=\"col-3\">\r\n                <h4>Social media</h4>\r\n                <i class=\"fab fa-facebook\"></i>\r\n                <i class=\"fab fa-instagram\"></i>\r\n                <i class=\"fab fa-twitter\"></i>\r\n            </div>\r\n            <div class=\"col-3\">\r\n                <h4>About us</h4>\r\n                <ul class=\"list-unstyled\">\r\n                    <li>FAQs</li>\r\n                    <li>Events</li>\r\n                    <li>Services</li>\r\n                </ul>\r\n            </div>\r\n            <div class=\"col-3\">\r\n                <h4>Quick links</h4>\r\n                <ul class=\"list-unstyled\">\r\n                    <li>Home</li>\r\n                    <li>Products</li>\r\n                    <li>Events</li>\r\n                </ul>\r\n            </div>\r\n            <div class=\"col-3\">\r\n                <h4>Contact</h4>\r\n                <ul class=\"list-unstyled\">\r\n                    <li>Phone: +24 0938 9989</li>\r\n                    <li>Mail: ecosmetics@mail.com</li>\r\n                    <li>Address: st. Ecosmetics no.1</li>\r\n                </ul>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <!-- Copyright -->\r\n    <div class=\"text-center text-dark p-3\" style=\"background-color: rgba(107,107,107,0.14);\">\r\n        © 2022 Copyright:\r\n        <a class=\"text-dark\">Web Programming</a>\r\n    </div>\r\n    <!-- Copyright -->\r\n</footer>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/fragments/footer.html b/src/main/resources/templates/fragments/footer.html
+--- a/src/main/resources/templates/fragments/footer.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/fragments/footer.html	(date 1650367594794)
+@@ -1,36 +1,38 @@
+ <footer class="text-center text-white" style="background-color: #f1f1f1;">
+     <!-- Grid container -->
+     <div class="container pt-4">
+-        <div class="row text-dark text-left justify-content-center">
++        <div class="row text-dark text-left justify-content-center m-5">
+             <div class="col-3">
+-                <h4>Social media</h4>
+-                <i class="fab fa-facebook"></i>
+-                <i class="fab fa-instagram"></i>
+-                <i class="fab fa-twitter"></i>
++                <h5 class="border-bottom border-dark pb-2" style="width: max-content">About us</h5>
++                <ul class="list-unstyled my-3" style="font-size: smaller">
++                    <li class="my-3">FAQs</li>
++                    <li class="my-3">Events</li>
++                    <li class="my-3">Services</li>
++                </ul>
+             </div>
+             <div class="col-3">
+-                <h4>About us</h4>
+-                <ul class="list-unstyled">
+-                    <li>FAQs</li>
+-                    <li>Events</li>
+-                    <li>Services</li>
++                <h5 class="border-bottom border-dark pb-2" style="width: max-content">Quick links</h5>
++                <ul class="list-unstyled my-3"  style="font-size: smaller">
++                    <li class="my-3">Home</li>
++                    <li class="my-3">Products</li>
++                    <li class="my-3">Events</li>
+                 </ul>
+             </div>
+             <div class="col-3">
+-                <h4>Quick links</h4>
+-                <ul class="list-unstyled">
+-                    <li>Home</li>
+-                    <li>Products</li>
+-                    <li>Events</li>
++                <h5 class="border-bottom border-dark pb-2" style="width: max-content">Contact</h5>
++                <ul class="list-unstyled my-3"  style="font-size: smaller">
++                    <li class="my-3">Phone: +24 0938 9989</li>
++                    <li class="my-3">Mail: ecosmetics@mail.com</li>
++                    <li class="my-3">Address: st. Ecosmetics no.1</li>
+                 </ul>
+             </div>
+             <div class="col-3">
+-                <h4>Contact</h4>
+-                <ul class="list-unstyled">
+-                    <li>Phone: +24 0938 9989</li>
+-                    <li>Mail: ecosmetics@mail.com</li>
+-                    <li>Address: st. Ecosmetics no.1</li>
+-                </ul>
++                <h5 class="border-bottom border-dark pb-2" style="width: max-content">Social media</h5>
++                <div style="font-size: x-large">
++                    <i class="fab fa-facebook mx-1"></i>
++                    <i class="fab fa-instagram mx-1"></i>
++                    <i class="fab fa-twitter mx-1"></i>
++                </div>
+             </div>
+         </div>
+     </div>
+Index: src/main/resources/templates/user-profile.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n    <meta charset=\"UTF-8\">\r\n    <title>Title</title>\r\n    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n\r\n    <script type=\"text/javascript\" th:inline=\"javascript\">\r\n\r\n        // Load the Visualization API and the corechart package.\r\n        google.charts.load('current', {'packages': ['corechart']});\r\n\r\n        // Set a callback to run when the Google Visualization API is loaded.\r\n        google.charts.setOnLoadCallback(drawChart);\r\n\r\n        // Callback that creates and populates a data table,\r\n        // instantiates the pie chart, passes in the data and\r\n        // draws it.\r\n        function drawChart() {\r\n\r\n            // Create the data table.\r\n            var data = new google.visualization.DataTable();\r\n            data.addColumn('string', 'Category');\r\n            data.addColumn('number', 'Products');\r\n            data.addRows([[${categoriesChart}]]);\r\n\r\n            // Set chart options\r\n            var options = {\r\n                'title': 'Products per category',\r\n                'width': 400,\r\n                'height': 300\r\n            };\r\n\r\n            // Instantiate and draw our chart, passing in some options.\r\n            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));\r\n            chart.draw(data, options);\r\n        }\r\n    </script>\r\n\r\n    <script type=\"text/javascript\" th:inline=\"javascript\">\r\n\r\n        // Load the Visualization API and the corechart package.\r\n        google.charts.load('current', {'packages': ['corechart']});\r\n\r\n        // Set a callback to run when the Google Visualization API is loaded.\r\n        google.charts.setOnLoadCallback(drawChart);\r\n\r\n        // Callback that creates and populates a data table,\r\n        // instantiates the pie chart, passes in the data and\r\n        // draws it.\r\n        function drawChart() {\r\n\r\n            // Create the data table.\r\n            var data = new google.visualization.DataTable();\r\n            data.addColumn('string', 'Brand');\r\n            data.addColumn('number', 'Products');\r\n            data.addRows([[${brandsChart}]]);\r\n\r\n            // Set chart options\r\n            var options = {\r\n                'title': 'Products per brand',\r\n                'width': 400,\r\n                'height': 300\r\n            };\r\n\r\n            // Instantiate and draw our chart, passing in some options.\r\n            var chart = new google.visualization.PieChart(document.getElementById('brands_chart'));\r\n            chart.draw(data, options);\r\n        }\r\n    </script>\r\n\r\n    <script type=\"text/javascript\" src=\"https://www.gstatic.com/charts/loader.js\"></script>\r\n    <script type=\"text/javascript\">\r\n        google.charts.load('current', {'packages':['timeline']});\r\n        google.charts.setOnLoadCallback(drawChart);\r\n        function drawChart() {\r\n            var container = document.getElementById('timeline2');\r\n            var chart = new google.visualization.Timeline(container);\r\n            var dataTable = new google.visualization.DataTable();\r\n\r\n            dataTable.addColumn({ type: 'string', id: 'President' });\r\n            dataTable.addColumn({ type: 'date', id: 'Start' });\r\n            dataTable.addColumn({ type: 'date', id: 'End' });\r\n            dataTable.addRows([\r\n                [ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],\r\n                [ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],\r\n                [ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]]);\r\n\r\n            console.log(dataTable)\r\n            chart.draw(dataTable);\r\n        }\r\n    </script>\r\n\r\n\r\n    <script type=\"text/javascript\" th:inline=\"javascript\">\r\n        google.charts.load('current', {'packages': ['timeline']});\r\n        google.charts.setOnLoadCallback(drawChart);\r\n\r\n        function drawChart() {\r\n            var container = document.getElementById('timeline');\r\n            var chart = new google.visualization.Timeline(container);\r\n            var dataTable = new google.visualization.DataTable();\r\n\r\n            dataTable.addColumn({type: 'string', id: 'President'});\r\n            dataTable.addColumn({type: 'date', id: 'Start'});\r\n            dataTable.addColumn({type: 'date', id: 'End'});\r\n            dataTable.addRows([[${eventsChart}]]);\r\n\r\n            //console.log(dataTable)\r\n\r\n            let eventsList = [[${eventsChart}]];\r\n            console.log(eventsList);\r\n\r\n            for (let i = 0; i < eventsList.length; i++) {\r\n                let name = eventsList[i]\r\n                console.log(name);\r\n            }\r\n\r\n\r\n            chart.draw(dataTable);\r\n        }\r\n    </script>\r\n</head>\r\n<body>\r\n<div class=\"container emp-profile\">\r\n    <form method=\"post\">\r\n        <div class=\"row\">\r\n            <div class=\"col-md-4\">\r\n                <div class=\"profile-img\">\r\n                    <img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog\"\r\n                         alt=\"\"/>\r\n                    <div class=\"file btn btn-lg btn-primary\">\r\n                        Change Photo\r\n                        <input type=\"file\" name=\"file\"/>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-6\">\r\n                <div class=\"profile-head\">\r\n                    <h5>\r\n                        Kshiti Ghelani\r\n                    </h5>\r\n                </div>\r\n            </div>\r\n            <div class=\"col-md-2\">\r\n                <input type=\"submit\" class=\"profile-edit-btn\" name=\"btnAddMore\" value=\"Edit Profile\"/>\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div class=\"col-md-4\">\r\n                <div class=\"profile-work\">\r\n                    <a href=\"/events?interest=INTERESTED\">Your upcoming events</a>\r\n                    <ul>\r\n                        <li th:each=\"event : ${events}\" th:text=\"${event.eventName}\"></li>\r\n                    </ul>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </form>\r\n    <!--    <div id=\"chart_div\"></div>-->\r\n    <div id=\"timeline\"></div>\r\n    <div id=\"timeline2\"></div>\r\n    <div id=\"brands_chart\"></div>\r\n</div>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/user-profile.html b/src/main/resources/templates/user-profile.html
+--- a/src/main/resources/templates/user-profile.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/user-profile.html	(date 1650475138633)
+@@ -3,123 +3,6 @@
+ <head>
+     <meta charset="UTF-8">
+     <title>Title</title>
+-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+-
+-    <script type="text/javascript" th:inline="javascript">
+-
+-        // Load the Visualization API and the corechart package.
+-        google.charts.load('current', {'packages': ['corechart']});
+-
+-        // Set a callback to run when the Google Visualization API is loaded.
+-        google.charts.setOnLoadCallback(drawChart);
+-
+-        // Callback that creates and populates a data table,
+-        // instantiates the pie chart, passes in the data and
+-        // draws it.
+-        function drawChart() {
+-
+-            // Create the data table.
+-            var data = new google.visualization.DataTable();
+-            data.addColumn('string', 'Category');
+-            data.addColumn('number', 'Products');
+-            data.addRows([[${categoriesChart}]]);
+-
+-            // Set chart options
+-            var options = {
+-                'title': 'Products per category',
+-                'width': 400,
+-                'height': 300
+-            };
+-
+-            // Instantiate and draw our chart, passing in some options.
+-            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+-            chart.draw(data, options);
+-        }
+-    </script>
+-
+-    <script type="text/javascript" th:inline="javascript">
+-
+-        // Load the Visualization API and the corechart package.
+-        google.charts.load('current', {'packages': ['corechart']});
+-
+-        // Set a callback to run when the Google Visualization API is loaded.
+-        google.charts.setOnLoadCallback(drawChart);
+-
+-        // Callback that creates and populates a data table,
+-        // instantiates the pie chart, passes in the data and
+-        // draws it.
+-        function drawChart() {
+-
+-            // Create the data table.
+-            var data = new google.visualization.DataTable();
+-            data.addColumn('string', 'Brand');
+-            data.addColumn('number', 'Products');
+-            data.addRows([[${brandsChart}]]);
+-
+-            // Set chart options
+-            var options = {
+-                'title': 'Products per brand',
+-                'width': 400,
+-                'height': 300
+-            };
+-
+-            // Instantiate and draw our chart, passing in some options.
+-            var chart = new google.visualization.PieChart(document.getElementById('brands_chart'));
+-            chart.draw(data, options);
+-        }
+-    </script>
+-
+-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+-    <script type="text/javascript">
+-        google.charts.load('current', {'packages':['timeline']});
+-        google.charts.setOnLoadCallback(drawChart);
+-        function drawChart() {
+-            var container = document.getElementById('timeline2');
+-            var chart = new google.visualization.Timeline(container);
+-            var dataTable = new google.visualization.DataTable();
+-
+-            dataTable.addColumn({ type: 'string', id: 'President' });
+-            dataTable.addColumn({ type: 'date', id: 'Start' });
+-            dataTable.addColumn({ type: 'date', id: 'End' });
+-            dataTable.addRows([
+-                [ 'Washington', new Date(1789, 3, 30), new Date(1797, 2, 4) ],
+-                [ 'Adams',      new Date(1797, 2, 4),  new Date(1801, 2, 4) ],
+-                [ 'Jefferson',  new Date(1801, 2, 4),  new Date(1809, 2, 4) ]]);
+-
+-            console.log(dataTable)
+-            chart.draw(dataTable);
+-        }
+-    </script>
+-
+-
+-    <script type="text/javascript" th:inline="javascript">
+-        google.charts.load('current', {'packages': ['timeline']});
+-        google.charts.setOnLoadCallback(drawChart);
+-
+-        function drawChart() {
+-            var container = document.getElementById('timeline');
+-            var chart = new google.visualization.Timeline(container);
+-            var dataTable = new google.visualization.DataTable();
+-
+-            dataTable.addColumn({type: 'string', id: 'President'});
+-            dataTable.addColumn({type: 'date', id: 'Start'});
+-            dataTable.addColumn({type: 'date', id: 'End'});
+-            dataTable.addRows([[${eventsChart}]]);
+-
+-            //console.log(dataTable)
+-
+-            let eventsList = [[${eventsChart}]];
+-            console.log(eventsList);
+-
+-            for (let i = 0; i < eventsList.length; i++) {
+-                let name = eventsList[i]
+-                console.log(name);
+-            }
+-
+-
+-            chart.draw(dataTable);
+-        }
+-    </script>
+ </head>
+ <body>
+ <div class="container emp-profile">
+@@ -157,10 +40,38 @@
+             </div>
+         </div>
+     </form>
+-    <!--    <div id="chart_div"></div>-->
+-    <div id="timeline"></div>
+-    <div id="timeline2"></div>
+-    <div id="brands_chart"></div>
++    <div class="justify-content-center">
++        <table class="table table-striped">
++            <thead>
++            <tr>
++                <th>
++                    Order id
++                </th>
++                <th>
++                    Purchase date
++                </th>
++                <th>
++                    Shipping
++                </th>
++                <th>
++                    Total price
++                </th>
++            </tr>
++            </thead>
++            <tbody>
++            <tr th:each="order: ${orders}">
++                <td th:text="${order.id}"></td>
++                <td th:text="${#temporals.format(order.purchaseDate, 'dd-MM-yyyy')}"></td>
++                <td th:text="${order.shipping}"></td>
++                <td th:text="${order.totalPrice}"></td>
++            </tr>
++            </tbody>
++        </table>
++    </div>
+ </div>
+ </body>
+-</html>
+\ No newline at end of file
++</html>
++
++
++
++
+Index: src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java b/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java
+new file mode 100644
+--- /dev/null	(date 1650473612289)
++++ b/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java	(date 1650473612289)
+@@ -0,0 +1,98 @@
++package mk.ukim.finki.wp.web;
++
++import mk.ukim.finki.wp.model.Brand;
++import mk.ukim.finki.wp.model.Event;
++import mk.ukim.finki.wp.model.User;
++import mk.ukim.finki.wp.repository.UserRepository;
++import mk.ukim.finki.wp.service.*;
++import org.springframework.security.access.prepost.PreAuthorize;
++import org.springframework.stereotype.Controller;
++import org.springframework.ui.Model;
++import org.springframework.web.bind.annotation.GetMapping;
++import org.springframework.web.bind.annotation.RequestMapping;
++
++import javax.servlet.http.HttpServletRequest;
++import java.util.*;
++
++@Controller
++@RequestMapping("/admin/profile")
++public class AdminProfileController {
++
++    private final UserService userService;
++    private final UserRepository userRepository;
++    private final ProductService productService;
++    private final BrandService brandService;
++    private final OrderService orderService;
++    private final EventService eventService;
++
++    public AdminProfileController(UserService userService,
++                                  UserRepository userRepository, ProductService productService, BrandService brandService, OrderService orderService, EventService eventService) {
++        this.userService = userService;
++        this.userRepository = userRepository;
++        this.productService = productService;
++        this.brandService = brandService;
++        this.orderService = orderService;
++        this.eventService = eventService;
++    }
++
++    @GetMapping
++    public String getUserProfilePage(Model model, HttpServletRequest request) {
++        String email = request.getRemoteUser();
++        User user = this.userRepository.findByEmail(email);
++//        List<Event> events = this.userService.listAllEventsInInterested(user.getId());
++        List<Event> events = this.eventService.listAll();
++        model.addAttribute("events", events);
++        model.addAttribute("categoriesChart", getCategoriesChart());
++        model.addAttribute("brandsChart", getBrandChart());
++        model.addAttribute("eventsChart", getEventChartData(events));
++        model.addAttribute("profitChart", getProfitChartData());
++        model.addAttribute("bodyContent", "admin-profile");
++        return "master-template";
++    }
++
++    private List<List<Object>> getCategoriesChart() {
++        return List.of(
++                List.of("Makeup", this.productService.listAllProductsByCategoryName("Makeup").size()),
++                List.of("Hair care", this.productService.listAllProductsByCategoryName("Hair care").size()),
++                List.of("Skin care", this.productService.listAllProductsByCategoryName("Skin care").size()),
++                List.of("Body care", this.productService.listAllProductsByCategoryName("Body care").size()),
++                List.of("Nails", this.productService.listAllProductsByCategoryName("Nails").size()),
++                List.of("Perfume", this.productService.listAllProductsByCategoryName("Perfume").size())
++        );
++    }
++
++    private List<List<Object>> getBrandChart() {
++        List<Brand> brands = this.brandService.listAll();
++        List result = new LinkedList();
++        for (int i = 0; i < brands.size(); i++) {
++            String brandName = brands.get(i).getName();
++            List<Object> brand = List.of(brandName, this.productService.listAllProductsByBrandName(brandName).size());
++            result.add(brand);
++        }
++        return result;
++    }
++
++    private List<List<Object>> getEventChartData(List<Event> events) {
++        List result = new LinkedList();
++
++        for (int i = 0; i < events.size(); i++) {
++            String eventName = events.get(i).getEventName();
++            int startMonth = events.get(i).getStartDate().getMonthValue();
++            int endMonth = events.get(i).getEndDate().getMonthValue();
++            List<Object> event = List.of(eventName, startMonth, endMonth);
++            result.add(event);
++        }
++
++        return result;
++    }
++
++    private List<List<Object>> getProfitChartData() {
++        List result = new LinkedList();
++        for (int i = 1; i <= 12; i++) {
++            List<Object> perMonth = List.of(i, this.orderService.sales(i),
++                    this.orderService.expenses(i), this.orderService.profit(i));
++            result.add(perMonth);
++        }
++        return result;
++    }
++}
+\ No newline at end of file
+Index: src/main/java/mk/ukim/finki/wp/service/OrderService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mk.ukim.finki.wp.service;\r\n\r\nimport mk.ukim.finki.wp.model.Order;\r\nimport mk.ukim.finki.wp.model.enumerations.PaymentMethods;\r\n\r\npublic interface OrderService {\r\n    Order purchase(Long cartId, String address, String phone, PaymentMethods paymentMethods);\r\n    Double shippingCalculation(Long cartId);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/service/OrderService.java b/src/main/java/mk/ukim/finki/wp/service/OrderService.java
+--- a/src/main/java/mk/ukim/finki/wp/service/OrderService.java	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/java/mk/ukim/finki/wp/service/OrderService.java	(date 1650473612223)
+@@ -3,7 +3,18 @@
+ import mk.ukim.finki.wp.model.Order;
+ import mk.ukim.finki.wp.model.enumerations.PaymentMethods;
+ 
++import java.util.List;
++
+ public interface OrderService {
+     Order purchase(Long cartId, String address, String phone, PaymentMethods paymentMethods);
++
+     Double shippingCalculation(Long cartId);
++
++    Double sales(int month);
++
++    Double expenses(int month);
++
++    Double profit(int month);
++
++    List<Order> listAllOrdersByUser(Long userId);
+ }
+Index: src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mk.ukim.finki.wp.service.impl;\r\n\r\nimport mk.ukim.finki.wp.model.Order;\r\nimport mk.ukim.finki.wp.model.Product;\r\nimport mk.ukim.finki.wp.model.ShoppingCart;\r\nimport mk.ukim.finki.wp.model.User;\r\nimport mk.ukim.finki.wp.model.enumerations.PaymentMethods;\r\nimport mk.ukim.finki.wp.model.enumerations.ShoppingCartStatus;\r\nimport mk.ukim.finki.wp.repository.OrderRepository;\r\nimport mk.ukim.finki.wp.repository.ProductRepository;\r\nimport mk.ukim.finki.wp.repository.ShoppingCartRepository;\r\nimport mk.ukim.finki.wp.service.OrderService;\r\nimport mk.ukim.finki.wp.service.ShoppingCartService;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.util.List;\r\n\r\n@Service\r\npublic class OrderServiceImpl implements OrderService {\r\n\r\n    private final ShoppingCartService shoppingCartService;\r\n    private final ShoppingCartRepository shoppingCartRepository;\r\n    private final ProductRepository productRepository;\r\n    private final OrderRepository orderRepository;\r\n\r\n    public OrderServiceImpl(ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderRepository orderRepository) {\r\n        this.shoppingCartService = shoppingCartService;\r\n        this.shoppingCartRepository = shoppingCartRepository;\r\n        this.productRepository = productRepository;\r\n        this.orderRepository = orderRepository;\r\n    }\r\n\r\n    @Override\r\n    public Order purchase(Long cartId, String address, String phone, PaymentMethods paymentMethods) {\r\n        List<Product> products = this.shoppingCartService.listAllProductsInShoppingCart(cartId);\r\n\r\n        User user = this.shoppingCartService.findById(cartId).getUser();\r\n        ShoppingCart shoppingCart = this.shoppingCartService.getActiveShoppingCart(user.getId());\r\n        Double subtotal = this.shoppingCartService.totalPrice(user.getId());\r\n\r\n        for (int i = 0; i < products.size(); i++) {\r\n            Product p = this.productRepository.findById(products.get(i).getId()).get();\r\n            int q = p.getQuantity() - 1;\r\n            p.setQuantity(q);\r\n            this.productRepository.save(p);\r\n        }\r\n\r\n        Double shipping = this.shippingCalculation(cartId);\r\n        Double totalPrice = shipping + subtotal;\r\n\r\n        shoppingCart.getProducts().clear();\r\n        shoppingCart.setStatus(ShoppingCartStatus.FINISHED);\r\n        this.shoppingCartRepository.save(shoppingCart);\r\n\r\n        return this.orderRepository.save(new Order(shoppingCart, address, phone, shipping, totalPrice, paymentMethods));\r\n    }\r\n\r\n    @Override\r\n    public Double shippingCalculation(Long cartId) {\r\n        User user = this.shoppingCartService.findById(cartId).getUser();\r\n        Double total = this.shoppingCartService.totalPrice(user.getId());\r\n\r\n        if (total < 15.0) {\r\n            return 3.99;\r\n        } else if (total >= 15.0 && total < 50.0) {\r\n            return 2.99;\r\n        } else if (total >= 50.0 && total < 100.0) {\r\n            return 1.99;\r\n        } else {\r\n            return 0.0;\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java b/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java
+--- a/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java	(date 1650474541593)
+@@ -9,10 +9,13 @@
+ import mk.ukim.finki.wp.repository.OrderRepository;
+ import mk.ukim.finki.wp.repository.ProductRepository;
+ import mk.ukim.finki.wp.repository.ShoppingCartRepository;
++import mk.ukim.finki.wp.repository.UserRepository;
+ import mk.ukim.finki.wp.service.OrderService;
+ import mk.ukim.finki.wp.service.ShoppingCartService;
+ import org.springframework.stereotype.Service;
+ 
++import java.util.ArrayList;
++import java.util.LinkedList;
+ import java.util.List;
+ 
+ @Service
+@@ -22,12 +25,14 @@
+     private final ShoppingCartRepository shoppingCartRepository;
+     private final ProductRepository productRepository;
+     private final OrderRepository orderRepository;
++    private final UserRepository userRepository;
+ 
+-    public OrderServiceImpl(ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderRepository orderRepository) {
++    public OrderServiceImpl(ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository, ProductRepository productRepository, OrderRepository orderRepository, UserRepository userRepository) {
+         this.shoppingCartService = shoppingCartService;
+         this.shoppingCartRepository = shoppingCartRepository;
+         this.productRepository = productRepository;
+         this.orderRepository = orderRepository;
++        this.userRepository = userRepository;
+     }
+ 
+     @Override
+@@ -70,4 +75,52 @@
+             return 0.0;
+         }
+     }
++
++    @Override
++    public Double sales(int month) {
++        List<Order> orders = this.orderRepository.findAll();
++        Double sales = 0.0;
++
++        for (int i = 0; i < orders.size(); i++) {
++            if (orders.get(i).getPurchaseDate().getMonthValue() == month) {
++                Double s = orders.get(i).getTotalPrice();
++                sales += s;
++            }
++        }
++
++        return sales;
++    }
++
++    @Override
++    public Double expenses(int month) {
++        Double sales = this.sales(month);
++        Double expenses = sales * 0.4;
++        return expenses;
++    }
++
++    @Override
++    public Double profit(int month) {
++        Double sales = this.sales(month);
++        Double expenses = this.expenses(month);
++        Double profit = sales - expenses;
++        return profit;
++    }
++
++    @Override
++    public List<Order> listAllOrdersByUser(Long userId) {
++        User user = this.userRepository.findById(userId).get();
++        List<ShoppingCart> carts = this.shoppingCartRepository.findAllByUser(user);
++        List<Order> allOrders = this.orderRepository.findAll();
++        List<Order> result = new LinkedList<>();
++        for (int i = 0; i < carts.size(); i++) {
++            ShoppingCart cart = carts.get(i);
++            for (int j = 0; j < allOrders.size(); j++) {
++                Order order = allOrders.get(j);
++                if (cart.getId().equals(order.getShoppingCart().getId())) {
++                    result.add(order);
++                }
++            }
++        }
++        return result;
++    }
+ }
+Index: src/main/resources/static/css/comments.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.user-comments{\r\n    box-shadow: 0 0 30px -20px rgba(0, 0, 0, 0.41);\r\n    /*background-color: white;*/\r\n    /*border: 1px solid rgba(128, 128, 128, 0.31);*/\r\n    /*border-radius: 0;*/\r\n}\r\n\r\n.comments-info{\r\n    border-bottom: 1px solid rgba(128, 128, 128, 0.31);\r\n}\r\n\r\n.comment-card-title{\r\n    font-weight: bold;\r\n}\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/static/css/comments.css b/src/main/resources/static/css/comments.css
+--- a/src/main/resources/static/css/comments.css	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/static/css/comments.css	(date 1650380018790)
+@@ -1,8 +1,5 @@
+ .user-comments{
+     box-shadow: 0 0 30px -20px rgba(0, 0, 0, 0.41);
+-    /*background-color: white;*/
+-    /*border: 1px solid rgba(128, 128, 128, 0.31);*/
+-    /*border-radius: 0;*/
+ }
+ 
+ .comments-info{
+Index: src/main/resources/static/css/events.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.grey-block {\r\n    background-color: #dadde6;\r\n    padding: 1%;\r\n}\r\n.card-events {\r\n    display: table-row;\r\n    background-color: #fff;\r\n    color: #989898;\r\n    margin-bottom: 10px;\r\n    text-transform: uppercase;\r\n    border-radius: 4px;\r\n    position: relative\r\n}\r\n\r\n.date {\r\n    display: table-cell;\r\n    width: 25%;\r\n    position: relative;\r\n    text-align: center;\r\n    border-right: 2px dashed #dadde6\r\n}\r\n\r\n.date:before,\r\n.date:after {\r\n    content: \"\";\r\n    display: block;\r\n    width: 30px;\r\n    height: 30px;\r\n    background-color: #DADDE6;\r\n    position: absolute;\r\n    top: -15px;\r\n    right: -15px;\r\n    z-index: 1;\r\n    border-radius: 50%\r\n}\r\n\r\n.date:after {\r\n    top: auto;\r\n    bottom: -15px\r\n}\r\n\r\n.date time {\r\n    display: block;\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    -webkit-transform: translate(-50%, -50%);\r\n    -ms-transform: translate(-50%, -50%);\r\n    transform: translate(-50%, -50%)\r\n}\r\n\r\n.date time span {\r\n    display: block\r\n}\r\n\r\n.date time span:first-child {\r\n    color: #2b2b2b;\r\n    font-weight: 600;\r\n    font-size: 250%\r\n}\r\n\r\n.date time span:last-child {\r\n    text-transform: uppercase;\r\n    font-weight: 600;\r\n    margin-top: -10px\r\n}\r\n\r\n.card-cont {\r\n    display: table-cell;\r\n    width: 100%;\r\n    font-size: 85%;\r\n    padding: 10px 10px 30px 50px\r\n}\r\n\r\n.card-cont h3 {\r\n    color: #3C3C3C;\r\n    font-size: 130%\r\n}\r\n\r\n.card-cont>div {\r\n    display: table-row\r\n}\r\n\r\n.card-cont .even-date i,\r\n.card-cont .even-info i,\r\n.card-cont .even-date time,\r\n.card-cont .even-info p {\r\n    display: table-cell\r\n}\r\n\r\n.card-cont .even-date i,\r\n.card-cont .even-info i {\r\n    padding: 5% 5% 0 0\r\n}\r\n\r\n.card-cont .even-info p {\r\n    padding: 30px 50px 0 0\r\n}\r\n\r\n.card-cont .even-date time span {\r\n    display: block\r\n}\r\n\r\n@media screen and (max-width: 860px) {\r\n    .card-events {\r\n        display: block;\r\n        float: none;\r\n        width: 100%;\r\n        margin-bottom: 10px\r\n    }\r\n    .card-cont .even-date,\r\n    .card-cont .even-info {\r\n        font-size: 75%\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/static/css/events.css b/src/main/resources/static/css/events.css
+--- a/src/main/resources/static/css/events.css	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/static/css/events.css	(date 1650380862210)
+@@ -1,15 +1,30 @@
++.header-events{
++    font-size: 70px;
++    color: #343434;
++    border-bottom: 3px solid #343434;
++    width: max-content;
++}
+ .grey-block {
+     background-color: #dadde6;
+-    padding: 1%;
++    margin-top: 2rem;
++    padding-top: 2.5rem;
+ }
+ .card-events {
+     display: table-row;
+-    background-color: #fff;
+-    color: #989898;
+-    margin-bottom: 10px;
++    background: #343434;
++    color: #ffffff;
+     text-transform: uppercase;
+-    border-radius: 4px;
+-    position: relative
++    border-radius: 15px;
++    position: relative;
++    box-shadow: 6px 7px 0px rgba(183, 183, 183, 0.66);
++}
++
++.event-name{
++    background: white;
++    padding: 1rem;
++    font-weight: bolder;
++    color: #343434;
++    text-align: center;
+ }
+ 
+ .date {
+@@ -17,7 +32,7 @@
+     width: 25%;
+     position: relative;
+     text-align: center;
+-    border-right: 2px dashed #dadde6
++    border-right: 2px dashed #dadde6;
+ }
+ 
+ .date:before,
+@@ -69,7 +84,7 @@
+     display: table-cell;
+     width: 100%;
+     font-size: 85%;
+-    padding: 10px 10px 30px 50px
++    padding: 25px 15px 20px 50px;
+ }
+ 
+ .card-cont h3 {
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n\txsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n\t<modelVersion>4.0.0</modelVersion>\r\n\t<parent>\r\n\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t<artifactId>spring-boot-starter-parent</artifactId>\r\n\t\t<version>2.3.0.RELEASE</version>\r\n\t\t<relativePath /> <!-- lookup parent from repository -->\r\n\t</parent>\r\n\t<groupId>mk.ukim.finki.wp</groupId>\r\n\t<artifactId>WP-App-Cosmetics-EShop</artifactId>\r\n\t<version>0.0.1-SNAPSHOT</version>\r\n\t<name>Wp-App-Cosmetics-EShop</name>\r\n\r\n\t<properties>\r\n\t\t<java.version>1.8</java.version>\r\n\t</properties>\r\n\r\n\t<dependencies>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-data-jpa</artifactId>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-security</artifactId>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-thymeleaf</artifactId>\r\n\t\t</dependency>\r\n\t\t\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.thymeleaf.extras</groupId>\r\n\t\t\t<artifactId>thymeleaf-extras-springsecurity5</artifactId>\r\n\t\t</dependency>\r\n\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-web</artifactId>\r\n\t\t</dependency>\r\n\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.projectlombok</groupId>\r\n\t\t\t<artifactId>lombok</artifactId>\r\n\t\t\t<optional>true</optional>\r\n\t\t</dependency>\r\n\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-devtools</artifactId>\r\n\t\t\t<scope>runtime</scope>\r\n\t\t\t<optional>true</optional>\r\n\t\t</dependency>\r\n\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.postgresql</groupId>\r\n\t\t\t<artifactId>postgresql</artifactId>\r\n\t\t</dependency>\r\n\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t<artifactId>spring-boot-starter-test</artifactId>\r\n\t\t\t<scope>test</scope>\r\n\t\t\t<exclusions>\r\n\t\t\t\t<exclusion>\r\n\t\t\t\t\t<groupId>org.junit.vintage</groupId>\r\n\t\t\t\t\t<artifactId>junit-vintage-engine</artifactId>\r\n\t\t\t\t</exclusion>\r\n\t\t\t</exclusions>\r\n\t\t</dependency>\r\n\t\t<dependency>\r\n\t\t\t<groupId>org.springframework.security</groupId>\r\n\t\t\t<artifactId>spring-security-test</artifactId>\r\n\t\t\t<scope>test</scope>\r\n\t\t</dependency>\r\n\t</dependencies>\r\n\r\n\t<build>\r\n\t\t<plugins>\r\n\t\t\t<plugin>\r\n\t\t\t\t<groupId>org.springframework.boot</groupId>\r\n\t\t\t\t<artifactId>spring-boot-maven-plugin</artifactId>\r\n\t\t\t</plugin>\r\n\t\t\t<plugin>\r\n\t\t\t\t<groupId>org.apache.maven.plugins</groupId>\r\n\t\t\t\t<artifactId>maven-compiler-plugin</artifactId>\r\n\t\t\t\t<configuration>\r\n\t\t\t\t\t<source>9</source>\r\n\t\t\t\t\t<target>9</target>\r\n\t\t\t\t</configuration>\r\n\t\t\t</plugin>\r\n\t\t</plugins>\r\n\t</build>\r\n\r\n</project>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/pom.xml	(date 1650479078279)
+@@ -19,6 +19,14 @@
+ 	</properties>
+ 
+ 	<dependencies>
++
++
++		<dependency>
++			<groupId>org.springframework.boot</groupId>
++			<artifactId>spring-boot-configuration-processor</artifactId>
++			<optional>true</optional>
++		</dependency>
++
+ 		<dependency>
+ 			<groupId>org.springframework.boot</groupId>
+ 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+Index: src/main/resources/templates/shopping-cart.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"container pb-5 mt-n2 mt-md-n3\">\r\n    <div class=\"row\">\r\n        <div class=\"col-xl-9 col-md-8\">\r\n            <h2 class=\"h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-pink\">\r\n                <span>Products</span><a\r\n                    class=\"font-size-sm\" href=/products>\r\n                <i class=\"fas fa-angle-left\"></i>\r\n                Continue shopping</a></h2>\r\n            <!-- Item-->\r\n            <div th:each=\"product: ${products}\" class=\"d-sm-flex justify-content-between my-4 border-b\">\r\n                <div class=\"media d-block d-sm-flex text-center text-sm-left mb-3\">\r\n                    <img th:src=\"${product.image}\" width=\"200\" height=\"200\" alt=\"\"/>\r\n                    <div class=\"media-body pt-3\">\r\n                        <h5 th:text=\"${product.name}\"\r\n                            class=\"product-card-title font-weight-semibold border-0 pb-0\"></h5>\r\n                        <div th:text=\"'Category: ' + ${product.category.name}\"\r\n                             class=\"font-size-sm text-muted mr-2\"></div>\r\n                        <div th:text=\"'Brand: ' + ${product.brand.name}\" class=\"font-size-sm text-muted mr-2\"></div>\r\n                        <h6 th:text=\"'$' +${product.price}\" class=\"font-size-lg text-success pt-2\"></h6>\r\n                    </div>\r\n                </div>\r\n\r\n\r\n                <div class=\"pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left\" style=\"max-width: 10rem;\">\r\n                    <form th:action=\"@{'/shopping-cart/edit-cart/{productId}' (productId=${product.id})}\">\r\n                        <div class=\"form-group mb-2\">\r\n                            <label for=\"newQuantity\">Quantity</label>\r\n                            <input class=\"form-control form-control-sm\"\r\n                                   type=\"number\"\r\n                                   id=\"newQuantity\"\r\n                                   name=\"newQuantity\"\r\n                                   th:each=\"p : ${productQuantity}\"\r\n                                   th:if=\"${#lists.contains(p, product)}\"\r\n                                   th:value=\"${p[1]}\">\r\n                        </div>\r\n                        <div>\r\n                            <button class=\"btn btn-outline-secondary btn-sm btn-block mb-2\"\r\n                                    type=\"submit\">\r\n                                Update cart\r\n                            </button>\r\n                        </div>\r\n                    </form>\r\n                    <div>\r\n                        <form th:method=\"POST\" th:action=\"@{'/shopping-cart/remove-product/{id}' (id=${product.id})}\">\r\n                            <button class=\"btn btn-outline-danger btn-sm btn-block mb-2\" type=\"submit\">\r\n                                Remove\r\n                            </button>\r\n                        </form>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <a href=\"/order\" class=\"add-item btn btn-block btn-secondary\">\r\n                Proceed to checkout\r\n            </a>\r\n        </div>\r\n        <!-- Sidebar-->\r\n        <div class=\"col-xl-3 col-md-4 pt-3 pt-md-0\">\r\n            <h2 class=\"h6 px-4 py-3 bg-pink text-center\">Subtotal</h2>\r\n            <div th:text=\"'$' + ${total}\" class=\"h3 font-weight-semibold text-center py-3 border-b\"></div>\r\n        </div>\r\n    </div>\r\n</div>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/shopping-cart.html b/src/main/resources/templates/shopping-cart.html
+--- a/src/main/resources/templates/shopping-cart.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/shopping-cart.html	(date 1650379301958)
+@@ -1,11 +1,13 @@
+-<div class="container pb-5 mt-n2 mt-md-n3">
++<div class="container my-5">
+     <div class="row">
+         <div class="col-xl-9 col-md-8">
+             <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-pink">
+-                <span>Products</span><a
+-                    class="font-size-sm" href=/products>
+-                <i class="fas fa-angle-left"></i>
+-                Continue shopping</a></h2>
++                <span>Products</span>
++                <a class="font-size-sm text-secondary" href=/products>
++                    <i class="fas fa-angle-left"></i>
++                    Continue shopping
++                </a>
++            </h2>
+             <!-- Item-->
+             <div th:each="product: ${products}" class="d-sm-flex justify-content-between my-4 border-b">
+                 <div class="media d-block d-sm-flex text-center text-sm-left mb-3">
+@@ -21,7 +23,7 @@
+                 </div>
+ 
+ 
+-                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
++                <div class="mr-5 mt-3 text-center text-sm-left" style="max-width: 10rem;">
+                     <form th:action="@{'/shopping-cart/edit-cart/{productId}' (productId=${product.id})}">
+                         <div class="form-group mb-2">
+                             <label for="newQuantity">Quantity</label>
+@@ -49,9 +51,14 @@
+                     </div>
+                 </div>
+             </div>
+-            <a href="/order" class="add-item btn btn-block btn-secondary">
+-                Proceed to checkout
+-            </a>
++            <div th:if="${products.size() == 0}" class="alert alert-info" role="alert">
++                Your shopping cart is empty!
++            </div>
++            <div th:if="${products.size() > 0}">
++                <a href="/order" class="add-item btn btn-block btn-secondary">
++                    Proceed to checkout
++                </a>
++            </div>
+         </div>
+         <!-- Sidebar-->
+         <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
+Index: src/main/resources/templates/review-form.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"form-bg\">\r\n    <div class=\"container\">\r\n        <div class=\"form-container\">\r\n            <div class=\"right-content\">\r\n                <h3 class=\"form-title\">Review</h3>\r\n                <form th:method=\"POST\"\r\n                      th:action=\"@{'/reviews/{id}/add-review/{reviewId}' (id=${product?.id}, reviewId=${review?.id})}\"\r\n                      class=\"form-horizontal\">\r\n                    <div class=\"d-flex justify-content-start\">\r\n                        <fieldset class=\"rating\">\r\n                            <input required type=\"radio\" id=\"star5\" name=\"stars\" value=\"5\"/>\r\n                            <label class=\"full\" for=\"star5\" title=\"Awesome - 5 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star4half\" name=\"stars\" value=\"4.5\"/>\r\n                            <label class=\"half\" for=\"star4half\" title=\"Pretty good - 4.5 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star4\" name=\"stars\" value=\"4\"/>\r\n                            <label class=\"full\" for=\"star4\" title=\"Pretty good - 4 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star3half\" name=\"stars\" value=\"3.5\"/>\r\n                            <label class=\"half\" for=\"star3half\" title=\"Meh - 3.5 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star3\" name=\"stars\" value=\"3\"/>\r\n                            <label class=\"full\" for=\"star3\" title=\"Meh - 3 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star2half\" name=\"stars\" value=\"2.5\"/>\r\n                            <label class=\"half\" for=\"star2half\" title=\"Kinda bad - 2.5 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star2\" name=\"stars\" value=\"2\"/>\r\n                            <label class=\"full\" for=\"star2\" title=\"Kinda bad - 2 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star1half\" name=\"stars\" value=\"1.5\"/>\r\n                            <label class=\"half\" for=\"star1half\" title=\"Meh - 1.5 stars\"></label>\r\n                            <input required type=\"radio\" id=\"star1\" name=\"stars\" value=\"1\"/>\r\n                            <label class=\"full\" for=\"star1\" title=\"Sucks big time - 1 star\"></label>\r\n                            <input required type=\"radio\" id=\"starhalf\" name=\"stars\" value=\"0.5\"/>\r\n                            <label class=\"half\" for=\"starhalf\" title=\"Sucks big time - 0.5 stars\"></label>\r\n                        </fieldset>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Comment</label>\r\n                        <textarea rows=\"3\"\r\n                                  style=\"height:100%\"\r\n                                  class=\"form-control\"\r\n                                  name=\"comment\"\r\n                                  th:text=\"${review?.comment}\">\r\n                        </textarea>\r\n                    </div>\r\n                    <button class=\"btn submit\" type=\"submit\">Submit</button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/review-form.html b/src/main/resources/templates/review-form.html
+--- a/src/main/resources/templates/review-form.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/review-form.html	(date 1650380027694)
+@@ -1,5 +1,5 @@
+ <div class="form-bg">
+-    <div class="container">
++    <div class="container my-5">
+         <div class="form-container">
+             <div class="right-content">
+                 <h3 class="form-title">Review</h3>
+@@ -39,7 +39,7 @@
+                                   th:text="${review?.comment}">
+                         </textarea>
+                     </div>
+-                    <button class="btn submit" type="submit">Submit</button>
++                    <button class="btn btn-block btn-cart" type="submit">Submit</button>
+                 </form>
+             </div>
+         </div>
+Index: src/main/resources/templates/product-filtering-sidebar.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"accordion accordion-filter\" id=\"accordionExample\">\r\n    <div class=\"card card-filters\">\r\n        <div class=\"card-header card-header-filters\" id=\"headingOne\">\r\n            <h2 class=\"mb-0\">\r\n                <button class=\"btn btn-link btn-block text-left text-decoration-none\"\r\n                        type=\"button\"\r\n                        data-toggle=\"collapse\"\r\n                        data-target=\"#collapseOne\"\r\n                        aria-expanded=\"true\"\r\n                        aria-controls=\"collapseOne\">\r\n                    Categories\r\n                </button>\r\n            </h2>\r\n        </div>\r\n\r\n        <div id=\"collapseOne\"\r\n             class=\"collapse show\"\r\n             aria-labelledby=\"headingOne\"\r\n             data-parent=\"#accordionExample\">\r\n            <div class=\"card-body card-body-filters\">\r\n                <form id=\"filter-cat\"\r\n                      th:action=\"@{'/products/page/1?categoryId=' + ${categoryId}}\">\r\n                    <ul class=\"list-unstyled\">\r\n                        <li th:each=\"category: ${categories}\">\r\n                            <button class=\"btn btn-link text-decoration-none\"\r\n                                    id=\"categoryId\"\r\n                                    name=\"categoryId\"\r\n                                    type=\"submit\"\r\n                                    th:value=\"${category.id}\"\r\n                                    th:text=\"${category.name}\">\r\n                            </button>\r\n                        </li>\r\n                    </ul>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"card\">\r\n        <div class=\"card-header card-header-filters\" id=\"headingTwo\">\r\n            <h2 class=\"mb-0\">\r\n                <button class=\"btn btn-link btn-block text-left collapsed text-decoration-none\"\r\n                        type=\"button\"\r\n                        data-toggle=\"collapse\"\r\n                        data-target=\"#collapseTwo\"\r\n                        aria-expanded=\"false\"\r\n                        aria-controls=\"collapseTwo\">\r\n                    Brands\r\n                </button>\r\n            </h2>\r\n        </div>\r\n        <div id=\"collapseTwo\" class=\"collapse\" aria-labelledby=\"headingTwo\" data-parent=\"#accordionExample\">\r\n            <div class=\"card-body card-body-filters\">\r\n                <form id=\"filter-brand\" th:action=\"@{'/products/page/1?brandId=' + ${brandId}}\">\r\n                    <ul class=\"list-unstyled\">\r\n                        <li th:each=\"brand: ${brands}\">\r\n                            <button class=\"btn btn-link text-decoration-none\"\r\n                                    id=\"brandId\"\r\n                                    name=\"brandId\"\r\n                                    type=\"submit\"\r\n                                    th:value=\"${brand.id}\"\r\n                                    th:text=\"${brand.name}\">\r\n                            </button>\r\n                        </li>\r\n                    </ul>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <div class=\"card\">\r\n        <div class=\"card-header card-header-filters\" id=\"headingThree\">\r\n            <h2 class=\"mb-0\">\r\n                <button class=\"btn btn-link btn-block text-left collapsed text-decoration-none\" type=\"button\"\r\n                        data-toggle=\"collapse\"\r\n                        data-target=\"#collapseThree\" aria-expanded=\"false\" aria-controls=\"collapseThree\">\r\n                    Filter by price\r\n                </button>\r\n            </h2>\r\n        </div>\r\n        <div id=\"collapseThree\" class=\"collapse\" aria-labelledby=\"headingThree\" data-parent=\"#accordionExample\">\r\n            <div class=\"card-body\">\r\n                <form id=\"filter-price\"\r\n                      th:action=\"@{'/products/page/1?price1=' + ${price1} + '&price2=' + ${price2}}\">\r\n                    <p class=\"text-muted text-center text-sm\">Type your price range</p>\r\n                    <div class=\"row d-flex justify-content-center\">\r\n                        <input name=\"price1\"\r\n                               type=\"number\"\r\n                               th:value=\"${price1}\"\r\n                               class=\"form-control col-md-4 mr-4\"\r\n                               required>\r\n                        <p class=\"font-weight-bold\"> - </p>\r\n                        <input name=\"price2\"\r\n                               type=\"number\"\r\n                               th:value=\"${price2}\"\r\n                               class=\"form-control col-md-4 ml-4\"\r\n                               required>\r\n                    </div>\r\n                    <div class=\"mt-2\">\r\n                        <button class=\"btn btn-outline-dark btn-block mb-2\"\r\n                                type=\"submit\">\r\n                            Filter\r\n                        </button>\r\n                    </div>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"card card-filters\">\r\n        <div class=\"card-header card-header-filters\" id=\"headingFour\">\r\n            <h2 class=\"mb-0\">\r\n                <button class=\"btn btn-link btn-block text-left collapsed text-decoration-none\" type=\"button\"\r\n                        data-toggle=\"collapse\"\r\n                        data-target=\"#collapseFour\" aria-expanded=\"false\" aria-controls=\"collapseFour\">\r\n                    Sort\r\n                </button>\r\n            </h2>\r\n        </div>\r\n        <div id=\"collapseFour\" class=\"collapse\" aria-labelledby=\"headingFour\" data-parent=\"#accordionExample\">\r\n            <div class=\"card-body sort-filters\">\r\n                <div class=\"m-3\">\r\n                    <a class=\"text-decoration-none\"\r\n                       th:href=\"@{'/products/page/1?sortField=name&sortDir='+${reverseSortDir}}\">\r\n                        <i class=\"fas fa-sort\"></i> Name\r\n                    </a>\r\n                </div>\r\n                <div class=\"m-3\">\r\n                    <a class=\"text-decoration-none\"\r\n                       th:href=\"@{'/products/page/1?sortField=price&sortDir='+${reverseSortDir}}\">\r\n                        <i class=\"fas fa-sort\"></i> Price\r\n                    </a>\r\n                </div>\r\n                <div class=\"m-3\">\r\n                    <a class=\"text-decoration-none\"\r\n                       th:href=\"@{'/products/page/1?sortField=rating&sortDir='+${reverseSortDir}}\">\r\n                        <i class=\"fas fa-sort\"></i> Rating\r\n                    </a>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/product-filtering-sidebar.html b/src/main/resources/templates/product-filtering-sidebar.html
+--- a/src/main/resources/templates/product-filtering-sidebar.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/product-filtering-sidebar.html	(date 1650285800238)
+@@ -80,22 +80,23 @@
+             <div class="card-body">
+                 <form id="filter-price"
+                       th:action="@{'/products/page/1?price1=' + ${price1} + '&price2=' + ${price2}}">
+-                    <p class="text-muted text-center text-sm">Type your price range</p>
+-                    <div class="row d-flex justify-content-center">
++                    <p class="text-muted">Type your price range</p>
++                    <div class="row d-flex text-muted ml-n2">
++                        <p class="mt-2 ml-2 mr-1">From</p>
+                         <input name="price1"
+                                type="number"
+                                th:value="${price1}"
+-                               class="form-control col-md-4 mr-4"
++                               class="form-control col-4"
+                                required>
+-                        <p class="font-weight-bold"> - </p>
++                        <p class="mt-2 mx-1">to</p>
+                         <input name="price2"
+                                type="number"
+                                th:value="${price2}"
+-                               class="form-control col-md-4 ml-4"
++                               class="form-control col-4"
+                                required>
+                     </div>
+-                    <div class="mt-2">
+-                        <button class="btn btn-outline-dark btn-block mb-2"
++                    <div>
++                        <button class="btn btn-block btn-details"
+                                 type="submit">
+                             Filter
+                         </button>
+Index: src/main/resources/templates/products.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"mr-5 ml-5 pr-5 pl-5\">\r\n\r\n    <div class=\"row mt-5 mb-3\">\r\n        <div class=\"col-3\">\r\n            <form th:action=\"@{'/products'}\">\r\n                <button class=\"btn btn-link btn-block clear-filter text-decoration-none\" type=\"submit\" value=\"\">\r\n                    <i class=\"fas fa-times\"></i>\r\n                    Clear filters\r\n                </button>\r\n            </form>\r\n        </div>\r\n        <div class=\"col-9\">\r\n            <!--    Search-->\r\n            <form th:action=\"@{'/products/page/1?name=' + ${name}}\">\r\n                <div class=\"searchBar sb-products mb-3\">\r\n                    <input id=\"searchQueryInput\"\r\n                           type=\"text\"\r\n                           name=\"name\"\r\n                           placeholder=\"Search for a product\"\r\n                           value=\"\"/>\r\n                    <button id=\"searchQuerySubmit\"\r\n                            type=\"submit\">\r\n                        <i class=\"fas fa-search\"></i>\r\n                    </button>\r\n                </div>\r\n            </form>\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"row\">\r\n        <!--    Accordion-->\r\n        <div class=\"col-3\">\r\n            <th:block th:replace=\"product-filtering-sidebar.html\"></th:block>\r\n        </div>\r\n        <!--    Products-->\r\n        <div class=\"col-9\">\r\n\r\n            <div class=\"row ml-2\">\r\n                <div th:each=\"product: ${products}\" class=\"card-width mb-2\">\r\n                    <div class=\"card card-product\">\r\n                        <div class=\"card-body card-body-info bg-white text-center\">\r\n                            <div class=\"mb-3 card-img-actions text-center\">\r\n                                <img th:src=\"${product.image}\" width=\"150px\" height=\"150px\"/>\r\n                            </div>\r\n                            <div>\r\n                                <h6 th:text=\"${product.name}\" class=\"font-weight-semibold mb-2\"></h6>\r\n                                <p th:text=\"${product.category.name}\" class=\"text-muted\" data-abc=\"true\"></p>\r\n                            </div>\r\n                            <h2 th:text=\"'$' + ${product.price}\" class=\"mt-n2 font-weight-semibold\"></h2>\r\n\r\n                            <div class=\"mb-3 d-flex justify-content-center\">\r\n<!--                                rating-->\r\n                            </div>\r\n\r\n                            <div class=\"mt-2\">\r\n                                <form method=\"POST\" th:action=\"@{'/shopping-cart/add-product/{id}' (id=${product.id})}\">\r\n                                    <button type=\"submit\" class=\"mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2\">\r\n                                        Add to cart\r\n                                    </button>\r\n                                </form>\r\n                                <a class=\"btn btn-block btn-sm btn-details pt-2 pb-2\"\r\n                                   th:href=\"@{'/products/details/{id}' (id=${product.id})}\">\r\n                                    Details\r\n                                </a>\r\n                            </div>\r\n                        </div>\r\n\r\n                        <div class=\"card-footer card-footer-info d-flex justify-content-between\">\r\n                            <div class=\"row\">\r\n                                <form method=\"POST\" th:action=\"@{'/products/delete/{id}' (id=${product.id})}\">\r\n                                    <button type=\"submit\" class=\"btn btn-link text-danger\">\r\n                                        <i class=\"fas fa-trash-alt\"></i>\r\n                                    </button>\r\n                                </form>\r\n                                <a th:href=\"@{'/products/edit-form/{id}' (id=${product.id})}\"\r\n                                   class=\"btn btn-link\">\r\n                                    <i class=\"fas fa-pen\"></i>\r\n                                </a>\r\n                            </div>\r\n                            <div class=\"m-1 text-muted\"\r\n                                 th:if=\"${product.quantity > 0}\"\r\n                                 th:text=\"'In stock: '+ ' ' + ${product.quantity}\">\r\n                            </div>\r\n                            <div class=\"m-1 text-muted\"\r\n                                 th:if=\"${product.quantity == 0}\"\r\n                                 th:text=\"'Out of stock!'\">\r\n                            </div>\r\n                        </div>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n            <div class=\"mt-1 ml-2 mr-1\">\r\n                <a href=\"/products/add-form\" class=\"btn btn-block btn-link text-decoration-none button-style\">\r\n                    Add new product\r\n                </a>\r\n            </div>\r\n\r\n            <!--Pagination-->\r\n            <div class=\"mt-3 d-flex justify-content-center\">\r\n                <th:block th:replace=\"product-pagination.html\"></th:block>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/products.html b/src/main/resources/templates/products.html
+--- a/src/main/resources/templates/products.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/products.html	(date 1650478408436)
+@@ -11,7 +11,7 @@
+         </div>
+         <div class="col-9">
+             <!--    Search-->
+-            <form th:action="@{'/products/page/1?name=' + ${name}}">
++            <form th:action="@{'/products/page/1?name=' + ${name}}" autocomplete="off">
+                 <div class="searchBar sb-products mb-3">
+                     <input id="searchQueryInput"
+                            type="text"
+@@ -47,11 +47,16 @@
+                                 <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
+                             </div>
+                             <h2 th:text="'$' + ${product.price}" class="mt-n2 font-weight-semibold"></h2>
+-
+-                            <div class="mb-3 d-flex justify-content-center">
+-<!--                                rating-->
++                            <div class="progress">
++                                <div class="progress-bar bg-warning text-dark"
++                                     role="progressbar"
++                                     th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;'"
++                                     th:aria-valuenow="${product.rating}"
++                                     aria-valuemin="0"
++                                     aria-valuemax="100"
++                                     th:text="'Rating: ' + ${product.rating}">
++                                </div>
+                             </div>
+-
+                             <div class="mt-2">
+                                 <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
+                                     <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+Index: src/main/resources/static/css/login-register.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>body {\r\n    background-color: #FFF8F8;\r\n}\r\n\r\n.form-container {\r\n    background-color: #fff;\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 0;\r\n    box-shadow: 0 0 25px -15px rgba(0, 0, 0, 0.3);\r\n}\r\n\r\n.form-container .left-content {\r\n    background-color: #2E323B;\r\n    font-family: 'Oswald', sans-serif;\r\n    width: 40%;\r\n    padding: 66px 50px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n}\r\n\r\n.form-container .left-content .title {\r\n    color: #EAD4CC;\r\n    font-size: 20px;\r\n    font-weight: 300;\r\n    letter-spacing: 2px;\r\n    text-transform: uppercase;\r\n    margin: 0 0 55px;\r\n}\r\n\r\n.form-container .left-content .sub-title {\r\n    color: #fff;\r\n    font-size: 60px;\r\n    font-weight: 300;\r\n    text-transform: uppercase;\r\n    margin: 0;\r\n}\r\n\r\n.form-container .right-content {\r\n    text-align: center;\r\n    width: 60%;\r\n    padding: 30px 50px;\r\n    display: inline-block;\r\n}\r\n\r\n.form-container .right-content .form-title {\r\n    color: #888;\r\n    font-family: 'Oswald', sans-serif;\r\n    font-size: 40px;\r\n    font-weight: 400;\r\n    text-align: left;\r\n    text-transform: uppercase;\r\n    padding: 0 0 2px;\r\n    margin: 0 0 30px;\r\n    border-bottom: 2px solid #EAD4CC;\r\n}\r\n\r\n.form-container .right-content .form-horizontal {\r\n    color: #999;\r\n    font-size: 14px;\r\n    text-align: left;\r\n    margin: 0 0 15px;\r\n}\r\n\r\n.form-container .form-horizontal .form-group {\r\n    margin: 0 0 20px;\r\n}\r\n\r\n.form-container .form-horizontal .form-group:nth-of-type(2) {\r\n    margin-bottom: 35px;\r\n}\r\n\r\n.form-container .form-horizontal .form-group label {\r\n    font-weight: 500;\r\n}\r\n\r\n.form-container .form-horizontal .form-control {\r\n    color: #888;\r\n    background: #f9f9f9;\r\n    font-weight: 400;\r\n    letter-spacing: 1px;\r\n    height: 40px;\r\n    padding: 6px 12px;\r\n    border-radius: 5px;\r\n    border: none;\r\n    box-shadow: none;\r\n}\r\n\r\n.form-container .form-horizontal .form-control:focus {\r\n    box-shadow: 0 0 5px #EAD4CC;\r\n}\r\n\r\n.form-container .form-horizontal .submit {\r\n    color: #333;\r\n    background: linear-gradient(to right, #EAD4CC, #FFF8F8);\r\n    font-size: 15px;\r\n    font-weight: 500;\r\n    letter-spacing: 0.5px;\r\n    text-transform: capitalize;\r\n    width: 100%;\r\n    padding: 9px 11px;\r\n    margin: 0 0 20px;\r\n    border-radius: 50px;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .form-horizontal .btn:hover,\r\n.form-container .form-horizontal .btn:focus {\r\n    box-shadow: 0 0 10px #EAD4CC;\r\n    outline: none;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me {\r\n    width: calc(100% - 105px);\r\n    display: inline-block;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .check-label {\r\n    color: #999;\r\n    font-size: 12px;\r\n    font-weight: 400;\r\n    vertical-align: top;\r\n    display: inline-block;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox {\r\n    height: 17px;\r\n    width: 17px;\r\n    min-height: auto;\r\n    margin: 0 1px 0 0;\r\n    border: 2px solid #EAD4CC;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    display: inline-block;\r\n    position: relative;\r\n    appearance: none;\r\n    -moz-appearance: none;\r\n    -webkit-appearance: none;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox:before {\r\n    content: '';\r\n    height: 5px;\r\n    width: 10px;\r\n    border-bottom: 2px solid #fff;\r\n    border-left: 2px solid #fff;\r\n    transform: rotate(-45deg);\r\n    position: absolute;\r\n    left: 2px;\r\n    top: 2.5px;\r\n    transition: all 0.3s ease;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox:checked {\r\n    background-color: #EAD4CC;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox:checked:before {\r\n    opacity: 1;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox:not(:checked):before {\r\n    opacity: 0;\r\n}\r\n\r\n.form-container .form-horizontal .remember-me .checkbox:focus {\r\n    outline: none;\r\n}\r\n\r\n.form-container .form-horizontal .forgot {\r\n    color: #999;\r\n    font-size: 12px;\r\n    text-align: right;\r\n    width: 100px;\r\n    vertical-align: top;\r\n    display: inline-block;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .form-horizontal .forgot:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n.form-container .right-content .separator {\r\n    color: #999;\r\n    font-size: 15px;\r\n    text-align: center;\r\n    margin: 0 0 15px;\r\n    display: block;\r\n}\r\n\r\n.form-container .right-content .social-links {\r\n    text-align: center;\r\n    padding: 0;\r\n    margin: 0 0 25px;\r\n    list-style: none;\r\n}\r\n\r\n.form-container .right-content .social-links li {\r\n    margin: 0 2px 5px;\r\n    display: inline-block;\r\n}\r\n\r\n.form-container .right-content .social-links li a {\r\n    color: #fff;\r\n    background-color: #F16262;\r\n    font-size: 12px;\r\n    padding: 9px 12px;\r\n    border-radius: 5px;\r\n    display: block;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .right-content .social-links li:nth-child(2) a {\r\n    background-color: #3B5897;\r\n}\r\n\r\n.form-container .right-content .social-links li a i {\r\n    margin-right: 10px;\r\n}\r\n\r\n.form-container .right-content .social-links li a:hover {\r\n    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);\r\n}\r\n\r\n.form-container .right-content .signup-link {\r\n    color: #999;\r\n    font-size: 13px;\r\n}\r\n\r\n.form-container .right-content .signup-link a {\r\n    color: #C3DECD;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .right-content .signup-link a:hover {\r\n    text-decoration: underline;\r\n}\r\n\r\n@media only screen and (max-width: 767px) {\r\n    .form-container .left-content,\r\n    .form-container .right-content {\r\n        width: 100%;\r\n        padding: 30px;\r\n    }\r\n\r\n    .form-container .left-content .title {\r\n        margin: 0 0 20px;\r\n    }\r\n\r\n    .form-container .left-content .sub-title {\r\n        font-size: 40px;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/static/css/login-register.css b/src/main/resources/static/css/login-register.css
+--- a/src/main/resources/static/css/login-register.css	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/static/css/login-register.css	(date 1650480283051)
+@@ -31,6 +31,7 @@
+     color: #fff;
+     font-size: 60px;
+     font-weight: 300;
++    height: 525px;
+     text-transform: uppercase;
+     margin: 0;
+ }
+Index: src/main/resources/templates/fragments/navbar.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><nav class=\"navbar navbar-expand-lg navbar-light bg-transparent ml-5 mr-5 pl-5 pr-5 mt-3\"\r\n     xmlns:sec=\"http://www.w3.org/1999/xhtml\">\r\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarTogglerDemo01\"\r\n            aria-controls=\"navbarTogglerDemo01\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\r\n        <span class=\"navbar-toggler-icon\"></span>\r\n    </button>\r\n    <div class=\"collapse navbar-collapse\" id=\"navbarTogglerDemo01\">\r\n        <a class=\"navbar-brand font-weight-bold\" href=\"/\">eCOSMETICS</a>\r\n        <ul class=\"navbar-nav mr-auto mt-2 mt-lg-0\">\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\" href=\"/\">HOME</a>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\" href=\"/products\">PRODUCTS</a>\r\n            </li>\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\" href=\"/events\">EVENTS</a>\r\n            </li>\r\n            <li sec:authorize=\"hasRole('ROLE_ADMIN')\" class=\"nav-item\">\r\n                <a class=\"nav-link\" href=\"/admin/brands\">BRANDS</a>\r\n            </li>\r\n        </ul>\r\n        <ul class=\"navbar-nav\">\r\n            <li class=\"nav-item\">\r\n                <a class=\"nav-link\" href=\"/shopping-cart\">\r\n                    <i class=\"fas fa-shopping-cart\"></i>\r\n<!--                    <span class=\"counter position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger\"-->\r\n<!--                          th:text=\"${productsInCart}\" th:unless=\"${#request.getRemoteUser() == null}\"></span>-->\r\n                </a>\r\n            </li>\r\n            <li sec:authorize=\"isAuthenticated()\" class=\"nav-item\">\r\n                <a class=\"nav-link text-uppercase\" href=\"/profile\" th:text=\"${#session.getAttribute('user')}\"></a>\r\n            </li>\r\n            <li sec:authorize=\"!isAuthenticated()\" class=\"nav-item\">\r\n                <a class=\"nav-link\" th:href=\"@{/login}\">LOGIN</a>\r\n            </li>\r\n            <li sec:authorize=\"isAuthenticated()\" class=\"nav-item\">\r\n                <a th:href=\"@{/logout}\" class=\"nav-link download\" href=\"/login\">LOGOUT</a>\r\n            </li>\r\n        </ul>\r\n    </div>\r\n</nav>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/fragments/navbar.html b/src/main/resources/templates/fragments/navbar.html
+--- a/src/main/resources/templates/fragments/navbar.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/fragments/navbar.html	(date 1650473854361)
+@@ -28,8 +28,11 @@
+ <!--                          th:text="${productsInCart}" th:unless="${#request.getRemoteUser() == null}"></span>-->
+                 </a>
+             </li>
+-            <li sec:authorize="isAuthenticated()" class="nav-item">
+-                <a class="nav-link text-uppercase" href="/profile" th:text="${#session.getAttribute('user')}"></a>
++            <li sec:authorize="isAuthenticated() && hasRole('ROLE_ADMIN')" class="nav-item">
++                <a class="nav-link text-uppercase" href="/admin/profile" th:text="${#session.getAttribute('user')}"></a>
++            </li>
++            <li sec:authorize="isAuthenticated() && hasRole('ROLE_USER')" class="nav-item">
++                <a class="nav-link text-uppercase" href="/user/profile" th:text="${#session.getAttribute('user')}"></a>
+             </li>
+             <li sec:authorize="!isAuthenticated()" class="nav-item">
+                 <a class="nav-link" th:href="@{/login}">LOGIN</a>
+Index: src/main/resources/templates/login.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:th=\"http://www.thymeleaf.org\">\r\n<head>\r\n    <meta charset=\"UTF-8\"/>\r\n    <title>Login</title>\r\n    <link rel=\"icon\"\r\n          href=\"https://cdn-icons.flaticon.com/png/512/573/premium/573829.png?token=exp=1645874623~hmac=b3001fb479693c7076cd3f02e74ec560\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css\"\r\n          integrity=\"sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==\"\r\n          crossorigin=\"anonymous\"/>\r\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"\r\n          integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">\r\n    <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\"\r\n            integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\"\r\n            integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\"\r\n            integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800'\r\n          rel='stylesheet' type='text/css'>\r\n\r\n    <link href=\"/css/login-register.css\" type=\"text/css\" rel=\"stylesheet\">\r\n</head>\r\n<body>\r\n<div class=\"pt-4\">\r\n    <div class=\"d-flex justify-content-center m-5\">\r\n        <div class=\"col-md-7\">\r\n            <div th:if=\"${param.error}\">\r\n                <div class=\"alert alert-danger\">Wrong email or password. Please try again!</div>\r\n            </div>\r\n\r\n            <div th:if=\"${param.logout}\">\r\n                <div class=\"alert alert-success\">Successful logout!</div>\r\n            </div>\r\n\r\n\r\n            <div class=\"form-container\">\r\n                <div class=\"left-content\">\r\n                    <h3 class=\"title\">eCosmetics</h3>\r\n                    <h4 class=\"sub-title\">Beauty is a way of life.</h4>\r\n                </div>\r\n\r\n                <div class=\"right-content\">\r\n                    <h3 class=\"form-title\">Login</h3>\r\n                    <form class=\"form-horizontal\" th:action=\"@{/login}\" method=\"post\">\r\n                        <div class=\"form-group\">\r\n                            <label for=\"username\">Email</label>\r\n                            <input id=\"username\" name=\"username\" type=\"email\" class=\"form-control\">\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                            <label for=\"password\">Password</label>\r\n                            <input id=\"password\" name=\"password\" type=\"password\" class=\"form-control\">\r\n                        </div>\r\n\r\n                        <input type=\"submit\" name=\"login-submit\" id=\"login-submit\"\r\n                               class=\"btn submit\" value=\"Login\"/>\r\n\r\n                        <div class=\"remember-me\">\r\n                            <input type=\"checkbox\" class=\"checkbox\">\r\n                            <span class=\"check-label\">Remember Me</span>\r\n                        </div>\r\n                        <a href=\"\" class=\"forgot\">Forgot Password</a>\r\n                    </form>\r\n                    <span class=\"separator\">OR</span>\r\n                    <ul class=\"social-links\">\r\n                        <li><a href=\"\"><i class=\"fab fa-google\"></i> Login with Google</a></li>\r\n                        <li><a href=\"\"><i class=\"fab fa-facebook-f\"></i> Login with Facebook</a></li>\r\n                    </ul>\r\n                    <span class=\"signup-link\">Don't have an account? Sign up <a\r\n                            th:href=\"@{/registration}\">here</a></span>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</body>\r\n</html>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/login.html b/src/main/resources/templates/login.html
+--- a/src/main/resources/templates/login.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/login.html	(date 1650480323788)
+@@ -65,11 +65,6 @@
+                         </div>
+                         <a href="" class="forgot">Forgot Password</a>
+                     </form>
+-                    <span class="separator">OR</span>
+-                    <ul class="social-links">
+-                        <li><a href=""><i class="fab fa-google"></i> Login with Google</a></li>
+-                        <li><a href=""><i class="fab fa-facebook-f"></i> Login with Facebook</a></li>
+-                    </ul>
+                     <span class="signup-link">Don't have an account? Sign up <a
+                             th:href="@{/registration}">here</a></span>
+                 </div>
+Index: WP-App-Cosmetics-EShop.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule=\"true\" type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"FacetManager\">\r\n    <facet type=\"web\" name=\"Web\">\r\n      <configuration>\r\n        <webroots />\r\n        <sourceRoots>\r\n          <root url=\"file://$MODULE_DIR$/src/main/java\" />\r\n          <root url=\"file://$MODULE_DIR$/src/main/resources\" />\r\n        </sourceRoots>\r\n      </configuration>\r\n    </facet>\r\n    <facet type=\"jpa\" name=\"JPA\">\r\n      <configuration>\r\n        <setting name=\"validation-enabled\" value=\"true\" />\r\n        <setting name=\"provider-name\" value=\"Hibernate\" />\r\n        <datasource-mapping>\r\n          <factory-entry name=\"entityManagerFactory\" />\r\n        </datasource-mapping>\r\n        <naming-strategy-map />\r\n      </configuration>\r\n    </facet>\r\n    <facet type=\"Spring\" name=\"Spring\">\r\n      <configuration />\r\n    </facet>\r\n  </component>\r\n  <component name=\"NewModuleRootManager\" LANGUAGE_LEVEL=\"JDK_1_9\">\r\n    <output url=\"file://$MODULE_DIR$/target/classes\" />\r\n    <output-test url=\"file://$MODULE_DIR$/target/test-classes\" />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/java\" isTestSource=\"false\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/main/resources\" type=\"java-resource\" />\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src/test/java\" isTestSource=\"true\" />\r\n      <excludeFolder url=\"file://$MODULE_DIR$/target\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-aop:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.aspectj:aspectjweaver:1.9.5\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-jdbc:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.zaxxer:HikariCP:3.4.5\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-jdbc:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.transaction:jakarta.transaction-api:1.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.persistence:jakarta.persistence-api:2.2.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate:hibernate-core:5.4.15.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jboss.logging:jboss-logging:3.4.1.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.javassist:javassist:3.24.0-GA\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: net.bytebuddy:byte-buddy:1.10.10\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: antlr:antlr:2.7.7\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.jboss:jandex:2.1.3.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml:classmate:1.5.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.dom4j:dom4j:2.1.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.hibernate.common:hibernate-commons-annotations:5.1.0.Final\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.glassfish.jaxb:jaxb-runtime:2.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.glassfish.jaxb:txw2:2.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.sun.istack:istack-commons-runtime:3.0.11\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"RUNTIME\" name=\"Maven: com.sun.activation:jakarta.activation:1.2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-jpa:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.data:spring-data-commons:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-orm:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-context:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-tx:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-beans:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-aspects:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-security:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-logging:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-classic:1.2.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: ch.qos.logback:logback-core:1.2.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-to-slf4j:2.13.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.logging.log4j:log4j-api:2.13.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:jul-to-slf4j:1.7.30\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.annotation:jakarta.annotation-api:1.3.5\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.yaml:snakeyaml:1.26\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-aop:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-config:5.3.2.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-web:5.3.2.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-expression:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.thymeleaf:thymeleaf-spring5:3.0.11.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.thymeleaf:thymeleaf:3.0.11.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.attoparser:attoparser:2.0.5.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.unbescape:unbescape:1.1.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.thymeleaf.extras:thymeleaf-extras-java8time:3.0.4.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.slf4j:slf4j-api:1.7.30\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-web:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-json:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-databind:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-annotations:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.core:jackson-core:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: com.fasterxml.jackson.module:jackson-module-parameter-names:2.11.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-starter-tomcat:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-core:9.0.35\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.glassfish:jakarta.el:3.0.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.apache.tomcat.embed:tomcat-embed-websocket:9.0.35\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-web:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-webmvc:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.projectlombok:lombok:1.18.12\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"RUNTIME\" name=\"Maven: org.springframework.boot:spring-boot-devtools:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.boot:spring-boot-autoconfigure:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.postgresql:postgresql:42.2.12\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-starter-test:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-test:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.boot:spring-boot-test-autoconfigure:2.3.0.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.jayway.jsonpath:json-path:2.4.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:json-smart:2.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.minidev:accessors-smart:1.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.ow2.asm:asm:5.0.4\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.xml.bind:jakarta.xml.bind-api:2.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: jakarta.activation:jakarta.activation-api:1.2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.assertj:assertj-core:3.16.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.hamcrest:hamcrest:2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter:5.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-api:5.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.apiguardian:apiguardian-api:1.1.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.opentest4j:opentest4j:1.2.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-commons:1.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-params:5.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.jupiter:junit-jupiter-engine:5.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.junit.platform:junit-platform-engine:1.6.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-core:3.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: net.bytebuddy:byte-buddy-agent:1.10.10\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.objenesis:objenesis:2.6\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.mockito:mockito-junit-jupiter:3.3.3\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.skyscreamer:jsonassert:1.5.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: com.vaadin.external.google:android-json:0.0.20131108.vaadin1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-core:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework:spring-jcl:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework:spring-test:5.2.6.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.xmlunit:xmlunit-core:2.7.0\" level=\"project\" />\r\n    <orderEntry type=\"library\" scope=\"TEST\" name=\"Maven: org.springframework.security:spring-security-test:5.3.2.RELEASE\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"Maven: org.springframework.security:spring-security-core:5.3.2.RELEASE\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/WP-App-Cosmetics-EShop.iml b/WP-App-Cosmetics-EShop.iml
+--- a/WP-App-Cosmetics-EShop.iml	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/WP-App-Cosmetics-EShop.iml	(date 1650479118321)
+@@ -35,6 +35,7 @@
+     </content>
+     <orderEntry type="inheritedJdk" />
+     <orderEntry type="sourceFolder" forTests="false" />
++    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-configuration-processor:2.3.0.RELEASE" level="project" />
+     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-jpa:2.3.0.RELEASE" level="project" />
+     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-aop:2.3.0.RELEASE" level="project" />
+     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.9.5" level="project" />
+Index: src/main/resources/templates/registration.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><!DOCTYPE html>\r\n<html lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:th=\"http://www.thymeleaf.org\">\r\n<head>\r\n    <meta charset=\"UTF-8\"/>\r\n    <title>Login</title>\r\n    <link rel=\"icon\"\r\n          href=\"https://cdn-icons.flaticon.com/png/512/573/premium/573829.png?token=exp=1645874623~hmac=b3001fb479693c7076cd3f02e74ec560\">\r\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css\"\r\n          integrity=\"sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==\"\r\n          crossorigin=\"anonymous\"/>\r\n    <link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"\r\n          integrity=\"sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T\" crossorigin=\"anonymous\">\r\n    <script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\"\r\n            integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js\"\r\n            integrity=\"sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js\"\r\n            integrity=\"sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM\"\r\n            crossorigin=\"anonymous\"></script>\r\n    <link href='//fonts.googleapis.com/css?family=Montserrat:thin,extra-light,light,100,200,300,400,500,600,700,800'\r\n          rel='stylesheet' type='text/css'>\r\n\r\n    <link href=\"/css/login-register.css\" type=\"text/css\" rel=\"stylesheet\">\r\n<body>\r\n<div>\r\n    <div class=\"d-flex justify-content-center m-5 pt-2\">\r\n        <div class=\"col-md-7\">\r\n            <div th:if=\"${param.success}\">\r\n                <div class=\"alert alert-success\">You've successfully registered!\r\n                    <a class=\"text-info\" href=\"/\" th:href=\"@{/login}\">Login here</a>\r\n                </div>\r\n            </div>\r\n            <div class=\"form-container\">\r\n                <div class=\"left-content\">\r\n                    <h3 class=\"title\">eCosmetics</h3>\r\n                    <h4 class=\"sub-title pt-5\">Beauty is a way of life.</h4>\r\n                </div>\r\n\r\n                <div class=\"right-content\">\r\n                    <h3 class=\"form-title\">Register</h3>\r\n                    <form class=\"form-horizontal\" th:action=\"@{/registration}\" method=\"post\" th:object=\"${user}\">\r\n                        <div class=\"form-group\">\r\n                            <label for=\"firstName\">First Name</label>\r\n                            <input id=\"firstName\"\r\n                                   name=\"firstName\"\r\n                                   type=\"text\"\r\n                                   class=\"form-control\"\r\n                                   th:field=\"*{firstName}\"\r\n                                   required\r\n                                   autofocus=\"autofocus\">\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                            <label for=\"lastName\">Last Name</label>\r\n                            <input id=\"lastName\"\r\n                                   name=\"lastName\"\r\n                                   type=\"text\"\r\n                                   class=\"form-control\"\r\n                                   th:field=\"*{lastName}\"\r\n                                   required\r\n                                   autofocus=\"autofocus\">\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                            <label for=\"email\">Email</label>\r\n                            <input id=\"email\"\r\n                                   name=\"email\"\r\n                                   type=\"text\"\r\n                                   class=\"form-control\"\r\n                                   th:field=\"*{email}\"\r\n                                   required\r\n                                   autofocus=\"autofocus\">\r\n                        </div>\r\n\r\n                        <div class=\"form-group\">\r\n                            <label for=\"password\">Password</label>\r\n                            <input id=\"password\"\r\n                                   name=\"password\"\r\n                                   type=\"password\"\r\n                                   class=\"form-control\"\r\n                                   th:field=\"*{password}\"\r\n                                   required\r\n                                   autofocus=\"autofocus\">\r\n                        </div>\r\n\r\n                        <div class=\"form-group text-center\">\r\n                            <button type=\"submit\" class=\"btn submit\">Register</button>\r\n                            <span class=\"signup-link\">Already registered? <a href=\"/\" th:href=\"@{/login}\">Login here</a></span>\r\n                        </div>\r\n                    </form>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n</body>\r\n</html>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/registration.html b/src/main/resources/templates/registration.html
+--- a/src/main/resources/templates/registration.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/registration.html	(date 1650478833742)
+@@ -23,6 +23,7 @@
+           rel='stylesheet' type='text/css'>
+ 
+     <link href="/css/login-register.css" type="text/css" rel="stylesheet">
++    <script src='https://www.google.com/recaptcha/api.js'></script>
+ <body>
+ <div>
+     <div class="d-flex justify-content-center m-5 pt-2">
+@@ -85,6 +86,10 @@
+                                    autofocus="autofocus">
+                         </div>
+ 
++
++                        <div class="g-recaptcha" th:attr="data-sitekey=${@captchaSettings.getSite()}"></div><br/><br/>
++                        <span id="captchaError" class="alert alert-danger col-sm-4" style="display:none"></span>
++
+                         <div class="form-group text-center">
+                             <button type="submit" class="btn submit">Register</button>
+                             <span class="signup-link">Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
+Index: src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>server.port=9090\r\nspring.profiles.active=prod\r\n\r\n#server.servlet.session.persistent=false
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/src/main/resources/application.properties b/src/main/resources/application.properties
+--- a/src/main/resources/application.properties	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/application.properties	(date 1650478700993)
+@@ -1,4 +1,7 @@
+ server.port=9090
+ spring.profiles.active=prod
+ 
+-#server.servlet.session.persistent=false
+\ No newline at end of file
++#server.servlet.session.persistent=false
++
++google.recaptcha.key.site=6LcX1oofAAAAALSkibtXvu_AO5kFWMjeqBZAl9-W
++google.recaptcha.key.secret=6LcX1oofAAAAAD0L6pUKmjiL_hizJpOlDaN1FLTO
+\ No newline at end of file
+Index: src/main/resources/static/css/form.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.form-container{\r\n    background-color: #fff;\r\n    font-family: 'Poppins', sans-serif;\r\n    font-size: 0;\r\n    box-shadow: 0 0 25px -15px rgba(0, 0, 0, 0.69);\r\n}\r\n\r\n.form-container .left-content{\r\n    background-color: #2E323B;\r\n    font-family: 'Oswald', sans-serif;\r\n    width: 40%;\r\n    padding: 66px 50px;\r\n    display: inline-block;\r\n    vertical-align: top;\r\n}\r\n.form-container .left-content .title{\r\n    color: #FF97A8;\r\n    font-size: 20px;\r\n    font-weight: 300;\r\n    letter-spacing: 2px;\r\n    text-transform: uppercase;\r\n    margin: 0 0 55px;\r\n}\r\n.form-container .left-content .sub-title{\r\n    color: #fff;\r\n    font-size: 60px;\r\n    font-weight: 300;\r\n    text-transform: uppercase;\r\n    margin: 0;\r\n}\r\n.form-container .right-content{\r\n    text-align: center;\r\n    width: 100%;\r\n    padding: 30px 50px;\r\n    display: inline-block;\r\n}\r\n.form-container .right-content .form-title{\r\n    color: #888;\r\n    font-family: 'Oswald', sans-serif;\r\n    font-size: 40px;\r\n    font-weight: 400;\r\n    text-align: left;\r\n    text-transform: uppercase;\r\n    padding: 0 0 2px;\r\n    margin: 0 0 30px;\r\n    border-bottom: 2px solid #FF97A8;\r\n}\r\n.form-container .right-content .form-horizontal {\r\n    color: #999;\r\n    font-size: 14px;\r\n    text-align: left;\r\n    margin: 0 0 15px;\r\n}\r\n.form-container .form-horizontal .form-group{ margin: 0 0 20px; }\r\n.form-container .form-horizontal .form-group:nth-of-type(2){ margin-bottom: 35px; }\r\n.form-container .form-horizontal .form-group label{ font-weight: 500; }\r\n.form-container .form-horizontal .form-control{\r\n    color: #888;\r\n    background: #f9f9f9;\r\n    font-weight: 400;\r\n    letter-spacing: 1px;\r\n    height: 40px;\r\n    padding: 6px 12px;\r\n    border-radius: 5px;\r\n    border: none;\r\n    box-shadow: none;\r\n}\r\n.form-container .form-horizontal .form-control:focus{ box-shadow: 0 0 5px #FF97A8; }\r\n.form-container .form-horizontal .submit{\r\n    color: #fff;\r\n    background: linear-gradient(to right, #FF638E, #FF97A8);\r\n    font-size: 15px;\r\n    font-weight: 500;\r\n    letter-spacing: 0.5px;\r\n    text-transform: capitalize;\r\n    width: 100%;\r\n    padding: 9px 11px;\r\n    margin: 0 0 20px;\r\n    border-radius: 50px;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.submit{\r\n    color: #fff;\r\n    background: linear-gradient(to right, #FF638E, #FF97A8);\r\n    font-size: 15px;\r\n    font-weight: 500;\r\n    letter-spacing: 0.5px;\r\n    text-transform: capitalize;\r\n    width: 100%;\r\n    padding: 9px 11px;\r\n    margin: 0 0 20px;\r\n    border-radius: 50px;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .form-horizontal .btn:hover,\r\n.form-container .form-horizontal .btn:focus{\r\n    box-shadow: 0 0 10px #FF97A8;\r\n    outline: none;\r\n}\r\n.form-container .form-horizontal .remember-me{\r\n    width: calc(100% - 105px);\r\n    display: inline-block;\r\n}\r\n.form-container .form-horizontal .remember-me .check-label{\r\n    color: #999;\r\n    font-size: 12px;\r\n    font-weight: 400;\r\n    vertical-align: top;\r\n    display: inline-block;\r\n}\r\n.form-container .form-horizontal .remember-me .checkbox{\r\n    height: 17px;\r\n    width: 17px;\r\n    min-height: auto;\r\n    margin: 0 1px 0 0;\r\n    border: 2px solid #FF97A8;\r\n    border-radius: 5px;\r\n    cursor: pointer;\r\n    display: inline-block;\r\n    position: relative;\r\n    appearance: none;\r\n    -moz-appearance: none;\r\n    -webkit-appearance: none;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n.form-container .form-horizontal .remember-me .checkbox:before{\r\n    content: '';\r\n    height: 5px;\r\n    width: 10px;\r\n    border-bottom: 2px solid #fff;\r\n    border-left: 2px solid #fff;\r\n    transform: rotate(-45deg);\r\n    position: absolute;\r\n    left: 2px;\r\n    top: 2.5px;\r\n    transition: all 0.3s ease;\r\n}\r\n.form-container .form-horizontal .remember-me .checkbox:checked{ background-color: #FF97A8; }\r\n.form-container .form-horizontal .remember-me .checkbox:checked:before{ opacity: 1; }\r\n.form-container .form-horizontal .remember-me .checkbox:not(:checked):before{ opacity: 0; }\r\n.form-container .form-horizontal .remember-me .checkbox:focus{ outline: none; }\r\n.form-container .form-horizontal .forgot{\r\n    color: #999;\r\n    font-size: 12px;\r\n    text-align: right;\r\n    width: 100px;\r\n    vertical-align: top;\r\n    display: inline-block;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n.form-container .form-horizontal .forgot:hover{ text-decoration: underline; }\r\n.form-container .right-content .separator{\r\n    color: #999;\r\n    font-size: 15px;\r\n    text-align: center;\r\n    margin: 0 0 15px;\r\n    display: block;\r\n}\r\n.form-container .right-content .social-links{\r\n    text-align: center;\r\n    padding: 0;\r\n    margin: 0 0 25px;\r\n    list-style: none;\r\n}\r\n.form-container .right-content .social-links li{\r\n    margin: 0 2px 5px;\r\n    display: inline-block;\r\n}\r\n.form-container .right-content .social-links li a{\r\n    color: #fff;\r\n    background-color: #F16262;\r\n    font-size: 12px;\r\n    padding: 9px 12px;\r\n    border-radius: 5px;\r\n    display: block;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n.form-container .right-content .social-links li:nth-child(2) a{ background-color: #3B5897; }\r\n.form-container .right-content .social-links li a i{ margin-right: 10px; }\r\n.form-container .right-content .social-links li a:hover{ box-shadow: 0 0 5px rgba(0,0,0,0.5); }\r\n.form-container .right-content .signup-link{\r\n    color: #999;\r\n    font-size: 13px;\r\n}\r\n.form-container .right-content .signup-link a{\r\n    color: #F16262;\r\n    transition: all 0.3s ease 0s;\r\n}\r\n\r\n.form-container .right-content .signup-link a:hover{ text-decoration: underline; }\r\n@media only screen and (max-width:767px){\r\n    .form-container .left-content,\r\n    .form-container .right-content{\r\n        width: 100%;\r\n        padding: 30px;\r\n    }\r\n    .form-container .left-content .title{ margin: 0 0 20px; }\r\n    .form-container .left-content .sub-title{ font-size: 40px; }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/static/css/form.css b/src/main/resources/static/css/form.css
+--- a/src/main/resources/static/css/form.css	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/static/css/form.css	(date 1650379877895)
+@@ -14,7 +14,7 @@
+     vertical-align: top;
+ }
+ .form-container .left-content .title{
+-    color: #FF97A8;
++    color: #6b6b6b;
+     font-size: 20px;
+     font-weight: 300;
+     letter-spacing: 2px;
+@@ -43,7 +43,7 @@
+     text-transform: uppercase;
+     padding: 0 0 2px;
+     margin: 0 0 30px;
+-    border-bottom: 2px solid #FF97A8;
++    border-bottom: 2px solid #ffc7da;
+ }
+ .form-container .right-content .form-horizontal {
+     color: #999;
+@@ -65,10 +65,10 @@
+     border: none;
+     box-shadow: none;
+ }
+-.form-container .form-horizontal .form-control:focus{ box-shadow: 0 0 5px #FF97A8; }
++.form-container .form-horizontal .form-control:focus{ box-shadow: 0 0 5px #ffc7da; }
+ .form-container .form-horizontal .submit{
+     color: #fff;
+-    background: linear-gradient(to right, #FF638E, #FF97A8);
++    background: linear-gradient(to right, #6b6b6b, #ffc7da);
+     font-size: 15px;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+@@ -82,7 +82,7 @@
+ 
+ .submit{
+     color: #fff;
+-    background: linear-gradient(to right, #FF638E, #FF97A8);
++    background: linear-gradient(to right, #6b6b6b, #ffc7da);
+     font-size: 15px;
+     font-weight: 500;
+     letter-spacing: 0.5px;
+@@ -96,7 +96,7 @@
+ 
+ .form-container .form-horizontal .btn:hover,
+ .form-container .form-horizontal .btn:focus{
+-    box-shadow: 0 0 10px #FF97A8;
++    box-shadow: 0 0 10px #ffc7da;
+     outline: none;
+ }
+ .form-container .form-horizontal .remember-me{
+@@ -115,7 +115,7 @@
+     width: 17px;
+     min-height: auto;
+     margin: 0 1px 0 0;
+-    border: 2px solid #FF97A8;
++    border: 2px solid #ffc7da;
+     border-radius: 5px;
+     cursor: pointer;
+     display: inline-block;
+@@ -137,7 +137,7 @@
+     top: 2.5px;
+     transition: all 0.3s ease;
+ }
+-.form-container .form-horizontal .remember-me .checkbox:checked{ background-color: #FF97A8; }
++.form-container .form-horizontal .remember-me .checkbox:checked{ background-color: #ffc7da; }
+ .form-container .form-horizontal .remember-me .checkbox:checked:before{ opacity: 1; }
+ .form-container .form-horizontal .remember-me .checkbox:not(:checked):before{ opacity: 0; }
+ .form-container .form-horizontal .remember-me .checkbox:focus{ outline: none; }
+Index: src/main/resources/templates/events-form.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"form-bg\">\r\n    <div class=\"container\">\r\n        <div class=\"form-container\">\r\n            <div class=\"right-content\">\r\n                <h3 class=\"form-title\">Event</h3>\r\n                <form th:method=\"POST\"\r\n                      th:action=\"@{'/events/add/{id}' (id=${event?.id})}\"\r\n                      class=\"form-horizontal\">\r\n                    <div class=\"form-group\">\r\n                        <label>Event Name</label>\r\n                        <input type=\"text\"\r\n                               class=\"form-control\"\r\n                               name=\"eventName\"\r\n                               th:value=\"${event?.eventName}\"\r\n                               required>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Event Description</label>\r\n                        <textarea rows=\"3\"\r\n                                  style=\"height:100%\"\r\n                                  class=\"form-control\"\r\n                                  name=\"eventDescription\"\r\n                                  th:text=\"${event?.eventDescription}\"\r\n                                  required></textarea>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Event Start Date</label>\r\n                        <input type=\"datetime-local\"\r\n                               class=\"form-control\"\r\n                               name=\"startDate\"\r\n                               th:value=\"${event?.startDate}\"\r\n                               required>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Event End Date</label>\r\n                        <input type=\"datetime-local\"\r\n                               class=\"form-control\"\r\n                               name=\"endDate\"\r\n                               th:value=\"${event?.endDate}\"\r\n                               required>\r\n                    </div>\r\n                    <button class=\"btn submit\" type=\"submit\">Submit</button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/events-form.html b/src/main/resources/templates/events-form.html
+--- a/src/main/resources/templates/events-form.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/events-form.html	(date 1650380133655)
+@@ -1,5 +1,5 @@
+ <div class="form-bg">
+-    <div class="container">
++    <div class="container my-5">
+         <div class="form-container">
+             <div class="right-content">
+                 <h3 class="form-title">Event</h3>
+@@ -39,7 +39,7 @@
+                                th:value="${event?.endDate}"
+                                required>
+                     </div>
+-                    <button class="btn submit" type="submit">Submit</button>
++                    <button class="btn btn-block btn-cart" type="submit">Submit</button>
+                 </form>
+             </div>
+         </div>
+Index: src/main/resources/templates/events.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><section class=\"mr-5 ml-5 pl-5 pr-5\">\r\n    <h1>Events</h1>\r\n\r\n    <div class=\"d-flex justify-content-around\">\r\n        <div class=\"mr-2\">\r\n            <div class=\"mb-2\">\r\n                <form th:action=\"@{'/events'}\">\r\n                    <button\r\n                            value=\"\"\r\n                            class=\"btn btn-dark btn-block\"\r\n                            type=\"submit\">\r\n                        ALL\r\n                    </button>\r\n                </form>\r\n            </div>\r\n            <div>\r\n                <form th:action=\"@{'/events?interest='}\">\r\n                    <button\r\n                            value=\"INTERESTED\"\r\n                            class=\"btn btn-dark btn-block\"\r\n                            name=\"interest\"\r\n                            type=\"submit\">\r\n                        INTERESTED\r\n                    </button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n        <div class=\"row\">\r\n            <div th:each=\"month : ${months}\" class=\"col-2 mb-2\">\r\n                <form th:action=\"@{'/events?filter=' + ${month}}\">\r\n                    <button th:text=\"${month}\"\r\n                            th:value=\"${month}\"\r\n                            class=\"btn btn-light btn-block\"\r\n                            name=\"filter\"\r\n                            type=\"submit\">\r\n                    </button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n\r\n\r\n    <div class=\"grey-block\">\r\n        <div class=\"row justify-content-center\">\r\n            <article th:each=\"event: ${events}\" class=\"card-events col-5 m-2\">\r\n\r\n\r\n                <section class=\"date\">\r\n                    <time>\r\n                        <span th:text=\"${#temporals.day(event.startDate)}\">\r\n                        </span>\r\n                        <span th:text=\"${#temporals.monthNameShort(event.startDate)}\">\r\n                        </span>\r\n                    </time>\r\n                </section>\r\n\r\n\r\n                <section class=\"card-cont\">\r\n                    <div>\r\n                        <small>eCOSMETICS</small>\r\n                        <h3 th:text=\"${event.eventName}\"></h3>\r\n                    </div>\r\n\r\n                    <div class=\"even-date\">\r\n                        <time>\r\n                            <span th:text=\"${#temporals.dayOfWeekName(event.startDate)\r\n                            + ' '\r\n                            + #temporals.day(event.startDate)\r\n                            + ' '\r\n                            + #temporals.monthName(event.startDate)\r\n                            + ' '\r\n                            + #temporals.year(event.startDate)}\">\r\n\r\n                            </span>\r\n                            <span th:text=\"${#temporals.hour(event.startDate)\r\n                            +':'\r\n                            + #temporals.minute(event.startDate)\r\n                            + ' to '\r\n                            + #temporals.hour(event.endDate)\r\n                            + ':'\r\n                            + #temporals.minute(event.endDate)}\">\r\n                            </span>\r\n                        </time>\r\n                    </div>\r\n                    <div class=\" even-info\">\r\n                        <p th:text=\"${event.eventDescription}\"></p>\r\n                    </div>\r\n\r\n\r\n                    <div th:if=\"${!#lists.contains(interested, event)}\">\r\n                        <form method=\"POST\" th:action=\"@{'/events/add-event/{id}' (id=${event.id})}\">\r\n                            <button type=\"submit\" class=\"mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2\">\r\n                                INTERESTED\r\n                            </button>\r\n                        </form>\r\n                    </div>\r\n                    <div th:if=\"${#lists.contains(interested, event)}\">\r\n                        <form method=\"POST\" th:action=\"@{'/events/remove-event/{id}' (id=${event.id})}\">\r\n                            <button type=\"submit\" class=\"mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2\">\r\n                                NOT INTERESTED\r\n                            </button>\r\n                        </form>\r\n                    </div>\r\n\r\n\r\n                    <div class=\"d-flex\">\r\n                        <form method=\"POST\" th:action=\"@{'/events/delete/{id}' (id=${event.id})}\">\r\n                            <button type=\"submit\" class=\"btn btn-link text-danger\">\r\n                                <i class=\"fas fa-trash-alt\"></i>\r\n                            </button>\r\n                        </form>\r\n                        <a th:href=\"@{'/events/edit-form/{id}' (id=${event.id})}\"\r\n                           class=\"btn btn-link\">\r\n                            <i class=\"fas fa-pen\"></i>\r\n                        </a>\r\n                    </div>\r\n                </section>\r\n            </article>\r\n        </div>\r\n\r\n        <div class=\"mt-1 ml-2 mr-1\">\r\n            <a href=\"/events/add-form\" class=\"btn btn-block btn-link text-decoration-none button-style\">\r\n                Add new event\r\n            </a>\r\n        </div>\r\n    </div>\r\n</section>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/events.html b/src/main/resources/templates/events.html
+--- a/src/main/resources/templates/events.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/events.html	(date 1650378455103)
+@@ -1,13 +1,13 @@
+ <section class="mr-5 ml-5 pl-5 pr-5">
+-    <h1>Events</h1>
++    <h1 class="header-events my-5">Events</h1>
+ 
+     <div class="d-flex justify-content-around">
+-        <div class="mr-2">
++        <div class="mr-4">
+             <div class="mb-2">
+                 <form th:action="@{'/events'}">
+                     <button
+                             value=""
+-                            class="btn btn-dark btn-block"
++                            class="btn btn-cart btn-block"
+                             type="submit">
+                         ALL
+                     </button>
+@@ -17,7 +17,7 @@
+                 <form th:action="@{'/events?interest='}">
+                     <button
+                             value="INTERESTED"
+-                            class="btn btn-dark btn-block"
++                            class="btn btn-cart btn-block"
+                             name="interest"
+                             type="submit">
+                         INTERESTED
+@@ -30,7 +30,7 @@
+                 <form th:action="@{'/events?filter=' + ${month}}">
+                     <button th:text="${month}"
+                             th:value="${month}"
+-                            class="btn btn-light btn-block"
++                            class="btn btn-details btn-block"
+                             name="filter"
+                             type="submit">
+                     </button>
+@@ -42,23 +42,20 @@
+ 
+     <div class="grey-block">
+         <div class="row justify-content-center">
+-            <article th:each="event: ${events}" class="card-events col-5 m-2">
+-
+-
++            <article th:each="event: ${events}" class="card-events col-5 m-3 mb-5">
+                 <section class="date">
+                     <time>
+-                        <span th:text="${#temporals.day(event.startDate)}">
++                        <span class="text-light" th:text="${#temporals.day(event.startDate)}">
+                         </span>
+                         <span th:text="${#temporals.monthNameShort(event.startDate)}">
+                         </span>
+                     </time>
+                 </section>
+ 
+-
+                 <section class="card-cont">
+                     <div>
+                         <small>eCOSMETICS</small>
+-                        <h3 th:text="${event.eventName}"></h3>
++                        <h2 class="event-name" th:text="${event.eventName}"></h2>
+                     </div>
+ 
+                     <div class="even-date">
+@@ -82,46 +79,45 @@
+                             </span>
+                         </time>
+                     </div>
+-                    <div class=" even-info">
+-                        <p th:text="${event.eventDescription}"></p>
+-                    </div>
++                    <!--                    <div class=" even-info">-->
++                    <!--                        <p th:text="${event.eventDescription}"></p>-->
++                    <!--                    </div>-->
+ 
+ 
+                     <div th:if="${!#lists.contains(interested, event)}">
+                         <form method="POST" th:action="@{'/events/add-event/{id}' (id=${event.id})}">
+-                            <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
++                            <button type="submit" class="btn btn-block btn-outline-light my-3">
+                                 INTERESTED
+                             </button>
+                         </form>
+                     </div>
+                     <div th:if="${#lists.contains(interested, event)}">
+                         <form method="POST" th:action="@{'/events/remove-event/{id}' (id=${event.id})}">
+-                            <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
++                            <button type="submit" class="btn btn-block btn-outline-light my-3">
+                                 NOT INTERESTED
+                             </button>
+                         </form>
+                     </div>
+ 
+ 
+-                    <div class="d-flex">
++                    <div class="d-flex" sec:authorize="isAuthenticated()">
+                         <form method="POST" th:action="@{'/events/delete/{id}' (id=${event.id})}">
+-                            <button type="submit" class="btn btn-link text-danger">
++                            <button type="submit" class="btn btn-link text-light">
+                                 <i class="fas fa-trash-alt"></i>
+                             </button>
+                         </form>
+                         <a th:href="@{'/events/edit-form/{id}' (id=${event.id})}"
+-                           class="btn btn-link">
++                           class="btn btn-link text-light">
+                             <i class="fas fa-pen"></i>
+                         </a>
+                     </div>
+                 </section>
+             </article>
+         </div>
+-
+-        <div class="mt-1 ml-2 mr-1">
+-            <a href="/events/add-form" class="btn btn-block btn-link text-decoration-none button-style">
+-                Add new event
+-            </a>
+-        </div>
++    </div>
++    <div class="my-5">
++        <a href="/events/add-form" class="btn btn-block btn-details text-decoration-none">
++            Add new event
++        </a>
+     </div>
+-</section>
++</section>
+\ No newline at end of file
+Index: src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mk.ukim.finki.wp.service.impl;\r\n\r\nimport mk.ukim.finki.wp.model.Event;\r\nimport mk.ukim.finki.wp.model.User;\r\nimport mk.ukim.finki.wp.repository.EventRepository;\r\nimport mk.ukim.finki.wp.repository.UserRepository;\r\nimport mk.ukim.finki.wp.service.EventService;\r\nimport org.springframework.stereotype.Service;\r\n\r\nimport java.time.LocalDateTime;\r\nimport java.util.List;\r\nimport java.util.Locale;\r\nimport java.util.Optional;\r\n\r\n@Service\r\npublic class EventServiceImpl implements EventService {\r\n\r\n    private final EventRepository eventRepository;\r\n    private final UserRepository userRepository;\r\n\r\n\r\n    public EventServiceImpl(EventRepository eventRepository, UserRepository userRepository) {\r\n        this.eventRepository = eventRepository;\r\n        this.userRepository = userRepository;\r\n    }\r\n\r\n    @Override\r\n    public List<Event> listAll() {\r\n        return this.eventRepository.findAll();\r\n    }\r\n\r\n    @Override\r\n    public Optional<Event> findById(Long id) {\r\n        return this.eventRepository.findById(id);\r\n    }\r\n\r\n    @Override\r\n    public List<Event> findByMonth(String month) {\r\n        return this.eventRepository.findAllByMonthEquals(month);\r\n    }\r\n\r\n    @Override\r\n    public Event create(LocalDateTime startDate, LocalDateTime endDate, String eventName, String eventDescription) {\r\n        Event event=new Event(startDate,endDate,eventName,eventDescription);\r\n        return this.eventRepository.save(event);\r\n    }\r\n\r\n    @Override\r\n    public Event update(Long id, LocalDateTime startDate, LocalDateTime endDate, String eventName, String eventDescription) {\r\n        Event event=this.eventRepository.findById(id).get();\r\n        event.setStartDate(startDate);\r\n        event.setEndDate(endDate);\r\n        event.setEventName(eventName);\r\n        event.setEventDescription(eventDescription);\r\n        return this.eventRepository.save(event);\r\n    }\r\n\r\n    @Override\r\n    public Event delete(Long id) {\r\n        Event event=this.eventRepository.findById(id).get();\r\n        this.eventRepository.delete(event);\r\n        return event;\r\n    }\r\n\r\n    @Override\r\n    public List<Event> listEventsByDateBetween(LocalDateTime date1, LocalDateTime date2) {\r\n        return this.eventRepository.findAllByStartDateBetween(date1, date2);\r\n    }\r\n\r\n    @Override\r\n    public void deleteFinished(List<Event> events) {\r\n        LocalDateTime currentTime = LocalDateTime.now();\r\n\r\n        for(int i=0;i<events.toArray().length;i++){\r\n            if(events.get(i).getEndDate().isAfter(currentTime))\r\n                events.remove(events.get(i));\r\n        }\r\n        this.eventRepository.saveAll(events);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java b/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java
+--- a/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java	(date 1650371377505)
+@@ -52,6 +52,7 @@
+         event.setEndDate(endDate);
+         event.setEventName(eventName);
+         event.setEventDescription(eventDescription);
++        event.setMonth(startDate.getMonth().name());
+         return this.eventRepository.save(event);
+     }
+ 
+Index: src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package mk.ukim.finki.wp.repository;\r\n\r\nimport mk.ukim.finki.wp.model.Product;\r\nimport mk.ukim.finki.wp.model.ShoppingCart;\r\nimport mk.ukim.finki.wp.model.User;\r\nimport mk.ukim.finki.wp.model.enumerations.ShoppingCartStatus;\r\nimport org.springframework.data.jpa.repository.JpaRepository;\r\nimport org.springframework.stereotype.Repository;\r\n\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\n@Repository\r\npublic interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {\r\n    Optional<ShoppingCart> findByUserAndStatus(User user, ShoppingCartStatus status);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java b/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java
+--- a/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java	(date 1650471338905)
+@@ -13,4 +13,5 @@
+ @Repository
+ public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
+     Optional<ShoppingCart> findByUserAndStatus(User user, ShoppingCartStatus status);
++    List<ShoppingCart> findAllByUser(User user);
+ }
+Index: src/main/resources/templates/products-form.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><div class=\"form-bg\">\r\n    <div class=\"container\">\r\n        <div class=\"form-container\">\r\n            <div class=\"right-content\">\r\n                <h3 class=\"form-title\">Product</h3>\r\n                <form th:method=\"POST\"\r\n                      th:action=\"@{'/products/add/{id}' (id=${product?.id})}\"\r\n                      class=\"form-horizontal\">\r\n                    <div class=\"form-group\">\r\n                        <label>Product Name</label>\r\n                        <input type=\"text\"\r\n                               class=\"form-control\"\r\n                               name=\"name\"\r\n                               th:value=\"${product?.name}\"\r\n                               required>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Price</label>\r\n                        <input type=\"text\"\r\n                               class=\"form-control\"\r\n                               name=\"price\"\r\n                               th:value=\"${product?.price}\"\r\n                               required>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Quantity</label>\r\n                        <input type=\"text\"\r\n                               class=\"form-control\"\r\n                               name=\"quantity\"\r\n                               th:value=\"${product?.quantity}\"\r\n                               required>\r\n                    </div>\r\n\r\n                    <div class=\"form-group\">\r\n                        <label>Description</label>\r\n                        <textarea rows=\"3\"\r\n                                  style=\"height:100%\"\r\n                                  class=\"form-control\"\r\n                                  name=\"description\"\r\n                                  th:text=\"${product?.description}\"\r\n                                  required></textarea>\r\n                    </div>\r\n\r\n                    <div class=\"form-group\">\r\n                        <label>Product image</label>\r\n                        <textarea rows=\"3\"\r\n                                  style=\"height:100%\"\r\n                                  class=\"form-control\"\r\n                                  name=\"image\"\r\n                                  th:text=\"${product?.image}\"\r\n                                  required></textarea>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Category</label>\r\n                        <select name=\"category\" class=\"form-control\">\r\n                            <option th:if=\"${product} != null\"\r\n                                    th:selected=\"${product.getCategory() != null &&\r\n                                product.getCategory().getId() == cat.getId()}\"\r\n                                    th:each=\"cat : ${categories}\"\r\n                                    th:value=\"${cat.getId()}\"\r\n                                    th:text=\"${cat.getName()}\">\r\n                            </option>\r\n                            <option th:if=\"${product} == null\"\r\n                                    th:each=\"cat : ${categories}\"\r\n                                    th:value=\"${cat.getId()}\"\r\n                                    th:text=\"${cat.getName()}\">\r\n                            </option>\r\n                        </select>\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n                        <label>Brand</label>\r\n                        <select name=\"brand\" class=\"form-control\">\r\n                            <option th:if=\"${product} != null\"\r\n                                    th:selected=\"${product.getBrand() != null &&\r\n                                product.getBrand().getId() == br.getId()}\"\r\n                                    th:each=\"br : ${brands}\"\r\n                                    th:value=\"${br.getId()}\"\r\n                                    th:text=\"${br.getName()}\">\r\n                            </option>\r\n                            <option th:if=\"${product} == null\"\r\n                                    th:each=\"br : ${brands}\"\r\n                                    th:value=\"${br.getId()}\"\r\n                                    th:text=\"${br.getName()}\">\r\n                            </option>\r\n                        </select>\r\n                    </div>\r\n                    <button class=\"btn submit\" type=\"submit\">Submit</button>\r\n                    <a id=\"back\" href=\"/products\" type=\"button\" class=\"btn btn-primary\">Back to products</a>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/templates/products-form.html b/src/main/resources/templates/products-form.html
+--- a/src/main/resources/templates/products-form.html	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/templates/products-form.html	(date 1650379762644)
+@@ -1,5 +1,5 @@
+ <div class="form-bg">
+-    <div class="container">
++    <div class="container my-5">
+         <div class="form-container">
+             <div class="right-content">
+                 <h3 class="form-title">Product</h3>
+@@ -84,8 +84,7 @@
+                             </option>
+                         </select>
+                     </div>
+-                    <button class="btn submit" type="submit">Submit</button>
+-                    <a id="back" href="/products" type="button" class="btn btn-primary">Back to products</a>
++                    <button class="btn btn-block btn-cart" type="submit">Submit</button>
+                 </form>
+             </div>
+         </div>
+Index: src/main/resources/static/css/shopping-cart.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>.fa-shopping-cart:hover{\r\n    color: #ff3d81;\r\n    transition: all 0.5s ease-in-out;\r\n}\r\n\r\n.bg-pink{\r\n    background: linear-gradient(to right, #FF638E, #FF97A8);\r\n    color: white;\r\n    border-radius: 5px;\r\n}\r\n\r\n.border-b{\r\n    border-bottom: 1px solid rgba(107, 107, 107, 0.34);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/static/css/shopping-cart.css b/src/main/resources/static/css/shopping-cart.css
+--- a/src/main/resources/static/css/shopping-cart.css	(revision 77da86c42d79a251d5033a592f0e14b4866cf21c)
++++ b/src/main/resources/static/css/shopping-cart.css	(date 1650378939684)
+@@ -1,12 +1,11 @@
+ .fa-shopping-cart:hover{
+-    color: #ff3d81;
++    color: #F7D9E5;
+     transition: all 0.5s ease-in-out;
+ }
+ 
+ .bg-pink{
+-    background: linear-gradient(to right, #FF638E, #FF97A8);
+-    color: white;
+-    border-radius: 5px;
++    background: #F7D9E5;
++    color: #848484;
+ }
+ 
+ .border-b{

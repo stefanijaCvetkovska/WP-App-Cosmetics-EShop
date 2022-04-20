@@ -1,13 +1,13 @@
 <section class="mr-5 ml-5 pl-5 pr-5">
-    <h1>Events</h1>
+    <h1 class="header-events my-5">Events</h1>
 
     <div class="d-flex justify-content-around">
-        <div class="mr-2">
+        <div class="mr-4">
             <div class="mb-2">
                 <form th:action="@{'/events'}">
                     <button
                             value=""
-                            class="btn btn-dark btn-block"
+                            class="btn btn-cart btn-block"
                             type="submit">
                         ALL
                     </button>
@@ -17,7 +17,7 @@
                 <form th:action="@{'/events?interest='}">
                     <button
                             value="INTERESTED"
-                            class="btn btn-dark btn-block"
+                            class="btn btn-cart btn-block"
                             name="interest"
                             type="submit">
                         INTERESTED
@@ -30,7 +30,7 @@
                 <form th:action="@{'/events?filter=' + ${month}}">
                     <button th:text="${month}"
                             th:value="${month}"
-                            class="btn btn-light btn-block"
+                            class="btn btn-details btn-block"
                             name="filter"
                             type="submit">
                     </button>
@@ -42,23 +42,20 @@
 
     <div class="grey-block">
         <div class="row justify-content-center">
-            <article th:each="event: ${events}" class="card-events col-5 m-2">
-
-
+            <article th:each="event: ${events}" class="card-events col-5 m-3 mb-5">
                 <section class="date">
                     <time>
-                        <span th:text="${#temporals.day(event.startDate)}">
+                        <span class="text-light" th:text="${#temporals.day(event.startDate)}">
                         </span>
                         <span th:text="${#temporals.monthNameShort(event.startDate)}">
                         </span>
                     </time>
                 </section>
 
-
                 <section class="card-cont">
                     <div>
                         <small>eCOSMETICS</small>
-                        <h3 th:text="${event.eventName}"></h3>
+                        <h2 class="event-name" th:text="${event.eventName}"></h2>
                     </div>
 
                     <div class="even-date">
@@ -82,46 +79,45 @@
                             </span>
                         </time>
                     </div>
-                    <div class=" even-info">
-                        <p th:text="${event.eventDescription}"></p>
-                    </div>
+                    <!--                    <div class=" even-info">-->
+                    <!--                        <p th:text="${event.eventDescription}"></p>-->
+                    <!--                    </div>-->
 
 
                     <div th:if="${!#lists.contains(interested, event)}">
                         <form method="POST" th:action="@{'/events/add-event/{id}' (id=${event.id})}">
-                            <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+                            <button type="submit" class="btn btn-block btn-outline-light my-3">
                                 INTERESTED
                             </button>
                         </form>
                     </div>
                     <div th:if="${#lists.contains(interested, event)}">
                         <form method="POST" th:action="@{'/events/remove-event/{id}' (id=${event.id})}">
-                            <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+                            <button type="submit" class="btn btn-block btn-outline-light my-3">
                                 NOT INTERESTED
                             </button>
                         </form>
                     </div>
 
 
-                    <div class="d-flex">
+                    <div class="d-flex" sec:authorize="isAuthenticated()">
                         <form method="POST" th:action="@{'/events/delete/{id}' (id=${event.id})}">
-                            <button type="submit" class="btn btn-link text-danger">
+                            <button type="submit" class="btn btn-link text-light">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </form>
                         <a th:href="@{'/events/edit-form/{id}' (id=${event.id})}"
-                           class="btn btn-link">
+                           class="btn btn-link text-light">
                             <i class="fas fa-pen"></i>
                         </a>
                     </div>
                 </section>
             </article>
         </div>
-
-        <div class="mt-1 ml-2 mr-1">
-            <a href="/events/add-form" class="btn btn-block btn-link text-decoration-none button-style">
-                Add new event
-            </a>
-        </div>
+    </div>
+    <div class="my-5">
+        <a href="/events/add-form" class="btn btn-block btn-details text-decoration-none">
+            Add new event
+        </a>
     </div>
 </section>

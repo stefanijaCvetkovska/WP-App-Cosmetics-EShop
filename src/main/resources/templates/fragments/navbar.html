@@ -28,8 +28,11 @@
 <!--                          th:text="${productsInCart}" th:unless="${#request.getRemoteUser() == null}"></span>-->
                 </a>
             </li>
-            <li sec:authorize="isAuthenticated()" class="nav-item">
-                <a class="nav-link text-uppercase" href="/profile" th:text="${#session.getAttribute('user')}"></a>
+            <li sec:authorize="isAuthenticated() && hasRole('ROLE_ADMIN')" class="nav-item">
+                <a class="nav-link text-uppercase" href="/admin/profile" th:text="${#session.getAttribute('user')}"></a>
+            </li>
+            <li sec:authorize="isAuthenticated() && hasRole('ROLE_USER')" class="nav-item">
+                <a class="nav-link text-uppercase" href="/user/profile" th:text="${#session.getAttribute('user')}"></a>
             </li>
             <li sec:authorize="!isAuthenticated()" class="nav-item">
                 <a class="nav-link" th:href="@{/login}">LOGIN</a>
