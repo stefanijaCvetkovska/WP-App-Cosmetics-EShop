@@ -37,6 +37,7 @@ public class UserProfileController {
         List<Order> orders = this.orderService.listAllOrdersByUser(user.getId());
         model.addAttribute("events", events);
         model.addAttribute("orders", orders);
+        model.addAttribute("user", user);
         model.addAttribute("bodyContent", "user-profile");
         return "master-template";
     }

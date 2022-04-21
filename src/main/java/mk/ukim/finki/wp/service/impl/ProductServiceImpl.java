@@ -18,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final ReviewService reviewService;
+    private static final DecimalFormat df = new DecimalFormat("0.00");
 
     public ProductServiceImpl(ProductRepository productRepository,
                               BrandRepository brandRepository,

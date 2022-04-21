@@ -1,4 +1,4 @@
-<div class="mr-5 ml-5 pr-5 pl-5">
+<div class="mr-5 ml-5 pr-5 pl-5" xmlns:sec="http://www.w3.org/1999/xhtml">
 
     <div class="row mt-5 mb-3">
         <div class="col-3">
@@ -47,16 +47,35 @@
                                 <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
                             </div>
                             <h2 th:text="'$' + ${product.price}" class="mt-n2 font-weight-semibold"></h2>
-                            <div class="progress">
-                                <div class="progress-bar bg-warning text-dark"
-                                     role="progressbar"
-                                     th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;'"
-                                     th:aria-valuenow="${product.rating}"
-                                     aria-valuemin="0"
-                                     aria-valuemax="100"
-                                     th:text="'Rating: ' + ${product.rating}">
+
+<!--                            <div class="progress">-->
+<!--                                <div class="progress-bar bg-warning text-dark"-->
+<!--                                     role="progressbar"-->
+<!--                                     th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;'"-->
+<!--                                     th:aria-valuenow="${product.rating}"-->
+<!--                                     aria-valuemin="0"-->
+<!--                                     aria-valuemax="100"-->
+<!--                                     th:text="'Rating: ' + ${product.rating}">-->
+<!--                                </div>-->
+<!--                            </div>-->
+
+                            <div>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-9">
+                                        <h3 class="progressbar-title">Reviews</h3>
+                                        <div class="progress">
+                                            <div class="progress-bar"
+                                                 th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;' +
+                                                'background: #ed687c'";>
+                                                <span class="progress-icon fa fa-star"
+                                                      style="border-color:#ed687c; color:#ed687c;"></span>
+                                                <div class="progress-value" th:text="${#numbers.formatDecimal(product.rating == null ? 0 : product.rating, 1, 1)}"></div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                             <div class="mt-2">
                                 <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
                                     <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
@@ -71,7 +90,7 @@
                         </div>
 
                         <div class="card-footer card-footer-info d-flex justify-content-between">
-                            <div class="row">
+                            <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
                                 <form method="POST" th:action="@{'/products/delete/{id}' (id=${product.id})}">
                                     <button type="submit" class="btn btn-link text-danger">
                                         <i class="fas fa-trash-alt"></i>

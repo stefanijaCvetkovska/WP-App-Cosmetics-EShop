@@ -44,7 +44,6 @@ public class UserServiceImpl implements UserService {
         User user = new User(registrationDto.getFirstName(),
                 registrationDto.getLastName(), registrationDto.getEmail(),
                 passwordEncoder.encode(registrationDto.getPassword()), Arrays.asList(new Role("ROLE_USER")));
-
         return userRepository.save(user);
     }
 
@@ -72,6 +71,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Event> listAllEventsInInterested(Long userId) {
         return this.userRepository.findById(userId).get().getEvents();
+    }
+
+    @Override
+    public int allUsers() {
+        return this.userRepository.findAll().size();
     }
 
     @Override

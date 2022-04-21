@@ -5,33 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4bc2f0bf-6f77-48e3-a04d-bacd8dc0cc9b" name="Changes" comment="Changes, Style, reCapcha">
-      <change afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/CaptchaSettings.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/admin-profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WP-App-Cosmetics-EShop.iml" beforeDir="false" afterPath="$PROJECT_DIR$/WP-App-Cosmetics-EShop.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/repository/ShoppingCartRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/OrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/OrderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/EventServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/ReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/ReviewService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/OrderServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/ProductServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/ProductServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/ReviewServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/web/AdminProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/mk/ukim/finki/wp/web/UserProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/comments.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/comments.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/events.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/events.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/form.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/form.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/login-register.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/login-register.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/shopping-cart.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/shopping-cart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/events-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/events-form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/products-list.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/products-list.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/css/user-profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/css/user-profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/admin-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/admin-profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/events.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/events.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/footer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/fragments/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/product-filtering-sidebar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/product-filtering-sidebar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/products-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/products-form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/products.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/products.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/registration.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/registration.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/review-form.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/review-form.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/shopping-cart.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/shopping-cart.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/templates/user-profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/user-profile.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,8 +35,8 @@
         <option value="CSS File" />
         <option value="Interface" />
         <option value="Enum" />
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -96,6 +85,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../style/pom.xml" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -188,7 +178,8 @@
       <workItem from="1648396428664" duration="9974000" />
       <workItem from="1650284389516" duration="2529000" />
       <workItem from="1650359373438" duration="11636000" />
-      <workItem from="1650465965535" duration="13928000" />
+      <workItem from="1650465965535" duration="14296000" />
+      <workItem from="1650540875547" duration="17245000" />
     </task>
     <task id="LOCAL-00001" summary="Reviews, Home page, etc...">
       <created>1645991001225</created>

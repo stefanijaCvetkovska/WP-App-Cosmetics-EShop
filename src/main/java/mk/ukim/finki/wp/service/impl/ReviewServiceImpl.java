@@ -1,6 +1,5 @@
 package mk.ukim.finki.wp.service.impl;
 
-import mk.ukim.finki.wp.model.Category;
 import mk.ukim.finki.wp.model.Product;
 import mk.ukim.finki.wp.model.Review;
 import mk.ukim.finki.wp.model.User;
@@ -9,11 +8,11 @@ import mk.ukim.finki.wp.model.exceptions.ReviewNotFoundException;
 import mk.ukim.finki.wp.repository.ProductRepository;
 import mk.ukim.finki.wp.repository.ReviewRepository;
 import mk.ukim.finki.wp.repository.UserRepository;
+import mk.ukim.finki.wp.service.ProductService;
 import mk.ukim.finki.wp.service.ReviewService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,8 +52,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Review delete(Long id) {
-        Review review = this.reviewRepository.findById(id)
+    public Review delete(Long reviewId) {
+        Review review = this.reviewRepository.findById(reviewId)
                 .orElseThrow(ReviewNotFoundException::new);
         this.reviewRepository.delete(review);
         return review;
@@ -86,5 +85,10 @@ public class ReviewServiceImpl implements ReviewService {
         Product product = productId != null ? this.productRepository.findById(productId).
                 orElse((Product) null) : null;
         return this.reviewRepository.findAllByProduct(product);
+    }
+
+    @Override
+    public int allReviews() {
+        return this.reviewRepository.findAll().size();
     }
 }

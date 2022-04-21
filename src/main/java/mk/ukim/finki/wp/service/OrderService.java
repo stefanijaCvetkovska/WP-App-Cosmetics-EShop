@@ -17,4 +17,6 @@ public interface OrderService {
     Double profit(int month);
 
     List<Order> listAllOrdersByUser(Long userId);
+
+    int allOrders ();
 }

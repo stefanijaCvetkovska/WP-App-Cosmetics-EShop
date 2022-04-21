@@ -14,4 +14,6 @@ public interface UserService extends UserDetailsService{
 	User removeEventFromInterested(Long userId, Long eventId);
 
 	List<Event> listAllEventsInInterested(Long userId);
+
+	int allUsers ();
 }

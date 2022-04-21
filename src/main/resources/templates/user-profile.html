@@ -1,76 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<div class="container emp-profile">
-    <form method="post">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-img">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog"
-                         alt=""/>
-                    <div class="file btn btn-lg btn-primary">
-                        Change Photo
-                        <input type="file" name="file"/>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="profile-head">
-                    <h5>
-                        Kshiti Ghelani
-                    </h5>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile"/>
+<div class="mx-5 emp-profile">
+    <div class="ml-5 row my-4">
+        <div class="col-9">
+            <h2 th:text="${user.firstName + ' ' + user.lastName}"></h2>
+            <div>
+                <p th:text="'Email: ' + ${user.email}"></p>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4">
-                <div class="profile-work">
-                    <a href="/events?interest=INTERESTED">Your upcoming events</a>
-                    <ul>
-                        <li th:each="event : ${events}" th:text="${event.eventName}"></li>
-                    </ul>
-                </div>
+        <div class="col-2 ml-auto">
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-5">
+            <a class="btn btn-outline-dark" href="/events?interest=INTERESTED">Your upcoming events</a>
+            <div class="row">
+                <article th:each="event: ${events}" class="card-events">
+                    <section class="date">
+                        <time>
+                        <span class="text-light" th:text="${#temporals.day(event.startDate)}">
+                        </span>
+                            <span th:text="${#temporals.monthNameShort(event.startDate)}">
+                        </span>
+                        </time>
+                    </section>
+
+                    <section class="card-cont">
+                        <div>
+                            <small>eCOSMETICS</small>
+                            <h6 class="event-name" th:text="${event.eventName}"></h6>
+                        </div>
+                    </section>
+                </article>
             </div>
         </div>
-    </form>
-    <div class="justify-content-center">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>
-                    Order id
-                </th>
-                <th>
-                    Purchase date
-                </th>
-                <th>
-                    Shipping
-                </th>
-                <th>
-                    Total price
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="order: ${orders}">
-                <td th:text="${order.id}"></td>
-                <td th:text="${#temporals.format(order.purchaseDate, 'dd-MM-yyyy')}"></td>
-                <td th:text="${order.shipping}"></td>
-                <td th:text="${order.totalPrice}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="col-7 justify-content-center">
+            <h3>Orders</h3>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Order id
+                    </th>
+                    <th>
+                        Purchase date
+                    </th>
+                    <th>
+                        Shipping
+                    </th>
+                    <th>
+                        Total price
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="order: ${orders}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${#temporals.format(order.purchaseDate, 'dd-MM-yyyy')}"></td>
+                    <td th:text="${order.shipping}"></td>
+                    <td th:text="${#numbers.formatDecimal(order.totalPrice == null ? 0 : order.totalPrice, 1, 1)}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-</body>
-</html>
 
 
 

@@ -5,11 +5,11 @@ import mk.ukim.finki.wp.model.Event;
 import mk.ukim.finki.wp.model.User;
 import mk.ukim.finki.wp.repository.UserRepository;
 import mk.ukim.finki.wp.service.*;
-import org.springframework.security.access.prepost.PreAuthorize;
+import mk.ukim.finki.wp.web.dto.UserRegistrationDto;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -24,28 +24,33 @@ public class AdminProfileController {
     private final BrandService brandService;
     private final OrderService orderService;
     private final EventService eventService;
+    private final ReviewService reviewService;
 
     public AdminProfileController(UserService userService,
-                                  UserRepository userRepository, ProductService productService, BrandService brandService, OrderService orderService, EventService eventService) {
+                                  UserRepository userRepository, ProductService productService, BrandService brandService, OrderService orderService, EventService eventService, ReviewService reviewService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.productService = productService;
         this.brandService = brandService;
         this.orderService = orderService;
         this.eventService = eventService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
     public String getUserProfilePage(Model model, HttpServletRequest request) {
         String email = request.getRemoteUser();
         User user = this.userRepository.findByEmail(email);
-//        List<Event> events = this.userService.listAllEventsInInterested(user.getId());
         List<Event> events = this.eventService.listAll();
         model.addAttribute("events", events);
         model.addAttribute("categoriesChart", getCategoriesChart());
         model.addAttribute("brandsChart", getBrandChart());
         model.addAttribute("eventsChart", getEventChartData(events));
         model.addAttribute("profitChart", getProfitChartData());
+        model.addAttribute("allUsers", this.userService.allUsers());
+        model.addAttribute("allReviews", this.reviewService.allReviews());
+        model.addAttribute("user", user);
+        model.addAttribute("allOrders", this.orderService.allOrders());
         model.addAttribute("bodyContent", "admin-profile");
         return "master-template";
     }

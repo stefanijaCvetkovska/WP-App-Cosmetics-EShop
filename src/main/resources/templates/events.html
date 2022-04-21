@@ -1,4 +1,4 @@
-<section class="mr-5 ml-5 pl-5 pr-5">
+<section class="mr-5 ml-5 pl-5 pr-5" xmlns:sec="http://www.w3.org/1999/xhtml">
     <h1 class="header-events my-5">Events</h1>
 
     <div class="d-flex justify-content-around">
@@ -100,7 +100,7 @@
                     </div>
 
 
-                    <div class="d-flex" sec:authorize="isAuthenticated()">
+                    <div class="d-flex" sec:authorize="hasRole('ROLE_ADMIN')">
                         <form method="POST" th:action="@{'/events/delete/{id}' (id=${event.id})}">
                             <button type="submit" class="btn btn-link text-light">
                                 <i class="fas fa-trash-alt"></i>
