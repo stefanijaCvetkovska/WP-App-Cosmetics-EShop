@@ -240,7 +240,10 @@ img {
     color: #F7D9E5;
 }
 
-
+.numReviews{
+    font-family: "Book Antiqua";
+    color: #5e5e5e;
+}
 
 @media screen and (max-width: 996px) {
     .preview {

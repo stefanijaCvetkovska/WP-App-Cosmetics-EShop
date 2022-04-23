@@ -152,6 +152,7 @@ public class ProductController {
 
     @GetMapping("/details/{id}")
     public String getProductDetails(@PathVariable Long id, HttpServletRequest request, Model model) {
+        model.addAttribute("numReviews",this.reviewService.listAllByProduct(id).size());
         return findPaginatedProductDetails(request, id, 1, model);
     }
 

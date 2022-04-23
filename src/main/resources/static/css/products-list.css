@@ -97,7 +97,7 @@
     text-transform: capitalize;
     margin-bottom: 15px;
 }
-.progress{
+#review-progress{
     height: 5px;
     width: 200px;
     overflow: visible;
@@ -105,13 +105,13 @@
     margin-bottom: 40px;
 }
 
-.progress .progress-bar{
+#review-progress .progress-bar{
     border-radius: 80px;
     position: relative;
     height: 7px;
     animation: animate-positive 2s;
 }
-.progress .progress-icon{
+#review-progress .progress-icon{
     width: 30px;
     height: 30px;
     line-height: 25px;

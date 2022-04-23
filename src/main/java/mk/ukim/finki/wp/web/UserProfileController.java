@@ -21,12 +21,14 @@ public class UserProfileController {
     private final UserRepository userRepository;
     private final OrderService orderService;
     private final EventService eventService;
+    private final ReviewService reviewService;
 
-    public UserProfileController(UserService userService, UserRepository userRepository, OrderService orderService, EventService eventService) {
+    public UserProfileController(UserService userService, UserRepository userRepository, OrderService orderService, EventService eventService, ReviewService reviewService) {
         this.userService = userService;
         this.userRepository = userRepository;
         this.orderService = orderService;
         this.eventService = eventService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
@@ -39,6 +41,7 @@ public class UserProfileController {
         model.addAttribute("orders", orders);
         model.addAttribute("user", user);
         model.addAttribute("bodyContent", "user-profile");
+        model.addAttribute("reviewsNum",this.reviewService.reviewsByUser(user));
         return "master-template";
     }
 }

@@ -16,4 +16,5 @@ public interface ReviewService {
     List<Review> listAllByProductAndUser(Long productId, String email);
     List<Review> listAllByProduct(Long productId);
     int allReviews ();
+    int reviewsByUser (User user);
 }

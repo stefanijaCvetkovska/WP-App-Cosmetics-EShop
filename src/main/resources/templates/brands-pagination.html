@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+<div th:if="${totalPages > 1}">
+    <div class="row justify-content-center">
+        <div class="col-2 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage > 1}"
+                   th:href="@{'/admin/brands/page/1' + '?searchName=' + ${searchName} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    First
+                </a>
+            </div>
+            <span th:unless="${currentPage > 1}">First</span>
+        </div>
+
+        <div class="col-2 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage > 1}"
+                   th:href="@{'/admin/brands/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    Prev
+                </a>
+            </div>
+            <span th:unless="${currentPage > 1}">Prev</span>
+        </div>
+
+        <div class="col-3 text-center border-p">
+            <span class="page-number">
+                <span th:text="${currentPage + ' ' + 'of' + ' ' + totalPages}"></span>
+            </span>
+        </div>
+
+        <div class="col-2 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/admin/brands/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    Next
+                </a>
+            </div>
+            <span th:unless="${currentPage < totalPages}">Next</span>
+        </div>
+
+        <div class="col-2 border-p">
+            <div class="page-item">
+                <a th:if="${currentPage < totalPages}"
+                   th:href="@{'/admin/brands/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    Last
+                </a>
+            </div>
+            <span th:unless="${currentPage < totalPages}">Last</span>
+        </div>
+    </div>
+</div>

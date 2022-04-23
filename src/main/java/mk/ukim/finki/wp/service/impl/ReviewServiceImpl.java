@@ -91,4 +91,9 @@ public class ReviewServiceImpl implements ReviewService {
     public int allReviews() {
         return this.reviewRepository.findAll().size();
     }
+
+    @Override
+    public int reviewsByUser(User user) {
+        return this.reviewRepository.findAllByUser(user).size();
+    }
 }

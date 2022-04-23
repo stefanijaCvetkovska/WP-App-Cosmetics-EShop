@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="card-details card-details-info">
         <div class="container-fluid">
             <div class="wrapper row">
@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <div class = "vertical"></div>
+                <div class="vertical"></div>
 
                 <div class="details col-md-6">
                     <h1 th:text="${product.name}" class="product-title mt-2"></h1>
@@ -23,11 +23,34 @@
                     <p th:text="${product.description}" class="product-description text-justify mt-2"></p>
                     <h1 th:text="'$' + ${product.price}" class="price mt-2"></h1>
 
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="progressbar-title">Reviews</h3>
+                                <div id="review-progress" class="progress">
+                                    <div class="progress-bar"
+                                         th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;' +
+                                                'background: #ed687c'" ;>
+                                                <span class="progress-icon fa fa-star"
+                                                      style="border-color:#ed687c; color:#ed687c;"></span>
+                                        <div class="progress-value"
+                                             th:text="${#numbers.formatDecimal(product.rating == null ? 0 : product.rating, 1, 1)}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6 mt-3 numReviews">
+                                <h4 th:text="'Total reviews: ' + ${numReviews}" style=""></h4>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="d-flex mt-4">
                         <a class="btn btn-all-reviews mr-3"
                            href="#comments">See all reviews
                         </a>
-                        <a class="btn btn-leave-review"
+                        <a sec:authorize="hasRole('ROLE_USER')"
+                           class="btn btn-leave-review"
                            th:if="${reviewsByUser.size() == 0}"
                            th:href="@{'/reviews/{id}/reviews-form' (id=${product.id})}">Leave a review
                         </a>

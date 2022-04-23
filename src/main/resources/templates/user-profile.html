@@ -1,44 +1,73 @@
-<div class="mx-5 emp-profile">
-    <div class="ml-5 row my-4">
-        <div class="col-9">
-            <h2 th:text="${user.firstName + ' ' + user.lastName}"></h2>
-            <div>
-                <p th:text="'Email: ' + ${user.email}"></p>
+<section id="content" class="container mt-5" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div class="p-5">
+        <div class="media clearfix">
+            <div class="media-body va-m">
+                <div class="d-flex">
+                    <h2 th:text="${user.firstName + ' ' + user.lastName}"></h2>
+                    <div class="mx-4">
+                        <div th:if="${reviewsNum <= 25 && reviewsNum > 0}">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div th:if="${reviewsNum <= 50 && reviewsNum > 25}">
+                            <i class="fas fa-medal"></i>
+                        </div>
+                        <div th:if="${reviewsNum <= 100 && reviewsNum > 50}">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <p th:text="'Email: ' + ${user.email}"></p>
+                </div>
+                <div>
+                    <h3 class="progressbar-title">Review Accomplishment</h3>
+                    <div id="review-progress" class="progress">
+                        <div class="progress-bar"
+                             th:style="'width:' + ( ${reviewsNum} == 0  ? '0' : ${reviewsNum}) + '%;' +
+                                                'background: #ed687c'";>
+                                                <span class="progress-icon fa fa-star"
+                                                      style="border-color:#ed687c; color:#ed687c;"></span>
+                            <div class="progress-value" th:text="${reviewsNum}"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-2 ml-auto">
-            <i class="fas fa-user-circle"></i>
+            <div class="col-2 ml-auto">
+                <i class="fas fa-user-circle" style="font-size: 110px"></i>
+            </div>
         </div>
     </div>
-    <hr>
 
-    <div class="row">
-        <div class="col-5">
-            <a class="btn btn-outline-dark" href="/events?interest=INTERESTED">Your upcoming events</a>
-            <div class="row">
-                <article th:each="event: ${events}" class="card-events">
-                    <section class="date">
-                        <time>
+    <div class="p-3 row">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="user-heading pt-2 pb-2 mb-3">My Events</div>
+                <div th:each="event: ${events}" class="panel-body pb5">
+                    <article class="card-events col-5 m-3 mb-5">
+                        <section class="date">
+                            <time>
                         <span class="text-light" th:text="${#temporals.day(event.startDate)}">
                         </span>
-                            <span th:text="${#temporals.monthNameShort(event.startDate)}">
+                                <span th:text="${#temporals.monthNameShort(event.startDate)}">
                         </span>
-                        </time>
-                    </section>
+                            </time>
+                        </section>
 
-                    <section class="card-cont">
-                        <div>
-                            <small>eCOSMETICS</small>
-                            <h6 class="event-name" th:text="${event.eventName}"></h6>
-                        </div>
-                    </section>
-                </article>
+                        <section class="card-cont">
+                            <div>
+                                <small>eCOSMETICS</small>
+                                <h2 class="event-name" th:text="${event.eventName}"></h2>
+                            </div>
+                        </section>
+                    </article>
+                </div>
             </div>
         </div>
-        <div class="col-7 justify-content-center">
-            <h3>Orders</h3>
-            <table class="table">
-                <thead class="thead-dark">
+        <div class="col-md-8">
+
+            <div class="user-heading pt-2 pb-2 mb-3">My Orders</div>
+            <table class="table table-dark">
+                <thead>
                 <tr>
                     <th>
                         Order id
@@ -65,8 +94,4 @@
             </table>
         </div>
     </div>
-</div>
-
-
-
-
+</section>

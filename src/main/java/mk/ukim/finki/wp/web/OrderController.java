@@ -48,6 +48,12 @@ public class OrderController {
                                 @RequestParam String phone,
                                 @RequestParam PaymentMethods payment) {
         this.orderService.purchase(cart, address, phone, payment);
-        return "redirect:/products";
+        return "redirect:/order/finished-order";
+    }
+
+    @GetMapping("/finished-order")
+    public String finishedOrder(Model model){
+        model.addAttribute("bodyContent", "finished-order");
+        return "master-template";
     }
 }

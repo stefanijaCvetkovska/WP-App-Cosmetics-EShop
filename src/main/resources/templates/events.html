@@ -84,23 +84,25 @@
                     <!--                    </div>-->
 
 
-                    <div th:if="${!#lists.contains(interested, event)}">
-                        <form method="POST" th:action="@{'/events/add-event/{id}' (id=${event.id})}">
-                            <button type="submit" class="btn btn-block btn-outline-light my-3">
-                                INTERESTED
-                            </button>
-                        </form>
-                    </div>
-                    <div th:if="${#lists.contains(interested, event)}">
-                        <form method="POST" th:action="@{'/events/remove-event/{id}' (id=${event.id})}">
-                            <button type="submit" class="btn btn-block btn-outline-light my-3">
-                                NOT INTERESTED
-                            </button>
-                        </form>
+                    <div sec:authorize="hasRole('ROLE_USER')">
+                        <div th:if="${!#lists.contains(interested, event)}">
+                            <form method="POST" th:action="@{'/events/add-event/{id}' (id=${event.id})}">
+                                <button type="submit" class="btn btn-block btn-outline-light my-3">
+                                    INTERESTED
+                                </button>
+                            </form>
+                        </div>
+                        <div th:if="${#lists.contains(interested, event)}">
+                            <form method="POST" th:action="@{'/events/remove-event/{id}' (id=${event.id})}">
+                                <button type="submit" class="btn btn-block btn-outline-light my-3">
+                                    NOT INTERESTED
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
 
-                    <div class="d-flex" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <div class=" my-2 ml-n3 d-flex" sec:authorize="hasRole('ROLE_ADMIN')">
                         <form method="POST" th:action="@{'/events/delete/{id}' (id=${event.id})}">
                             <button type="submit" class="btn btn-link text-light">
                                 <i class="fas fa-trash-alt"></i>
@@ -116,7 +118,7 @@
         </div>
     </div>
     <div class="my-5">
-        <a href="/events/add-form" class="btn btn-block btn-details text-decoration-none">
+        <a sec:authorize="hasRole('ROLE_ADMIN')" href="/events/add-form" class="btn btn-block btn-details text-decoration-none">
             Add new event
         </a>
     </div>

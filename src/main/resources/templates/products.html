@@ -47,23 +47,11 @@
                                 <p th:text="${product.category.name}" class="text-muted" data-abc="true"></p>
                             </div>
                             <h2 th:text="'$' + ${product.price}" class="mt-n2 font-weight-semibold"></h2>
-
-<!--                            <div class="progress">-->
-<!--                                <div class="progress-bar bg-warning text-dark"-->
-<!--                                     role="progressbar"-->
-<!--                                     th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;'"-->
-<!--                                     th:aria-valuenow="${product.rating}"-->
-<!--                                     aria-valuemin="0"-->
-<!--                                     aria-valuemax="100"-->
-<!--                                     th:text="'Rating: ' + ${product.rating}">-->
-<!--                                </div>-->
-<!--                            </div>-->
-
                             <div>
                                 <div class="row justify-content-center">
                                     <div class="col-md-9">
                                         <h3 class="progressbar-title">Reviews</h3>
-                                        <div class="progress">
+                                        <div id="review-progress" class="progress">
                                             <div class="progress-bar"
                                                  th:style="'width:' + ( ${product.rating} == 0  ? '0' : (${product.rating}) * 20.0 ) + '%;' +
                                                 'background: #ed687c'";>
@@ -77,8 +65,11 @@
                             </div>
 
                             <div class="mt-2">
-                                <form method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
-                                    <button type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+                                <form sec:authorize="hasRole('ROLE_USER')" method="POST" th:action="@{'/shopping-cart/add-product/{id}' (id=${product.id})}">
+                                    <button th:if="${product.quantity > 0}" type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2">
+                                        Add to cart
+                                    </button>
+                                    <button th:if="${product.quantity == 0}" type="submit" class="mb-2 btn btn-block btn-sm btn-cart pt-2 pb-2" disabled>
                                         Add to cart
                                     </button>
                                 </form>
@@ -114,7 +105,7 @@
                 </div>
             </div>
             <div class="mt-1 ml-2 mr-1">
-                <a href="/products/add-form" class="btn btn-block btn-link text-decoration-none button-style">
+                <a sec:authorize="hasRole('ROLE_ADMIN')" href="/products/add-form" class="btn btn-block btn-link text-decoration-none button-style">
                     Add new product
                 </a>
             </div>
